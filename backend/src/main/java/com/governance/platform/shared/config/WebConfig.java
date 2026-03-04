@@ -1,11 +1,19 @@
 package com.governance.platform.shared.config;
 
+import com.governance.platform.shared.web.ClientRequestHeaderInterceptor;
+import com.governance.platform.shared.web.ClientRequestHeaders;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
+
+    private final ClientRequestHeaderInterceptor clientRequestHeaderInterceptor;
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
@@ -15,9 +23,15 @@ public class WebConfig implements WebMvcConfigurer {
                         "http://localhost:9003"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*");
+                .allowedHeaders("*")
+                .exposedHeaders(ClientRequestHeaders.HEADER_REQUEST_ID);
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(clientRequestHeaderInterceptor)
+                .addPathPatterns("/api/**");
     }
 }
-
 
 
