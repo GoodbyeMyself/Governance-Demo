@@ -35,9 +35,14 @@ export default defineConfig({
             redirect: '/home',
         },
         {
-            name: '首页',
+            name: '系统工作台',
             path: '/home',
             component: './Home',
+        },
+        {
+            name: '数据源管理',
+            path: '/data-source',
+            component: './DataSource',
         },
         {
             name: '元数据采集',

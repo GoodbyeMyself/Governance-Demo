@@ -1,27 +1,24 @@
 import {
-    createDataSource,
-    deleteDataSource,
-    fetchDataSources,
-    type DataSourceItem,
-    type DataSourcePayload,
-    type DataSourceType,
-    updateDataSource,
-} from '@/services/dataSource';
+    fetchWorkbenchOverview,
+    type WorkbenchDailyTrendItem,
+    type WorkbenchOverview,
+} from '@/services/workbench';
 import {
-    DeleteOutlined,
-    EditOutlined,
-    PlusOutlined,
+    ArrowRightOutlined,
+    DatabaseOutlined,
     ReloadOutlined,
+    ScheduleOutlined,
+    SettingOutlined,
 } from '@ant-design/icons';
+import { useNavigate } from '@umijs/max';
 import {
     Button,
     Card,
-    Form,
-    Input,
-    Modal,
-    Popconfirm,
-    Select,
+    Col,
+    Progress,
+    Row,
     Space,
+    Statistic,
     Table,
     Tag,
     message,
@@ -30,16 +27,6 @@ import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useMemo, useState } from 'react';
 import styles from './index.less';
 
-const typeTextMap: Record<DataSourceType, string> = {
-    DATABASE: '数据库',
-    FILE_SYSTEM: '文件系统',
-};
-
-const typeColorMap: Record<DataSourceType, string> = {
-    DATABASE: 'blue',
-    FILE_SYSTEM: 'green',
-};
-
 const formatTime = (value?: string) => {
     if (!value) return '-';
     const date = new Date(value);
@@ -47,28 +34,49 @@ const formatTime = (value?: string) => {
     return date.toLocaleString();
 };
 
+const formatShortDate = (value: string) => {
+    if (!value) return '-';
+    return value.slice(5);
+};
+
+const calcMaxTrendCount = (data: WorkbenchDailyTrendItem[]) => {
+    if (!data.length) return 1;
+    const max = Math.max(...data.map((item) => item.count || 0));
+    return max > 0 ? max : 1;
+};
+
 const HomePage: React.FC = () => {
-    const [form] = Form.useForm<DataSourcePayload>();
-    const [data, setData] = useState<DataSourceItem[]>([]);
+    const navigate = useNavigate();
+    const [overview, setOverview] = useState<WorkbenchOverview | null>(null);
     const [loading, setLoading] = useState(false);
-    const [open, setOpen] = useState(false);
-    const [saving, setSaving] = useState(false);
-    const [editingItem, setEditingItem] = useState<DataSourceItem | null>(null);
     const [messageApi, contextHolder] = message.useMessage();
 
-    const isEdit = useMemo(() => Boolean(editingItem), [editingItem]);
+    const enabledTaskRate = useMemo(() => {
+        const total = overview?.totalMetadataTasks || 0;
+        if (!total) return 0;
+        const enabled = overview?.enabledMetadataTaskCount || 0;
+        return Math.round((enabled / total) * 100);
+    }, [overview?.totalMetadataTasks, overview?.enabledMetadataTaskCount]);
 
-    const loadData = async () => {
+    const dataSourceTrendMax = useMemo(
+        () => calcMaxTrendCount(overview?.dataSourceUpdateTrend7d || []),
+        [overview?.dataSourceUpdateTrend7d],
+    );
+    const metadataTrendMax = useMemo(
+        () => calcMaxTrendCount(overview?.metadataTaskUpdateTrend7d || []),
+        [overview?.metadataTaskUpdateTrend7d],
+    );
+
+    const loadOverview = async () => {
         setLoading(true);
         try {
-            const res = await fetchDataSources();
-            if (!res.success) {
-                throw new Error(res.message || '加载数据源失败');
+            const res = await fetchWorkbenchOverview();
+            if (!res.success || !res.data) {
+                throw new Error(res.message || '加载工作台数据失败');
             }
-            setData(res.data || []);
+            setOverview(res.data);
         } catch (error) {
-            const msg =
-                error instanceof Error ? error.message : '加载数据源失败';
+            const msg = error instanceof Error ? error.message : '加载工作台数据失败';
             messageApi.error(msg);
         } finally {
             setLoading(false);
@@ -76,135 +84,27 @@ const HomePage: React.FC = () => {
     };
 
     useEffect(() => {
-        void loadData();
+        void loadOverview();
     }, []);
 
-    const onOpenCreate = () => {
-        setEditingItem(null);
-        form.resetFields();
-        form.setFieldValue('type', 'DATABASE');
-        setOpen(true);
-    };
-
-    const onOpenEdit = (record: DataSourceItem) => {
-        setEditingItem(record);
-        form.setFieldsValue({
-            name: record.name,
-            type: record.type,
-            connectionUrl: record.connectionUrl,
-            username: record.username,
-            description: record.description,
-            password: '',
-        });
-        setOpen(true);
-    };
-
-    const onCancelModal = () => {
-        setOpen(false);
-        setEditingItem(null);
-        form.resetFields();
-    };
-
-    const onSubmit = async () => {
-        try {
-            const values = await form.validateFields();
-            const payload: DataSourcePayload = {
-                name: values.name?.trim() || '',
-                type: values.type,
-                connectionUrl: values.connectionUrl?.trim() || undefined,
-                username: values.username?.trim() || undefined,
-                password: values.password?.trim() || undefined,
-                description: values.description?.trim() || undefined,
-            };
-
-            setSaving(true);
-            if (isEdit && editingItem) {
-                const res = await updateDataSource(editingItem.id, payload);
-                if (!res.success) {
-                    throw new Error(res.message || '更新数据源失败');
-                }
-                messageApi.success('数据源更新成功');
-            } else {
-                const res = await createDataSource(payload);
-                if (!res.success) {
-                    throw new Error(res.message || '新增数据源失败');
-                }
-                messageApi.success('数据源创建成功');
-            }
-            onCancelModal();
-            await loadData();
-        } catch (error) {
-            if (error && typeof error === 'object' && 'errorFields' in error) {
-                return;
-            }
-            const msg =
-                error instanceof Error ? error.message : '保存数据源失败';
-            messageApi.error(msg);
-        } finally {
-            setSaving(false);
-        }
-    };
-
-    const onDelete = async (id: number) => {
-        try {
-            const res = await deleteDataSource(id);
-            if (!res.success) {
-                throw new Error(res.message || '删除数据源失败');
-            }
-            messageApi.success('删除成功');
-            await loadData();
-        } catch (error) {
-            const msg =
-                error instanceof Error ? error.message : '删除数据源失败';
-            messageApi.error(msg);
-        }
-    };
-
-    const columns: ColumnsType<DataSourceItem> = [
+    const recentDataSourceColumns: ColumnsType<
+        NonNullable<WorkbenchOverview['recentDataSources']>[number]
+    > = [
         {
-            title: 'ID',
-            dataIndex: 'id',
-            width: 80,
-        },
-        {
-            title: '名称',
+            title: '数据源名称',
             dataIndex: 'name',
             ellipsis: true,
-            width: 180,
         },
         {
             title: '类型',
             dataIndex: 'type',
             width: 120,
-            render: (value: DataSourceType) => (
-                <Tag color={typeColorMap[value]}>{typeTextMap[value]}</Tag>
-            ),
-        },
-        {
-            title: '连接地址',
-            dataIndex: 'connectionUrl',
-            ellipsis: true,
-            width: 280,
-            render: (value) => value || '-',
-        },
-        {
-            title: '用户名',
-            dataIndex: 'username',
-            width: 140,
-            render: (value) => value || '-',
-        },
-        {
-            title: '描述',
-            dataIndex: 'description',
-            ellipsis: true,
-            width: 220,
-            render: (value) => value || '-',
-        },
-        {
-            title: '创建时间',
-            dataIndex: 'createdAt',
-            width: 180,
-            render: formatTime,
+            render: (value) =>
+                value === 'DATABASE' ? (
+                    <Tag color="blue">数据库</Tag>
+                ) : (
+                    <Tag color="green">文件系统</Tag>
+                ),
         },
         {
             title: '更新时间',
@@ -212,38 +112,46 @@ const HomePage: React.FC = () => {
             width: 180,
             render: formatTime,
         },
+    ];
+
+    const recentTaskColumns: ColumnsType<
+        NonNullable<WorkbenchOverview['recentMetadataTasks']>[number]
+    > = [
         {
-            title: '操作',
-            key: 'action',
-            fixed: 'right',
-            width: 150,
-            render: (_, record) => (
-                <Space size="middle">
-                    <Button
-                        type="link"
-                        size="small"
-                        icon={<EditOutlined />}
-                        onClick={() => onOpenEdit(record)}
-                    >
-                        编辑
-                    </Button>
-                    <Popconfirm
-                        title="确认删除该数据源？"
-                        okText="确认"
-                        cancelText="取消"
-                        onConfirm={() => onDelete(record.id)}
-                    >
-                        <Button
-                            type="link"
-                            danger
-                            size="small"
-                            icon={<DeleteOutlined />}
-                        >
-                            删除
-                        </Button>
-                    </Popconfirm>
-                </Space>
-            ),
+            title: '任务名称',
+            dataIndex: 'taskName',
+            ellipsis: true,
+        },
+        {
+            title: '数据源',
+            dataIndex: 'dataSourceName',
+            ellipsis: true,
+            width: 160,
+        },
+        {
+            title: '策略',
+            dataIndex: 'strategy',
+            width: 90,
+            render: (value) => (value === 'FULL' ? '全量' : '增量'),
+        },
+        {
+            title: '调度',
+            dataIndex: 'scheduleType',
+            width: 100,
+            render: (value) => (value === 'CRON' ? 'Cron' : '手动'),
+        },
+        {
+            title: '状态',
+            dataIndex: 'enabled',
+            width: 90,
+            render: (value) =>
+                value ? <Tag color="success">启用</Tag> : <Tag>停用</Tag>,
+        },
+        {
+            title: '更新时间',
+            dataIndex: 'updatedAt',
+            width: 180,
+            render: formatTime,
         },
     ];
 
@@ -251,117 +159,200 @@ const HomePage: React.FC = () => {
         <div className={styles.page}>
             {contextHolder}
             <Card
-                title="数据源管理"
+                className={styles.headerCard}
+                title="系统工作台"
                 extra={
-                    <Space>
-                        <Button
-                            icon={<ReloadOutlined />}
-                            onClick={() => void loadData()}
-                        >
-                            刷新
-                        </Button>
-                        <Button
-                            type="primary"
-                            icon={<PlusOutlined />}
-                            onClick={onOpenCreate}
-                        >
-                            新增数据源
-                        </Button>
-                    </Space>
+                    <Button
+                        icon={<ReloadOutlined />}
+                        loading={loading}
+                        onClick={() => void loadOverview()}
+                    >
+                        刷新统计
+                    </Button>
                 }
             >
-                <Table<DataSourceItem>
-                    rowKey="id"
-                    loading={loading}
-                    columns={columns}
-                    dataSource={data}
-                    scroll={{ x: 1450 }}
-                    pagination={{
-                        showSizeChanger: true,
-                        defaultPageSize: 10,
-                        showTotal: (total) => `共 ${total} 条`,
-                    }}
-                />
+                <Row gutter={[16, 16]}>
+                    <Col xs={24} sm={12} lg={6}>
+                        <Card className={styles.statCard} bordered={false}>
+                            <Statistic
+                                title="数据源总数"
+                                value={overview?.totalDataSources || 0}
+                                prefix={<DatabaseOutlined />}
+                            />
+                        </Card>
+                    </Col>
+                    <Col xs={24} sm={12} lg={6}>
+                        <Card className={styles.statCard} bordered={false}>
+                            <Statistic
+                                title="采集任务总数"
+                                value={overview?.totalMetadataTasks || 0}
+                                prefix={<SettingOutlined />}
+                            />
+                        </Card>
+                    </Col>
+                    <Col xs={24} sm={12} lg={6}>
+                        <Card className={styles.statCard} bordered={false}>
+                            <Statistic
+                                title="启用任务数"
+                                value={overview?.enabledMetadataTaskCount || 0}
+                                valueStyle={{ color: '#3f8600' }}
+                                prefix={<ScheduleOutlined />}
+                            />
+                        </Card>
+                    </Col>
+                    <Col xs={24} sm={12} lg={6}>
+                        <Card className={styles.statCard} bordered={false}>
+                            <Statistic
+                                title="Cron任务数"
+                                value={overview?.cronMetadataTaskCount || 0}
+                                valueStyle={{ color: '#1677ff' }}
+                                prefix={<ScheduleOutlined />}
+                            />
+                        </Card>
+                    </Col>
+                </Row>
             </Card>
 
-            <Modal
-                title={isEdit ? '编辑数据源' : '新增数据源'}
-                open={open}
-                confirmLoading={saving}
-                onCancel={onCancelModal}
-                onOk={() => void onSubmit()}
-                destroyOnClose
-                maskClosable={false}
-            >
-                <Form form={form} layout="vertical" initialValues={{ type: 'DATABASE' }}>
-                    <Form.Item
-                        label="数据源名称"
-                        name="name"
-                        rules={[
-                            { required: true, message: '请输入数据源名称' },
-                            { max: 100, message: '名称不能超过 100 个字符' },
-                        ]}
-                    >
-                        <Input placeholder="例如：MySQL-Prod" />
-                    </Form.Item>
+            <Row gutter={[16, 16]} className={styles.contentRow}>
+                <Col xs={24} lg={12}>
+                    <Card title="快捷入口">
+                        <div className={styles.quickActions}>
+                            <Button
+                                type="primary"
+                                className={styles.quickButton}
+                                onClick={() => navigate('/data-source')}
+                            >
+                                <span>进入数据源管理</span>
+                                <ArrowRightOutlined />
+                            </Button>
+                            <Button
+                                className={styles.quickButton}
+                                onClick={() => navigate('/metadata-collection')}
+                            >
+                                <span>进入元数据采集</span>
+                                <ArrowRightOutlined />
+                            </Button>
+                        </div>
+                    </Card>
+                </Col>
+                <Col xs={24} lg={12}>
+                    <Card title="采集运行概览">
+                        <div className={styles.progressWrap}>
+                            <div className={styles.progressTitle}>任务启用率</div>
+                            <Progress
+                                percent={enabledTaskRate}
+                                status="active"
+                                strokeColor="#52c41a"
+                            />
+                        </div>
+                        <Space wrap size={[8, 8]}>
+                            <Tag color="blue">
+                                全量任务：{overview?.fullMetadataTaskCount || 0}
+                            </Tag>
+                            <Tag color="purple">
+                                增量任务：{overview?.incrementalMetadataTaskCount || 0}
+                            </Tag>
+                            <Tag color="gold">
+                                手动任务：
+                                {(overview?.totalMetadataTasks || 0) -
+                                    (overview?.cronMetadataTaskCount || 0)}
+                            </Tag>
+                            <Tag color="geekblue">
+                                Cron任务：{overview?.cronMetadataTaskCount || 0}
+                            </Tag>
+                        </Space>
+                    </Card>
+                </Col>
+            </Row>
 
-                    <Form.Item
-                        label="类型"
-                        name="type"
-                        rules={[{ required: true, message: '请选择类型' }]}
-                    >
-                        <Select
-                            options={[
-                                { label: '数据库', value: 'DATABASE' },
-                                { label: '文件系统', value: 'FILE_SYSTEM' },
-                            ]}
+            <Row gutter={[16, 16]} className={styles.contentRow}>
+                <Col xs={24} lg={12}>
+                    <Card title="数据源近 7 天更新趋势">
+                        <div className={styles.trendList}>
+                            {(overview?.dataSourceUpdateTrend7d || []).map((item) => (
+                                <div className={styles.trendRow} key={item.date}>
+                                    <div className={styles.trendDate}>
+                                        {formatShortDate(item.date)}
+                                    </div>
+                                    <div className={styles.trendBarWrap}>
+                                        <div
+                                            className={styles.trendBarDataSource}
+                                            style={{
+                                                width: `${Math.max(
+                                                    6,
+                                                    Math.round(
+                                                        ((item.count || 0) /
+                                                            dataSourceTrendMax) *
+                                                            100,
+                                                    ),
+                                                )}%`,
+                                            }}
+                                        />
+                                    </div>
+                                    <div className={styles.trendCount}>{item.count}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </Card>
+                </Col>
+                <Col xs={24} lg={12}>
+                    <Card title="采集任务近 7 天更新趋势">
+                        <div className={styles.trendList}>
+                            {(overview?.metadataTaskUpdateTrend7d || []).map((item) => (
+                                <div className={styles.trendRow} key={item.date}>
+                                    <div className={styles.trendDate}>
+                                        {formatShortDate(item.date)}
+                                    </div>
+                                    <div className={styles.trendBarWrap}>
+                                        <div
+                                            className={styles.trendBarTask}
+                                            style={{
+                                                width: `${Math.max(
+                                                    6,
+                                                    Math.round(
+                                                        ((item.count || 0) /
+                                                            metadataTrendMax) *
+                                                            100,
+                                                    ),
+                                                )}%`,
+                                            }}
+                                        />
+                                    </div>
+                                    <div className={styles.trendCount}>{item.count}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </Card>
+                </Col>
+            </Row>
+
+            <Row gutter={[16, 16]} className={styles.contentRow}>
+                <Col xs={24} xl={12}>
+                    <Card title="最近更新的数据源">
+                        <Table
+                            rowKey="id"
+                            size="small"
+                            loading={loading}
+                            columns={recentDataSourceColumns}
+                            dataSource={overview?.recentDataSources || []}
+                            pagination={false}
                         />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="连接地址"
-                        name="connectionUrl"
-                        rules={[
-                            {
-                                max: 500,
-                                message: '连接地址不能超过 500 个字符',
-                            },
-                        ]}
-                    >
-                        <Input placeholder="例如：jdbc:mysql://localhost:3306/demo" />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="用户名"
-                        name="username"
-                        rules={[
-                            { max: 100, message: '用户名不能超过 100 个字符' },
-                        ]}
-                    >
-                        <Input placeholder="例如：root" />
-                    </Form.Item>
-
-                    <Form.Item
-                        label={isEdit ? '密码（留空表示不变/清空）' : '密码'}
-                        name="password"
-                        rules={[
-                            { max: 100, message: '密码不能超过 100 个字符' },
-                        ]}
-                    >
-                        <Input.Password placeholder="请输入密码" />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="描述"
-                        name="description"
-                        rules={[
-                            { max: 500, message: '描述不能超过 500 个字符' },
-                        ]}
-                    >
-                        <Input.TextArea rows={3} placeholder="请输入描述信息" />
-                    </Form.Item>
-                </Form>
-            </Modal>
+                    </Card>
+                </Col>
+                <Col xs={24} xl={12}>
+                    <Card title="最近更新的采集任务">
+                        <Table
+                            rowKey="id"
+                            size="small"
+                            loading={loading}
+                            columns={recentTaskColumns}
+                            dataSource={overview?.recentMetadataTasks || []}
+                            pagination={false}
+                            scroll={{ x: 720 }}
+                        />
+                    </Card>
+                </Col>
+            </Row>
         </div>
     );
 };

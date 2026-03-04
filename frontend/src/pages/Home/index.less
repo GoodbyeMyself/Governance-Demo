@@ -4,6 +4,85 @@
     min-height: calc(100vh - 56px);
 }
 
+.headerCard {
+    margin-bottom: 16px;
+}
+
+.statCard {
+    background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+}
+
+.contentRow {
+    margin-top: 0;
+}
+
+.quickActions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.quickButton {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 42px;
+}
+
+.progressWrap {
+    margin-bottom: 12px;
+}
+
+.progressTitle {
+    margin-bottom: 8px;
+    color: #555;
+    font-size: 13px;
+}
+
+.trendList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.trendRow {
+    display: grid;
+    grid-template-columns: 56px 1fr 36px;
+    align-items: center;
+    column-gap: 10px;
+}
+
+.trendDate {
+    color: #666;
+    font-size: 12px;
+}
+
+.trendBarWrap {
+    height: 10px;
+    background: #f0f4f9;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.trendBarDataSource {
+    height: 100%;
+    background: linear-gradient(90deg, #7bb8ff 0%, #1677ff 100%);
+    border-radius: 20px;
+}
+
+.trendBarTask {
+    height: 100%;
+    background: linear-gradient(90deg, #95de64 0%, #52c41a 100%);
+    border-radius: 20px;
+}
+
+.trendCount {
+    text-align: right;
+    color: #555;
+    font-size: 12px;
+}
+
 @media (max-width: 768px) {
     .page {
         padding: 12px;
