@@ -4,6 +4,10 @@ spring:
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:mayunlong}
     driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: always
+      encoding: UTF-8
   jpa:
     hibernate:
       ddl-auto: update

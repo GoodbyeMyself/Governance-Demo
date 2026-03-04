@@ -1,6 +1,30 @@
-# Data Source Management Backend (Minimal)
+# Data Governance Backend
 
-This is a minimal Spring Boot backend example for a data governance "Data Source Management" module.
+This backend is organized for long-term module growth in a data governance platform.
+
+## Project Structure
+
+```text
+com.governance.datasource
+├─ DataSourceManagementApplication
+├─ shared
+│  ├─ api         # unified response model
+│  ├─ config      # cross-module config (CORS, etc.)
+│  └─ exception   # global exception handling and shared exceptions
+└─ modules
+   ├─ datasource
+   │  ├─ controller / dto / entity / repository / service
+   │  └─ exception
+   └─ metadata
+      ├─ controller / dto / entity / repository / service
+      └─ exception
+```
+
+## Module Rule
+
+- Add new business modules under `modules/<module-name>/...`.
+- Keep global/common logic in `shared`.
+- Do not place cross-module logic directly under root package.
 
 ## Tech Stack
 

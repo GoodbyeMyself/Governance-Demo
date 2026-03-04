@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>com.governance</groupId>
-    <artifactId>data-source-management</artifactId>
+    <artifactId>data-governance</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>data-source-management</name>
     <description>Minimal data source management backend demo</description>

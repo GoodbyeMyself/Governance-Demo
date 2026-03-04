@@ -1,9 +1,3 @@
-CREATE DATABASE IF NOT EXISTS governance_demo
-DEFAULT CHARACTER SET utf8mb4
-DEFAULT COLLATE utf8mb4_general_ci;
-
-USE governance_demo;
-
 CREATE TABLE IF NOT EXISTS data_sources (
     id BIGINT NOT NULL AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
