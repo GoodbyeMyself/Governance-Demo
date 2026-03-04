@@ -55,7 +55,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
         layout: 'top',
         // 自定义 页面 title
         pageTitleRender: () => {
-            return isMicroApp ? '数据治理' : '微应用 - 数据服务';
+            return '数据治理';
         },
     };
 };

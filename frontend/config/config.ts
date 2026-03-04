@@ -42,7 +42,7 @@ export default defineConfig({
     initialState: {},
     request: {},
     layout: {
-        title: '微应用 - 数据服务',
+        title: '数据治理',
     },
     routes: [
         {
@@ -53,11 +53,6 @@ export default defineConfig({
             name: '首页',
             path: '/home',
             component: './Home',
-        },
-        {
-            name: '微应用',
-            path: '/microapp',
-            component: './Microapp',
         },
         {
             name: '权限演示',
@@ -86,9 +81,9 @@ export default defineConfig({
      */
     favicons: ['/favicon.svg'],
     // 要在非根目录下部署 umi 项目时，你可以使用 base 配置
-    base: '/microapp-service/',
+    base: '/',
     // 静态资源公共路径
-    publicPath: isProduction ? '/microapp-service/' : '/',
+    publicPath: '/',
     // 输出的文件夹 名称
-    outputPath: isProduction ? 'microapp-service' : 'dist',
+    outputPath: 'dist',
 });
