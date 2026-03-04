@@ -76,7 +76,8 @@ const HomePage: React.FC = () => {
             }
             setOverview(res.data);
         } catch (error) {
-            const msg = error instanceof Error ? error.message : '加载工作台数据失败';
+            const msg =
+                error instanceof Error ? error.message : '加载工作台数据失败';
             messageApi.error(msg);
         } finally {
             setLoading(false);
@@ -158,87 +159,134 @@ const HomePage: React.FC = () => {
     return (
         <div className={styles.page}>
             {contextHolder}
-            <Card
-                className={styles.headerCard}
-                title="系统工作台"
-                extra={
-                    <Button
-                        icon={<ReloadOutlined />}
-                        loading={loading}
-                        onClick={() => void loadOverview()}
-                    >
-                        刷新统计
-                    </Button>
-                }
-            >
-                <Row gutter={[16, 16]}>
-                    <Col xs={24} sm={12} lg={6}>
-                        <Card className={styles.statCard} bordered={false}>
-                            <Statistic
-                                title="数据源总数"
-                                value={overview?.totalDataSources || 0}
-                                prefix={<DatabaseOutlined />}
-                            />
-                        </Card>
-                    </Col>
-                    <Col xs={24} sm={12} lg={6}>
-                        <Card className={styles.statCard} bordered={false}>
-                            <Statistic
-                                title="采集任务总数"
-                                value={overview?.totalMetadataTasks || 0}
-                                prefix={<SettingOutlined />}
-                            />
-                        </Card>
-                    </Col>
-                    <Col xs={24} sm={12} lg={6}>
-                        <Card className={styles.statCard} bordered={false}>
-                            <Statistic
-                                title="启用任务数"
-                                value={overview?.enabledMetadataTaskCount || 0}
-                                valueStyle={{ color: '#3f8600' }}
-                                prefix={<ScheduleOutlined />}
-                            />
-                        </Card>
-                    </Col>
-                    <Col xs={24} sm={12} lg={6}>
-                        <Card className={styles.statCard} bordered={false}>
-                            <Statistic
-                                title="Cron任务数"
-                                value={overview?.cronMetadataTaskCount || 0}
-                                valueStyle={{ color: '#1677ff' }}
-                                prefix={<ScheduleOutlined />}
-                            />
-                        </Card>
-                    </Col>
-                </Row>
-            </Card>
 
-            <Row gutter={[16, 16]} className={styles.contentRow}>
-                <Col xs={24} lg={12}>
-                    <Card title="快捷入口">
+            <Row gutter={[16, 16]} className={styles.topRow}>
+                <Col xs={24} xl={16}>
+                    <Card className={styles.headerCard}>
+                        <div className={styles.headerMain}>
+                            <div>
+                                <div className={styles.headerTitle}>
+                                    系统工作台
+                                </div>
+                                <div className={styles.headerDesc}>
+                                    统一查看数据源、采集任务和近期更新趋势
+                                </div>
+                            </div>
+                            <Button
+                                icon={<ReloadOutlined />}
+                                loading={loading}
+                                onClick={() => void loadOverview()}
+                            >
+                                刷新统计
+                            </Button>
+                        </div>
+
+                        <Row gutter={[12, 12]} className={styles.statGrid}>
+                            <Col xs={24} sm={12} lg={6}>
+                                <Card
+                                    className={styles.statCard}
+                                    bordered={false}
+                                >
+                                    <Statistic
+                                        title="数据源总数"
+                                        value={overview?.totalDataSources || 0}
+                                        prefix={<DatabaseOutlined />}
+                                    />
+                                </Card>
+                            </Col>
+                            <Col xs={24} sm={12} lg={6}>
+                                <Card
+                                    className={styles.statCard}
+                                    bordered={false}
+                                >
+                                    <Statistic
+                                        title="采集任务总数"
+                                        value={
+                                            overview?.totalMetadataTasks || 0
+                                        }
+                                        prefix={<SettingOutlined />}
+                                    />
+                                </Card>
+                            </Col>
+                            <Col xs={24} sm={12} lg={6}>
+                                <Card
+                                    className={styles.statCard}
+                                    bordered={false}
+                                >
+                                    <Statistic
+                                        title="启用任务数"
+                                        value={
+                                            overview?.enabledMetadataTaskCount ||
+                                            0
+                                        }
+                                        valueStyle={{ color: '#3f8600' }}
+                                        prefix={<ScheduleOutlined />}
+                                    />
+                                </Card>
+                            </Col>
+                            <Col xs={24} sm={12} lg={6}>
+                                <Card
+                                    className={styles.statCard}
+                                    bordered={false}
+                                >
+                                    <Statistic
+                                        title="Cron任务数"
+                                        value={
+                                            overview?.cronMetadataTaskCount || 0
+                                        }
+                                        valueStyle={{ color: '#1677ff' }}
+                                        prefix={<ScheduleOutlined />}
+                                    />
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Card>
+                </Col>
+
+                <Col xs={24} xl={8}>
+                    <Card className={styles.quickCard} title="快捷入口">
                         <div className={styles.quickActions}>
                             <Button
                                 type="primary"
-                                className={styles.quickButton}
+                                className={`${styles.quickButton} ${styles.quickButtonPrimary}`}
                                 onClick={() => navigate('/data-source')}
                             >
-                                <span>进入数据源管理</span>
+                                <span className={styles.quickButtonText}>
+                                    <span className={styles.quickButtonTitle}>
+                                        进入数据源管理
+                                    </span>
+                                    <span className={styles.quickButtonDesc}>
+                                        维护连接配置与更新记录
+                                    </span>
+                                </span>
                                 <ArrowRightOutlined />
                             </Button>
                             <Button
                                 className={styles.quickButton}
                                 onClick={() => navigate('/metadata-collection')}
                             >
-                                <span>进入元数据采集</span>
+                                <span className={styles.quickButtonText}>
+                                    <span className={styles.quickButtonTitle}>
+                                        进入元数据采集
+                                    </span>
+                                    <span className={styles.quickButtonDesc}>
+                                        新建并管理采集任务
+                                    </span>
+                                </span>
                                 <ArrowRightOutlined />
                             </Button>
                         </div>
                     </Card>
                 </Col>
-                <Col xs={24} lg={12}>
+            </Row>
+
+            <Row gutter={[16, 16]} className={styles.contentRow}>
+                <Col xs={24}>
                     <Card title="采集运行概览">
                         <div className={styles.progressWrap}>
-                            <div className={styles.progressTitle}>任务启用率</div>
+                            <div className={styles.progressTitle}>
+                                任务启用率
+                            </div>
                             <Progress
                                 percent={enabledTaskRate}
                                 status="active"
@@ -250,7 +298,8 @@ const HomePage: React.FC = () => {
                                 全量任务：{overview?.fullMetadataTaskCount || 0}
                             </Tag>
                             <Tag color="purple">
-                                增量任务：{overview?.incrementalMetadataTaskCount || 0}
+                                增量任务：
+                                {overview?.incrementalMetadataTaskCount || 0}
                             </Tag>
                             <Tag color="gold">
                                 手动任务：
@@ -269,58 +318,74 @@ const HomePage: React.FC = () => {
                 <Col xs={24} lg={12}>
                     <Card title="数据源近 7 天更新趋势">
                         <div className={styles.trendList}>
-                            {(overview?.dataSourceUpdateTrend7d || []).map((item) => (
-                                <div className={styles.trendRow} key={item.date}>
-                                    <div className={styles.trendDate}>
-                                        {formatShortDate(item.date)}
+                            {(overview?.dataSourceUpdateTrend7d || []).map(
+                                (item) => (
+                                    <div
+                                        className={styles.trendRow}
+                                        key={item.date}
+                                    >
+                                        <div className={styles.trendDate}>
+                                            {formatShortDate(item.date)}
+                                        </div>
+                                        <div className={styles.trendBarWrap}>
+                                            <div
+                                                className={
+                                                    styles.trendBarDataSource
+                                                }
+                                                style={{
+                                                    width: `${Math.max(
+                                                        6,
+                                                        Math.round(
+                                                            ((item.count || 0) /
+                                                                dataSourceTrendMax) *
+                                                                100,
+                                                        ),
+                                                    )}%`,
+                                                }}
+                                            />
+                                        </div>
+                                        <div className={styles.trendCount}>
+                                            {item.count}
+                                        </div>
                                     </div>
-                                    <div className={styles.trendBarWrap}>
-                                        <div
-                                            className={styles.trendBarDataSource}
-                                            style={{
-                                                width: `${Math.max(
-                                                    6,
-                                                    Math.round(
-                                                        ((item.count || 0) /
-                                                            dataSourceTrendMax) *
-                                                            100,
-                                                    ),
-                                                )}%`,
-                                            }}
-                                        />
-                                    </div>
-                                    <div className={styles.trendCount}>{item.count}</div>
-                                </div>
-                            ))}
+                                ),
+                            )}
                         </div>
                     </Card>
                 </Col>
                 <Col xs={24} lg={12}>
                     <Card title="采集任务近 7 天更新趋势">
                         <div className={styles.trendList}>
-                            {(overview?.metadataTaskUpdateTrend7d || []).map((item) => (
-                                <div className={styles.trendRow} key={item.date}>
-                                    <div className={styles.trendDate}>
-                                        {formatShortDate(item.date)}
+                            {(overview?.metadataTaskUpdateTrend7d || []).map(
+                                (item) => (
+                                    <div
+                                        className={styles.trendRow}
+                                        key={item.date}
+                                    >
+                                        <div className={styles.trendDate}>
+                                            {formatShortDate(item.date)}
+                                        </div>
+                                        <div className={styles.trendBarWrap}>
+                                            <div
+                                                className={styles.trendBarTask}
+                                                style={{
+                                                    width: `${Math.max(
+                                                        6,
+                                                        Math.round(
+                                                            ((item.count || 0) /
+                                                                metadataTrendMax) *
+                                                                100,
+                                                        ),
+                                                    )}%`,
+                                                }}
+                                            />
+                                        </div>
+                                        <div className={styles.trendCount}>
+                                            {item.count}
+                                        </div>
                                     </div>
-                                    <div className={styles.trendBarWrap}>
-                                        <div
-                                            className={styles.trendBarTask}
-                                            style={{
-                                                width: `${Math.max(
-                                                    6,
-                                                    Math.round(
-                                                        ((item.count || 0) /
-                                                            metadataTrendMax) *
-                                                            100,
-                                                    ),
-                                                )}%`,
-                                            }}
-                                        />
-                                    </div>
-                                    <div className={styles.trendCount}>{item.count}</div>
-                                </div>
-                            ))}
+                                ),
+                            )}
                         </div>
                     </Card>
                 </Col>
