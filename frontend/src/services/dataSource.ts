@@ -1,4 +1,4 @@
-import { request } from '@umijs/max';
+import { httpRequest } from '@/utils/http';
 
 export type DataSourceType = 'DATABASE' | 'FILE_SYSTEM';
 
@@ -29,27 +29,29 @@ export interface DataSourcePayload {
 }
 
 export async function fetchDataSources() {
-    return request<ApiResponse<DataSourceItem[]>>('/api/data-sources', {
+    return httpRequest<ApiResponse<DataSourceItem[]>>('/api/data-sources', {
         method: 'GET',
     });
 }
 
 export async function createDataSource(payload: DataSourcePayload) {
-    return request<ApiResponse<DataSourceItem>>('/api/data-sources', {
+    return httpRequest<ApiResponse<DataSourceItem>>('/api/data-sources', {
         method: 'POST',
+        requireBody: true,
         data: payload,
     });
 }
 
 export async function updateDataSource(id: number, payload: DataSourcePayload) {
-    return request<ApiResponse<DataSourceItem>>(`/api/data-sources/${id}`, {
+    return httpRequest<ApiResponse<DataSourceItem>>(`/api/data-sources/${id}`, {
         method: 'PUT',
+        requireBody: true,
         data: payload,
     });
 }
 
 export async function deleteDataSource(id: number) {
-    return request<ApiResponse<null>>(`/api/data-sources/${id}`, {
+    return httpRequest<ApiResponse<null>>(`/api/data-sources/${id}`, {
         method: 'DELETE',
     });
 }

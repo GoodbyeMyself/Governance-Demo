@@ -1,5 +1,5 @@
-import { request } from '@umijs/max';
 import type { ApiResponse } from './dataSource';
+import { httpRequest } from '@/utils/http';
 
 export interface WorkbenchRecentDataSourceItem {
     id: number;
@@ -39,7 +39,7 @@ export interface WorkbenchOverview {
 }
 
 export async function fetchWorkbenchOverview() {
-    return request<ApiResponse<WorkbenchOverview>>('/api/workbench/overview', {
+    return httpRequest<ApiResponse<WorkbenchOverview>>('/api/workbench/overview', {
         method: 'GET',
     });
 }

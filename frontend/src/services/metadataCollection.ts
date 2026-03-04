@@ -1,5 +1,5 @@
-import { request } from '@umijs/max';
 import type { ApiResponse, DataSourceType } from './dataSource';
+import { httpRequest } from '@/utils/http';
 
 export type MetadataCollectionStrategy = 'FULL' | 'INCREMENTAL';
 export type MetadataCollectionScope = 'SCHEMA' | 'TABLE';
@@ -37,7 +37,7 @@ export interface MetadataCollectionTaskPayload {
 }
 
 export async function fetchMetadataCollectionTasks() {
-    return request<ApiResponse<MetadataCollectionTaskItem[]>>(
+    return httpRequest<ApiResponse<MetadataCollectionTaskItem[]>>(
         '/api/metadata-collection-tasks',
         {
             method: 'GET',
@@ -46,7 +46,7 @@ export async function fetchMetadataCollectionTasks() {
 }
 
 export async function fetchMetadataCollectionTaskDetail(id: number) {
-    return request<ApiResponse<MetadataCollectionTaskItem>>(
+    return httpRequest<ApiResponse<MetadataCollectionTaskItem>>(
         `/api/metadata-collection-tasks/${id}`,
         {
             method: 'GET',
@@ -57,10 +57,11 @@ export async function fetchMetadataCollectionTaskDetail(id: number) {
 export async function createMetadataCollectionTask(
     payload: MetadataCollectionTaskPayload,
 ) {
-    return request<ApiResponse<MetadataCollectionTaskItem>>(
+    return httpRequest<ApiResponse<MetadataCollectionTaskItem>>(
         '/api/metadata-collection-tasks',
         {
             method: 'POST',
+            requireBody: true,
             data: payload,
         },
     );
@@ -70,17 +71,18 @@ export async function updateMetadataCollectionTask(
     id: number,
     payload: MetadataCollectionTaskPayload,
 ) {
-    return request<ApiResponse<MetadataCollectionTaskItem>>(
+    return httpRequest<ApiResponse<MetadataCollectionTaskItem>>(
         `/api/metadata-collection-tasks/${id}`,
         {
             method: 'PUT',
+            requireBody: true,
             data: payload,
         },
     );
 }
 
 export async function deleteMetadataCollectionTask(id: number) {
-    return request<ApiResponse<null>>(`/api/metadata-collection-tasks/${id}`, {
+    return httpRequest<ApiResponse<null>>(`/api/metadata-collection-tasks/${id}`, {
         method: 'DELETE',
     });
 }
