@@ -60,6 +60,7 @@ export default defineConfig({
             component: './Access',
         },
     ],
+    headScripts: ['/runtime-config.js'],
     proxy: proxy[REACT_APP_ENV as keyof typeof proxy],
     npmClient: 'npm',
     qiankun: {
