@@ -5,7 +5,17 @@ import {
     type AuthCenterUserRole,
 } from '@/services/authCenter';
 import { EditOutlined, ReloadOutlined } from '@ant-design/icons';
-import { Button, Card, Modal, Select, Space, Table, Tag, message } from 'antd';
+import {
+    Button,
+    Card,
+    Modal,
+    Select,
+    Space,
+    Table,
+    Tag,
+    Tooltip,
+    message,
+} from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useMemo, useState } from 'react';
 import styles from './index.less';
@@ -167,16 +177,16 @@ const UserManagementPage: React.FC = () => {
             title: '操作',
             key: 'action',
             fixed: 'right',
-            width: 140,
+            width: 80,
             render: (_, record) => (
-                <Button
-                    type="link"
-                    size="small"
-                    icon={<EditOutlined />}
-                    onClick={() => openRoleModal(record)}
-                >
-                    修改角色
-                </Button>
+                <Tooltip title="修改角色">
+                    <Button
+                        type="text"
+                        size="small"
+                        icon={<EditOutlined />}
+                        onClick={() => openRoleModal(record)}
+                    />
+                </Tooltip>
             ),
         },
     ];
@@ -219,10 +229,7 @@ const UserManagementPage: React.FC = () => {
             >
                 <div className={styles.userInfo}>
                     <div>用户名：{editingUser?.username || '-'}</div>
-                    <div>
-                        当前角色：
-                        {editingUser ? roleTextMap[editingUser.role] : '-'}
-                    </div>
+                    <div>当前角色：{editingUser ? roleTextMap[editingUser.role] : '-'}</div>
                 </div>
                 <Select<AuthCenterUserRole>
                     value={nextRole}
@@ -239,4 +246,3 @@ const UserManagementPage: React.FC = () => {
 };
 
 export default UserManagementPage;
-

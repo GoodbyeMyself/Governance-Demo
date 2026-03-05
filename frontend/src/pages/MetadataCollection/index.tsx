@@ -34,6 +34,7 @@ import {
     Switch,
     Table,
     Tag,
+    Tooltip,
     message,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
@@ -228,24 +229,24 @@ const MetadataCollectionPage: React.FC = () => {
         {
             title: 'ID',
             dataIndex: 'id',
-            width: 80,
+            width: 50,
         },
         {
             title: '任务名称',
             dataIndex: 'taskName',
-            width: 180,
+            width: 140,
             ellipsis: true,
         },
         {
             title: '数据源',
             dataIndex: 'dataSourceName',
-            width: 200,
+            width: 140,
             ellipsis: true,
         },
         {
             title: '数据源类型',
             dataIndex: 'dataSourceType',
-            width: 120,
+            width: 100,
             render: (value: DataSourceType) => (
                 <Tag color={value === 'DATABASE' ? 'blue' : 'green'}>
                     {dataSourceTypeTextMap[value]}
@@ -255,39 +256,39 @@ const MetadataCollectionPage: React.FC = () => {
         {
             title: '采集策略',
             dataIndex: 'strategy',
-            width: 120,
+            width: 100,
             render: (value: MetadataCollectionStrategy) => strategyTextMap[value],
         },
         {
             title: '采集范围',
             dataIndex: 'scope',
-            width: 120,
+            width: 100,
             render: (value: MetadataCollectionScope) => scopeTextMap[value],
         },
-        {
-            title: '目标匹配规则',
-            dataIndex: 'targetPattern',
-            width: 220,
-            ellipsis: true,
-            render: (value) => value || '-',
-        },
+        // {
+        //     title: '目标匹配规则',
+        //     dataIndex: 'targetPattern',
+        //     width: 220,
+        //     ellipsis: true,
+        //     render: (value) => value || '-',
+        // },
         {
             title: '调度方式',
             dataIndex: 'scheduleType',
-            width: 140,
+            width: 80,
             render: (value: MetadataCollectionScheduleType) => scheduleTypeTextMap[value],
         },
-        {
-            title: 'Cron 表达式',
-            dataIndex: 'cronExpression',
-            width: 180,
-            ellipsis: true,
-            render: (value) => value || '-',
-        },
+        // {
+        //     title: 'Cron 表达式',
+        //     dataIndex: 'cronExpression',
+        //     width: 180,
+        //     ellipsis: true,
+        //     render: (value) => value || '-',
+        // },
         {
             title: '启用状态',
             dataIndex: 'enabled',
-            width: 100,
+            width: 80,
             render: (value: boolean) =>
                 value ? <Tag color="success">启用</Tag> : <Tag color="default">停用</Tag>,
         },
@@ -301,52 +302,52 @@ const MetadataCollectionPage: React.FC = () => {
         {
             title: '创建时间',
             dataIndex: 'createdAt',
-            width: 180,
+            width: 140,
             render: formatTime,
         },
-        {
-            title: '更新时间',
-            dataIndex: 'updatedAt',
-            width: 180,
-            render: formatTime,
-        },
+        // {
+        //     title: '更新时间',
+        //     dataIndex: 'updatedAt',
+        //     width: 180,
+        //     render: formatTime,
+        // },
         {
             title: '操作',
             key: 'action',
-            width: 220,
+            width: 140,
             fixed: 'right',
             render: (_, record) => (
-                <Space size="middle">
-                    <Button
-                        type="link"
-                        size="small"
-                        icon={<EyeOutlined />}
-                        onClick={() => navigate(`/metadata-collection/${record.id}`)}
-                    >
-                        详情
-                    </Button>
-                    <Button
-                        type="link"
-                        size="small"
-                        icon={<EditOutlined />}
-                        onClick={() => onOpenEdit(record)}
-                    >
-                        编辑
-                    </Button>
+                <Space size={4}>
+                    <Tooltip title="详情">
+                        <Button
+                            type="text"
+                            size="small"
+                            icon={<EyeOutlined />}
+                            onClick={() => navigate(`/metadata-collection/${record.id}`)}
+                        />
+                    </Tooltip>
+                    <Tooltip title="编辑">
+                        <Button
+                            type="text"
+                            size="small"
+                            icon={<EditOutlined />}
+                            onClick={() => onOpenEdit(record)}
+                        />
+                    </Tooltip>
                     <Popconfirm
                         title="确认删除该采集任务吗？"
                         okText="确认"
                         cancelText="取消"
                         onConfirm={() => onDelete(record.id)}
                     >
-                        <Button
-                            type="link"
-                            danger
-                            size="small"
-                            icon={<DeleteOutlined />}
-                        >
-                            删除
-                        </Button>
+                        <Tooltip title="删除">
+                            <Button
+                                type="text"
+                                danger
+                                size="small"
+                                icon={<DeleteOutlined />}
+                            />
+                        </Tooltip>
                     </Popconfirm>
                 </Space>
             ),
