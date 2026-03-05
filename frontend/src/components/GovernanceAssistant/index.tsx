@@ -1,4 +1,5 @@
 import { CustomerServiceOutlined } from '@ant-design/icons';
+import { Spin } from 'antd';
 import {
     type MouseEvent as ReactMouseEvent,
     useCallback,
@@ -47,6 +48,9 @@ type ResizeListeners = {
 const GovernanceAssistant: FC = () => {
     const [visible, setVisible] = useState(false);
     const [isResizing, setIsResizing] = useState(false);
+    const [iframeLoading, setIframeLoading] = useState(false);
+    const [iframeError, setIframeError] = useState(false);
+    const [iframeReloadKey, setIframeReloadKey] = useState(0);
     const [viewportWidth, setViewportWidth] = useState(() =>
         typeof window === 'undefined' ? 1920 : window.innerWidth,
     );
@@ -163,44 +167,102 @@ const GovernanceAssistant: FC = () => {
         };
     }, [clearResizeListeners]);
 
+    useEffect(() => {
+        if (!visible) {
+            clearResizeListeners();
+        }
+    }, [clearResizeListeners, visible]);
+
+    useEffect(() => {
+        if (visible && hasIframeUrl) {
+            setIframeLoading(true);
+            setIframeError(false);
+        }
+    }, [hasIframeUrl, visible, iframeReloadKey]);
+
     const panelStyle = isMobile
         ? undefined
         : { width: `${clampWidth(panelWidth, viewportWidth)}px` };
 
+    const handleIframeLoad = () => {
+        setIframeLoading(false);
+        setIframeError(false);
+    };
+
+    const handleIframeError = () => {
+        setIframeLoading(false);
+        setIframeError(true);
+    };
+
+    const reloadIframe = () => {
+        setIframeLoading(true);
+        setIframeError(false);
+        setIframeReloadKey((prev) => prev + 1);
+    };
+
     return (
         <div className={styles.wrapper}>
-            <div
-                className={`${styles.panel} ${visible ? styles.panelVisible : ''} ${isResizing ? styles.panelResizing : ''}`}
-                style={panelStyle}
-            >
+            {visible && (
                 <div
-                    className={`${styles.resizeHandle} ${isResizing ? styles.resizeHandleActive : ''}`}
-                    onMouseDown={handleResizeStart}
-                />
-                <div className={styles.header}>
-                    <span className={styles.title}>{assistantConfig.title}</span>
-                    <button
-                        type="button"
-                        className={styles.closeButton}
-                        onClick={() => setVisible(false)}
-                    >
-                        关闭
-                    </button>
+                    className={`${styles.panel} ${styles.panelVisible} ${isResizing ? styles.panelResizing : ''}`}
+                    style={panelStyle}
+                >
+                    <div
+                        className={`${styles.resizeHandle} ${isResizing ? styles.resizeHandleActive : ''}`}
+                        onMouseDown={handleResizeStart}
+                    />
+                    <div className={styles.header}>
+                        <span className={styles.title}>{assistantConfig.title}</span>
+                        <button
+                            type="button"
+                            className={styles.closeButton}
+                            onClick={() => setVisible(false)}
+                        >
+                            关闭
+                        </button>
+                    </div>
+                    <div className={styles.body}>
+                        {hasIframeUrl ? (
+                            <div className={styles.iframeWrap}>
+                                <iframe
+                                    key={iframeReloadKey}
+                                    className={`${styles.iframe} ${iframeLoading ? styles.iframeLoading : ''}`}
+                                    src={assistantConfig.iframeUrl}
+                                    title={assistantConfig.title}
+                                    onLoad={handleIframeLoad}
+                                    onError={handleIframeError}
+                                />
+                                {iframeLoading && (
+                                    <div className={styles.loadingMask}>
+                                        <Spin size="large" />
+                                        <div className={styles.loadingText}>
+                                            助手加载中，请稍候...
+                                        </div>
+                                    </div>
+                                )}
+                                {iframeError && !iframeLoading && (
+                                    <div className={styles.errorMask}>
+                                        <div className={styles.errorText}>
+                                            助手加载失败，请检查助手地址或网络连接。
+                                        </div>
+                                        <button
+                                            type="button"
+                                            className={styles.retryButton}
+                                            onClick={reloadIframe}
+                                        >
+                                            重新加载
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <div className={styles.empty}>
+                                助手地址未配置，请修改 runtime-config.js
+                            </div>
+                        )}
+                    </div>
                 </div>
-                <div className={styles.body}>
-                    {hasIframeUrl ? (
-                        <iframe
-                            className={styles.iframe}
-                            src={assistantConfig.iframeUrl}
-                            title={assistantConfig.title}
-                        />
-                    ) : (
-                        <div className={styles.empty}>
-                            助手地址未配置，请修改 runtime-config.js
-                        </div>
-                    )}
-                </div>
-            </div>
+            )}
 
             {!visible && (
                 <button
