@@ -16,17 +16,17 @@ import {
 import {
     Button,
     Card,
+    Empty,
     Form,
     Input,
+    List,
     Modal,
     Popconfirm,
     Select,
     Space,
-    Table,
     Tag,
     message,
 } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useMemo, useState } from 'react';
 import styles from './index.less';
 
@@ -158,93 +158,6 @@ const DataSourcePage: React.FC = () => {
         }
     };
 
-    const columns: ColumnsType<DataSourceItem> = [
-        {
-            title: 'ID',
-            dataIndex: 'id',
-            width: 80,
-        },
-        {
-            title: '名称',
-            dataIndex: 'name',
-            ellipsis: true,
-            width: 180,
-        },
-        {
-            title: '类型',
-            dataIndex: 'type',
-            width: 120,
-            render: (value: DataSourceType) => (
-                <Tag color={typeColorMap[value]}>{typeTextMap[value]}</Tag>
-            ),
-        },
-        {
-            title: '连接地址',
-            dataIndex: 'connectionUrl',
-            ellipsis: true,
-            width: 280,
-            render: (value) => value || '-',
-        },
-        {
-            title: '用户名',
-            dataIndex: 'username',
-            width: 140,
-            render: (value) => value || '-',
-        },
-        {
-            title: '描述',
-            dataIndex: 'description',
-            ellipsis: true,
-            width: 220,
-            render: (value) => value || '-',
-        },
-        {
-            title: '创建时间',
-            dataIndex: 'createdAt',
-            width: 180,
-            render: formatTime,
-        },
-        {
-            title: '更新时间',
-            dataIndex: 'updatedAt',
-            width: 180,
-            render: formatTime,
-        },
-        {
-            title: '操作',
-            key: 'action',
-            fixed: 'right',
-            width: 150,
-            render: (_, record) => (
-                <Space size="middle">
-                    <Button
-                        type="link"
-                        size="small"
-                        icon={<EditOutlined />}
-                        onClick={() => onOpenEdit(record)}
-                    >
-                        编辑
-                    </Button>
-                    <Popconfirm
-                        title="确认删除该数据源吗？"
-                        okText="确认"
-                        cancelText="取消"
-                        onConfirm={() => onDelete(record.id)}
-                    >
-                        <Button
-                            type="link"
-                            danger
-                            size="small"
-                            icon={<DeleteOutlined />}
-                        >
-                            删除
-                        </Button>
-                    </Popconfirm>
-                </Space>
-            ),
-        },
-    ];
-
     return (
         <div className={styles.page}>
             {contextHolder}
@@ -265,17 +178,97 @@ const DataSourcePage: React.FC = () => {
                     </Space>
                 }
             >
-                <Table<DataSourceItem>
+                <List<DataSourceItem>
+                    className={styles.cardList}
                     rowKey="id"
                     loading={loading}
-                    columns={columns}
                     dataSource={data}
-                    scroll={{ x: 1450 }}
+                    locale={{
+                        emptyText: (
+                            <Empty
+                                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                description="暂无数据源，请先新增"
+                            />
+                        ),
+                    }}
+                    grid={{
+                        gutter: 16,
+                        xs: 1,
+                        sm: 1,
+                        md: 2,
+                        lg: 2,
+                        xl: 3,
+                        xxl: 4,
+                    }}
                     pagination={{
                         showSizeChanger: true,
-                        defaultPageSize: 10,
+                        defaultPageSize: 9,
                         showTotal: (total) => `共 ${total} 条`,
                     }}
+                    renderItem={(item) => (
+                        <List.Item>
+                            <Card
+                                hoverable
+                                className={styles.sourceCard}
+                                title={
+                                    <Space size={8} wrap={false}>
+                                        <span className={styles.cardTitle}>
+                                            {item.name || '-'}
+                                        </span>
+                                        <Tag color={typeColorMap[item.type]}>
+                                            {typeTextMap[item.type]}
+                                        </Tag>
+                                    </Space>
+                                }
+                            >
+                                <div className={styles.cardContent}>
+                                    <div className={styles.infoRow}>
+                                        <span className={styles.infoLabel}>连接地址</span>
+                                        <span className={styles.infoValue}>
+                                            {item.connectionUrl || '-'}
+                                        </span>
+                                    </div>
+                                    <div className={styles.infoRow}>
+                                        <span className={styles.infoLabel}>描述</span>
+                                        <span className={styles.infoValue}>
+                                            {item.description || '-'}
+                                        </span>
+                                    </div>
+                                    <div className={styles.infoRow}>
+                                        <span className={styles.infoLabel}>创建时间</span>
+                                        <span className={styles.infoValue}>
+                                            {formatTime(item.createdAt)}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className={styles.cardActions}>
+                                    <Button
+                                        type="link"
+                                        size="small"
+                                        icon={<EditOutlined />}
+                                        onClick={() => onOpenEdit(item)}
+                                    >
+                                        编辑
+                                    </Button>
+                                    <Popconfirm
+                                        title="确认删除该数据源吗？"
+                                        okText="确认"
+                                        cancelText="取消"
+                                        onConfirm={() => onDelete(item.id)}
+                                    >
+                                        <Button
+                                            type="link"
+                                            danger
+                                            size="small"
+                                            icon={<DeleteOutlined />}
+                                        >
+                                            删除
+                                        </Button>
+                                    </Popconfirm>
+                                </div>
+                            </Card>
+                        </List.Item>
+                    )}
                 />
             </Card>
 
