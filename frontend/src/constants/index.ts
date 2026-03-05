@@ -1,1 +1,1 @@
-export const DEFAULT_NAME = '微应用 - 数据服务';
+﻿export const DEFAULT_NAME = '数据治理平台';

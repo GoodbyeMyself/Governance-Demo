@@ -6,8 +6,6 @@ import com.governance.platform.modules.metadata.dto.MetadataCollectionTaskRespon
 import com.governance.platform.modules.metadata.service.MetadataCollectionTaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,12 +25,11 @@ public class MetadataCollectionTaskController {
     private final MetadataCollectionTaskService metadataCollectionTaskService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<MetadataCollectionTaskResponse>> createTask(
+    public ApiResponse<MetadataCollectionTaskResponse> createTask(
             @Valid @RequestBody MetadataCollectionTaskRequest request
     ) {
         MetadataCollectionTaskResponse response = metadataCollectionTaskService.createTask(request);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.success("Metadata collection task created", response));
+        return ApiResponse.success("Metadata collection task created", response);
     }
 
     @GetMapping("/{id}")

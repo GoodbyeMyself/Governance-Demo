@@ -1,4 +1,4 @@
-import {
+﻿import {
     createMetadataCollectionTask,
     deleteMetadataCollectionTask,
     fetchMetadataCollectionTasks,
@@ -497,8 +497,7 @@ const MetadataCollectionPage: React.FC = () => {
                                         { required: true, message: '请输入 Cron 表达式' },
                                         {
                                             max: 100,
-                                            message:
-                                                'Cron 表达式不能超过 100 个字符',
+                                            message: 'Cron 表达式不能超过 100 个字符',
                                         },
                                     ]}
                                 >

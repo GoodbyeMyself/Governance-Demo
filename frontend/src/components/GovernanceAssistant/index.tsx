@@ -1,4 +1,4 @@
-import { CustomerServiceOutlined } from '@ant-design/icons';
+﻿import { CustomerServiceOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
 import {
     type MouseEvent as ReactMouseEvent,
@@ -109,10 +109,7 @@ const GovernanceAssistant: FC = () => {
                 }
 
                 const delta = startX - moveEvent.clientX;
-                const nextWidth = clampWidth(
-                    startWidth + delta,
-                    window.innerWidth,
-                );
+                const nextWidth = clampWidth(startWidth + delta, window.innerWidth);
                 pendingWidthRef.current = nextWidth;
                 if (resizeFrameRef.current !== null) return;
 

@@ -1,0 +1,20 @@
+package com.governance.platform.modules.authcenter.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class AuthCenterLoginRequest {
+
+    @NotBlank(message = "username is required")
+    private String username;
+
+    @NotBlank(message = "password is required")
+    private String password;
+}

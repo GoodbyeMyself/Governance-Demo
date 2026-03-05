@@ -1,6 +1,9 @@
-import { request } from '@umijs/max';
+﻿import { history, request } from '@umijs/max';
+import type { AxiosResponse, RequestOptions } from '@umijs/max';
+import { message } from 'antd';
+import { clearAuthState, getToken } from './auth';
 
-type UmiRequestOptions = NonNullable<Parameters<typeof request>[1]>;
+type UmiRequestOptions = RequestOptions;
 
 export interface HttpRequestOptions extends UmiRequestOptions {
     skipDefaultHeaders?: boolean;
@@ -10,6 +13,7 @@ export interface HttpRequestOptions extends UmiRequestOptions {
 }
 
 const BODY_METHODS = new Set(['POST', 'PUT', 'PATCH']);
+const LOGIN_PATH = '/login';
 
 const buildRequestId = () =>
     `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
@@ -22,7 +26,7 @@ const getStorageValue = (key: string): string | null => {
 };
 
 const getAuthorization = (): string | null => {
-    const token = getStorageValue('token') || getStorageValue('accessToken');
+    const token = getToken() || getStorageValue('accessToken');
     if (!token) {
         return null;
     }
@@ -47,22 +51,10 @@ const getDefaultHeaders = (): Record<string, string> => {
 const normalizeHeaders = (
     headers: UmiRequestOptions['headers'],
 ): Record<string, string> => {
-    if (!headers) {
+    if (!headers || typeof headers !== 'object') {
         return {};
     }
-    if (headers instanceof Headers) {
-        const result: Record<string, string> = {};
-        headers.forEach((value, key) => {
-            result[key] = value;
-        });
-        return result;
-    }
-    if (Array.isArray(headers)) {
-        return headers.reduce<Record<string, string>>((acc, [key, value]) => {
-            acc[String(key)] = String(value);
-            return acc;
-        }, {});
-    }
+
     return Object.entries(headers as Record<string, unknown>).reduce<
         Record<string, string>
     >((acc, [key, value]) => {
@@ -88,10 +80,101 @@ const validateBeforeRequest = (url: string, options: HttpRequestOptions) => {
     }
 };
 
+const resolveBusinessMessage = (payload: unknown): string | null => {
+    if (!payload || typeof payload !== 'object') {
+        return null;
+    }
+    const messageText = (payload as Record<string, unknown>).message;
+    if (typeof messageText === 'string' && messageText.trim()) {
+        return messageText.trim();
+    }
+    return null;
+};
+
+const resolveHttpMessage = (
+    status: number,
+    payload?: unknown,
+    fallback?: string,
+): string => {
+    const businessMessage = resolveBusinessMessage(payload);
+    if (businessMessage) {
+        return businessMessage;
+    }
+
+    if (fallback) {
+        return fallback;
+    }
+
+    switch (status) {
+        case 400:
+            return '请求参数错误，请检查输入内容';
+        case 401:
+            return '登录已过期，请重新登录';
+        case 403:
+            return '暂无权限访问当前资源';
+        case 404:
+            return '请求的接口不存在';
+        case 405:
+            return '请求方法不支持';
+        case 408:
+            return '请求超时，请稍后重试';
+        case 409:
+            return '资源冲突，请检查后重试';
+        case 413:
+            return '请求内容过大';
+        case 415:
+            return '请求格式不受支持';
+        case 429:
+            return '请求过于频繁，请稍后再试';
+        case 500:
+            return '服务端异常，请稍后重试';
+        case 502:
+            return '网关错误，请稍后重试';
+        case 503:
+            return '服务暂不可用，请稍后重试';
+        case 504:
+            return '网关超时，请稍后重试';
+        default:
+            return `请求失败（HTTP ${status}）`;
+    }
+};
+
+const redirectToLogin = () => {
+    if (typeof window === 'undefined') {
+        return;
+    }
+
+    const pathname = history.location?.pathname || window.location.pathname;
+    if (pathname === LOGIN_PATH) {
+        return;
+    }
+
+    const search = history.location?.search || window.location.search || '';
+    const redirect = encodeURIComponent(`${pathname}${search}`);
+    history.push(`${LOGIN_PATH}?redirect=${redirect}`);
+};
+
+const handleHttpStatus = (
+    status: number,
+    payload?: unknown,
+    fallback?: string,
+): never => {
+    const messageText = resolveHttpMessage(status, payload, fallback);
+
+    if (status === 401) {
+        clearAuthState();
+        message.warning(messageText);
+        redirectToLogin();
+        throw new Error(messageText);
+    }
+
+    throw new Error(messageText);
+};
+
 export async function httpRequest<T = any>(
     url: string,
     options: HttpRequestOptions = {},
-) {
+): Promise<T> {
     validateBeforeRequest(url, options);
 
     const {
@@ -117,8 +200,32 @@ export async function httpRequest<T = any>(
         delete headers.Authorization;
     }
 
-    return request<T>(url, {
-        ...requestOptions,
-        headers,
-    });
+    try {
+        const response = (await request(url, {
+            ...requestOptions,
+            headers,
+            getResponse: true,
+            skipErrorHandler: true,
+        })) as AxiosResponse<T>;
+
+        if (response.status !== 200) {
+            handleHttpStatus(response.status, response.data);
+        }
+
+        return response.data;
+    } catch (error) {
+        const responseStatus = (error as any)?.response?.status as
+            | number
+            | undefined;
+        const responseData = (error as any)?.response?.data;
+        if (responseStatus) {
+            handleHttpStatus(responseStatus, responseData);
+        }
+
+        const fallbackMessage =
+            error instanceof Error && error.message
+                ? error.message
+                : '网络异常，请检查网络连接';
+        throw new Error(fallbackMessage);
+    }
 }

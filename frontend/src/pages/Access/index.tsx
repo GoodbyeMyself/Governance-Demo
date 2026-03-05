@@ -1,6 +1,4 @@
-// 权限控制
-import { Access, useAccess } from '@umijs/max';
-// antd
+﻿import { Access, useAccess } from '@umijs/max';
 import { Button } from 'antd';
 
 const AccessPage: React.FC = () => {
@@ -11,10 +9,11 @@ const AccessPage: React.FC = () => {
             style={{
                 minHeight: '400px',
                 backgroundColor: '#fff',
+                padding: 16,
             }}
         >
             <Access accessible={access.canSeeAdmin}>
-                <Button>只有 Admin 可以看到这个按钮</Button>
+                <Button>仅 Admin 可见的按钮</Button>
             </Access>
         </div>
     );

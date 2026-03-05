@@ -1,4 +1,4 @@
-import { defineConfig } from '@umijs/max';
+﻿import { defineConfig } from '@umijs/max';
 import proxy from './proxy';
 
 const { REACT_APP_ENV = 'dev' } = process.env;
@@ -27,9 +27,15 @@ export default defineConfig({
     initialState: {},
     request: {},
     layout: {
-        title: '数据治理',
+        title: '数据治理平台',
     },
     routes: [
+        {
+            path: '/login',
+            component: './Auth/Login',
+            layout: false,
+            hideInMenu: true,
+        },
         {
             path: '/',
             redirect: '/home',
@@ -48,6 +54,17 @@ export default defineConfig({
             name: '元数据采集',
             path: '/metadata-collection',
             component: './MetadataCollection',
+        },
+        {
+            name: '用户管理',
+            path: '/user-management',
+            component: './UserManagement',
+            access: 'canManageUsers',
+        },
+        {
+            path: '/profile',
+            component: './Profile',
+            hideInMenu: true,
         },
         {
             path: '/metadata-collection/:id',

@@ -36,3 +36,21 @@ CREATE TABLE IF NOT EXISTS metadata_collection_tasks (
     CONSTRAINT uk_metadata_task_name UNIQUE (task_name),
     CONSTRAINT fk_task_data_source FOREIGN KEY (data_source_id) REFERENCES data_sources (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS sys_users (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    username VARCHAR(64) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    nickname VARCHAR(100) NULL,
+    email VARCHAR(100) NULL,
+    phone VARCHAR(30) NULL,
+    status VARCHAR(20) NOT NULL,
+    role VARCHAR(20) NOT NULL,
+    last_login_at DATETIME(6) NULL,
+    created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    updated_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    CONSTRAINT pk_sys_users PRIMARY KEY (id),
+    CONSTRAINT uk_sys_users_username UNIQUE (username),
+    CONSTRAINT uk_sys_users_email UNIQUE (email),
+    CONSTRAINT uk_sys_users_phone UNIQUE (phone)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

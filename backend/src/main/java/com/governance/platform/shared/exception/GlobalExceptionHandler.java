@@ -1,6 +1,10 @@
 package com.governance.platform.shared.exception;
 
 import com.governance.platform.shared.api.ApiResponse;
+import com.governance.platform.modules.authcenter.exception.AuthCenterAuthenticationException;
+import com.governance.platform.modules.authcenter.exception.AuthCenterDuplicateUserException;
+import com.governance.platform.modules.authcenter.exception.AuthCenterOperationException;
+import com.governance.platform.modules.authcenter.exception.AuthCenterUserDisabledException;
 import com.governance.platform.modules.datasource.exception.DataSourceInUseException;
 import com.governance.platform.modules.datasource.exception.DuplicateDataSourceException;
 import com.governance.platform.modules.metadata.exception.DuplicateMetadataCollectionTaskException;
@@ -18,6 +22,30 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(AuthCenterDuplicateUserException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicateUser(AuthCenterDuplicateUserException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ApiResponse.failure(ex.getMessage()));
+    }
+
+    @ExceptionHandler(AuthCenterAuthenticationException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAuthFailed(AuthCenterAuthenticationException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ApiResponse.failure(ex.getMessage()));
+    }
+
+    @ExceptionHandler(AuthCenterUserDisabledException.class)
+    public ResponseEntity<ApiResponse<Void>> handleUserDisabled(AuthCenterUserDisabledException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ApiResponse.failure(ex.getMessage()));
+    }
+
+    @ExceptionHandler(AuthCenterOperationException.class)
+    public ResponseEntity<ApiResponse<Void>> handleOperationException(AuthCenterOperationException ex) {
+        return ResponseEntity.badRequest()
+                .body(ApiResponse.failure(ex.getMessage()));
+    }
 
     @ExceptionHandler(DuplicateDataSourceException.class)
     public ResponseEntity<ApiResponse<Void>> handleDuplicateDataSource(DuplicateDataSourceException ex) {

@@ -20,6 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins(
                         "http://localhost:3000",
                         "http://localhost:8000",
+                        "http://localhost:8001",
                         "http://localhost:9003"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
