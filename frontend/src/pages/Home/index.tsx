@@ -1,4 +1,4 @@
-﻿import {
+import {
     fetchWorkbenchOverview,
     type WorkbenchDailyTrendItem,
     type WorkbenchOverview,
@@ -10,7 +10,7 @@ import {
     ScheduleOutlined,
     SettingOutlined,
 } from '@ant-design/icons';
-import { useNavigate } from '@umijs/max';
+import { useNavigate } from 'react-router-dom';
 import {
     Button,
     Card,
@@ -25,7 +25,7 @@ import {
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useMemo, useState } from 'react';
-import styles from './index.less';
+import styles from './index.module.less';
 
 const formatTime = (value?: string) => {
     if (!value) return '-';
@@ -180,7 +180,7 @@ const HomePage: React.FC = () => {
 
                         <Row gutter={[12, 12]} className={styles.statGrid}>
                             <Col xs={24} sm={12} lg={6}>
-                                <Card className={styles.statCard} bordered={false}>
+                                <Card className={styles.statCard} variant="borderless">
                                     <Statistic
                                         title="数据源总数"
                                         value={overview?.totalDataSources || 0}
@@ -189,7 +189,7 @@ const HomePage: React.FC = () => {
                                 </Card>
                             </Col>
                             <Col xs={24} sm={12} lg={6}>
-                                <Card className={styles.statCard} bordered={false}>
+                                <Card className={styles.statCard} variant="borderless">
                                     <Statistic
                                         title="采集任务总数"
                                         value={overview?.totalMetadataTasks || 0}
@@ -198,21 +198,21 @@ const HomePage: React.FC = () => {
                                 </Card>
                             </Col>
                             <Col xs={24} sm={12} lg={6}>
-                                <Card className={styles.statCard} bordered={false}>
+                                <Card className={styles.statCard} variant="borderless">
                                     <Statistic
                                         title="启用任务数"
                                         value={overview?.enabledMetadataTaskCount || 0}
-                                        valueStyle={{ color: '#3f8600' }}
+                                        styles={{ content: { color: '#3f8600' } }}
                                         prefix={<ScheduleOutlined />}
                                     />
                                 </Card>
                             </Col>
                             <Col xs={24} sm={12} lg={6}>
-                                <Card className={styles.statCard} bordered={false}>
+                                <Card className={styles.statCard} variant="borderless">
                                     <Statistic
                                         title="Cron 任务数"
                                         value={overview?.cronMetadataTaskCount || 0}
-                                        valueStyle={{ color: '#1677ff' }}
+                                        styles={{ content: { color: '#1677ff' } }}
                                         prefix={<ScheduleOutlined />}
                                     />
                                 </Card>

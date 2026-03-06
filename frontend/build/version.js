@@ -1,58 +1,32 @@
-/**
- * @description: 生成 版本文件
- * @author: M.yunlong
+﻿/**
+ * Generate build version metadata.
  */
 
-// 获取 node 子进程
-const { exec } = require('child_process');
+const { execSync } = require('child_process');
+const fs = require('fs');
+const path = require('path');
 
-// node 操作文件
-let fs = require('fs');
+const outputDir = path.resolve(__dirname, '..', 'dist');
+const outputFile = path.join(outputDir, 'version.txt');
 
-// 读取 package.json 文件
-const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+const buildDate = new Date().toLocaleString();
 
-// 获取 package.json 中的 name 属性的值
-const projectName = packageJson.name;
+const runGit = (command) => {
+    try {
+        return execSync(command, { encoding: 'utf8' }).trim();
+    } catch {
+        return 'unknown';
+    }
+};
 
-// 构建时间
-let buildDate = new Date().toLocaleString();
+const gitBranch = runGit('git symbolic-ref --short -q HEAD');
+const lastCommitId = runGit('git rev-parse --short HEAD');
 
-// 分支名称
-let gitBranch = '';
+if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+}
 
-// 分支名称
-exec('git symbolic-ref --short -q HEAD', (err, stdout, stderr) => {
-    // 设值
-    gitBranch = stdout;
-});
+const content = `构建时间: ${buildDate}\n构建分支: ${gitBranch}\nCommit ID: ${lastCommitId}\n`;
 
-// 最后一次 提交信息
-let lastCommitId = '';
-
-// 最后一次 提交 commit id
-exec('git rev-parse --short HEAD', (err, stdout, stderr) => {
-    lastCommitId = stdout;
-});
-
-// 监听参数获取 完毕
-process.on('exit', function (code) {
-    // 生成版本文件
-    fs.writeFileSync(
-        `./${projectName}/version.txt`,
-        `
-        构建 时间 : ${buildDate}
-
-        构建 branch: ${gitBranch}
-        commit id: ${lastCommitId}
-    `,
-    );
-
-    // 打印
-    console.log(`
-        构建 时间 : ${buildDate}
-        
-        构建 branch: ${gitBranch}
-        commit id: ${lastCommitId}
-    `);
-});
+fs.writeFileSync(outputFile, content, 'utf8');
+console.log(content);

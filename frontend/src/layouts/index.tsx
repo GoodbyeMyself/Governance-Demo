@@ -1,7 +1,5 @@
-// React
-import React from 'react';
-// umi
-import { Outlet, useLocation } from 'umi';
+﻿import React from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 import GovernanceAssistant from '@/components/GovernanceAssistant';
 import { hasToken } from '@/utils/auth';
 

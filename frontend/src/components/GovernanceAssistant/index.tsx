@@ -1,4 +1,4 @@
-﻿import { CustomerServiceOutlined } from '@ant-design/icons';
+import { CustomerServiceOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
 import {
     type MouseEvent as ReactMouseEvent,
@@ -9,7 +9,7 @@ import {
     useState,
     type FC,
 } from 'react';
-import styles from './index.less';
+import styles from './index.module.less';
 
 const DEFAULT_PANEL_WIDTH = 520;
 const MIN_PANEL_WIDTH = 260;

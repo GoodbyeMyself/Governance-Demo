@@ -1,11 +1,9 @@
-﻿import { history, request } from '@umijs/max';
-import type { AxiosResponse, RequestOptions } from '@umijs/max';
+﻿import axios, { isAxiosError } from 'axios';
+import type { AxiosRequestConfig } from 'axios';
 import { message } from 'antd';
 import { clearAuthState, getToken } from './auth';
 
-type UmiRequestOptions = RequestOptions;
-
-export interface HttpRequestOptions extends UmiRequestOptions {
+export interface HttpRequestOptions extends AxiosRequestConfig {
     skipDefaultHeaders?: boolean;
     skipAuth?: boolean;
     requireBody?: boolean;
@@ -49,7 +47,7 @@ const getDefaultHeaders = (): Record<string, string> => {
 };
 
 const normalizeHeaders = (
-    headers: UmiRequestOptions['headers'],
+    headers: AxiosRequestConfig['headers'],
 ): Record<string, string> => {
     if (!headers || typeof headers !== 'object') {
         return {};
@@ -144,14 +142,14 @@ const redirectToLogin = () => {
         return;
     }
 
-    const pathname = history.location?.pathname || window.location.pathname;
+    const pathname = window.location.pathname;
     if (pathname === LOGIN_PATH) {
         return;
     }
 
-    const search = history.location?.search || window.location.search || '';
+    const search = window.location.search || '';
     const redirect = encodeURIComponent(`${pathname}${search}`);
-    history.push(`${LOGIN_PATH}?redirect=${redirect}`);
+    window.location.replace(`${LOGIN_PATH}?redirect=${redirect}`);
 };
 
 const handleHttpStatus = (
@@ -201,25 +199,25 @@ export async function httpRequest<T = any>(
     }
 
     try {
-        const response = (await request(url, {
+        const response = await axios.request<T>({
             ...requestOptions,
+            url,
             headers,
-            getResponse: true,
-            skipErrorHandler: true,
-        })) as AxiosResponse<T>;
+            validateStatus: () => true,
+        });
 
-        if (response.status !== 200) {
+        if (response.status < 200 || response.status >= 300) {
             handleHttpStatus(response.status, response.data);
         }
 
         return response.data;
     } catch (error) {
-        const responseStatus = (error as any)?.response?.status as
-            | number
-            | undefined;
-        const responseData = (error as any)?.response?.data;
-        if (responseStatus) {
-            handleHttpStatus(responseStatus, responseData);
+        if (isAxiosError(error)) {
+            const responseStatus = error.response?.status;
+            const responseData = error.response?.data;
+            if (responseStatus) {
+                handleHttpStatus(responseStatus, responseData);
+            }
         }
 
         const fallbackMessage =

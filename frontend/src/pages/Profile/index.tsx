@@ -1,9 +1,9 @@
-import { fetchCurrentUser, type AuthCenterUserProfile } from '@/services/authCenter';
+﻿import { fetchCurrentUser, type AuthCenterUserProfile } from '@/services/authCenter';
 import { ArrowLeftOutlined, ReloadOutlined } from '@ant-design/icons';
-import { history } from '@umijs/max';
 import { Button, Card, Descriptions, Space, Tag, message } from 'antd';
 import { useEffect, useState } from 'react';
-import styles from './index.less';
+import { useNavigate } from 'react-router-dom';
+import styles from './index.module.less';
 
 const roleTextMap = {
     ADMIN: '管理员',
@@ -23,6 +23,7 @@ const formatTime = (value?: string) => {
 };
 
 const ProfilePage: React.FC = () => {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [profile, setProfile] = useState<AuthCenterUserProfile | null>(null);
     const [messageApi, contextHolder] = message.useMessage();
@@ -55,7 +56,7 @@ const ProfilePage: React.FC = () => {
                     <Button icon={<ReloadOutlined />} onClick={() => void loadProfile()}>
                         刷新
                     </Button>
-                    <Button icon={<ArrowLeftOutlined />} onClick={() => history.push('/home')}>
+                    <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/home')}>
                         返回工作台
                     </Button>
                 </Space>
@@ -109,4 +110,3 @@ const ProfilePage: React.FC = () => {
 };
 
 export default ProfilePage;
-

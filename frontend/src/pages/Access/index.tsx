@@ -1,8 +1,8 @@
-﻿import { Access, useAccess } from '@umijs/max';
+﻿import { getStoredUser } from '@/utils/auth';
 import { Button } from 'antd';
 
 const AccessPage: React.FC = () => {
-    const access = useAccess();
+    const canSeeAdmin = getStoredUser()?.role === 'ADMIN';
 
     return (
         <div
@@ -12,9 +12,11 @@ const AccessPage: React.FC = () => {
                 padding: 16,
             }}
         >
-            <Access accessible={access.canSeeAdmin}>
+            {canSeeAdmin ? (
                 <Button>仅 Admin 可见的按钮</Button>
-            </Access>
+            ) : (
+                <span>当前账号无管理员权限</span>
+            )}
         </div>
     );
 };

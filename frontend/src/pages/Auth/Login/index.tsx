@@ -1,4 +1,4 @@
-﻿import {
+import {
     fetchCurrentUser,
     login,
     register,
@@ -7,10 +7,10 @@
 } from '@/services/authCenter';
 import { setAuthState } from '@/utils/auth';
 import { LockOutlined, MailOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
-import { history, useLocation } from '@umijs/max';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Card, Form, Input, Tabs, message } from 'antd';
 import { useMemo, useState } from 'react';
-import styles from './index.less';
+import styles from './index.module.less';
 
 type LoginFormValues = AuthCenterLoginPayload;
 
@@ -20,6 +20,7 @@ type RegisterFormValues = AuthCenterRegisterPayload & {
 
 const LoginPage: React.FC = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
     const [loginForm] = Form.useForm<LoginFormValues>();
     const [registerForm] = Form.useForm<RegisterFormValues>();
@@ -59,7 +60,7 @@ const LoginPage: React.FC = () => {
             }
 
             messageApi.success('登录成功');
-            history.replace(redirectPath);
+            navigate(redirectPath, { replace: true });
         } catch (error) {
             if (error && typeof error === 'object' && 'errorFields' in error) {
                 return;

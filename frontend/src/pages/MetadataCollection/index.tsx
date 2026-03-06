@@ -1,4 +1,4 @@
-﻿import {
+import {
     createMetadataCollectionTask,
     deleteMetadataCollectionTask,
     fetchMetadataCollectionTasks,
@@ -21,7 +21,7 @@ import {
     PlusOutlined,
     ReloadOutlined,
 } from '@ant-design/icons';
-import { useNavigate } from '@umijs/max';
+import { useNavigate } from 'react-router-dom';
 import {
     Button,
     Card,
@@ -39,7 +39,7 @@ import {
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useMemo, useState } from 'react';
-import styles from './index.less';
+import styles from './index.module.less';
 
 type TaskFormValues = Omit<MetadataCollectionTaskPayload, 'dataSourceId'> & {
     dataSourceId: number | null;
@@ -395,8 +395,7 @@ const MetadataCollectionPage: React.FC = () => {
                 confirmLoading={saving}
                 onCancel={onCancelModal}
                 onOk={() => void onSubmit()}
-                destroyOnClose
-                maskClosable={false}
+                mask={{ closable: false }}
             >
                 <Form<TaskFormValues>
                     form={form}

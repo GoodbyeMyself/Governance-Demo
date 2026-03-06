@@ -1,13 +1,13 @@
-﻿import {
+import {
     fetchMetadataCollectionTaskDetail,
     type MetadataCollectionTaskItem,
 } from '@/services/metadataCollection';
 import { type DataSourceType } from '@/services/dataSource';
 import { ArrowLeftOutlined, ReloadOutlined } from '@ant-design/icons';
-import { useNavigate, useParams } from '@umijs/max';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Card, Descriptions, Space, Spin, Tag, message } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
-import styles from './index.less';
+import styles from './index.module.less';
 
 const dataSourceTypeTextMap: Record<DataSourceType, string> = {
     DATABASE: '数据库',

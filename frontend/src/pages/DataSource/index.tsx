@@ -1,4 +1,4 @@
-﻿import {
+import {
     createDataSource,
     deleteDataSource,
     fetchDataSources,
@@ -16,19 +16,21 @@ import {
 import {
     Button,
     Card,
+    Col,
     Empty,
     Form,
     Input,
-    List,
     Modal,
+    Pagination,
     Popconfirm,
+    Row,
     Select,
     Space,
     Tag,
     message,
 } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
-import styles from './index.less';
+import styles from './index.module.less';
 
 const typeTextMap: Record<DataSourceType, string> = {
     DATABASE: '数据库',
@@ -56,7 +58,22 @@ const DataSourcePage: React.FC = () => {
     const [editingItem, setEditingItem] = useState<DataSourceItem | null>(null);
     const [messageApi, contextHolder] = message.useMessage();
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(9);
+
     const isEdit = useMemo(() => Boolean(editingItem), [editingItem]);
+
+    const pagedData = useMemo(() => {
+        const startIndex = (currentPage - 1) * pageSize;
+        return data.slice(startIndex, startIndex + pageSize);
+    }, [currentPage, data, pageSize]);
+
+    useEffect(() => {
+        const maxPage = Math.max(1, Math.ceil(data.length / pageSize));
+        if (currentPage > maxPage) {
+            setCurrentPage(maxPage);
+        }
+    }, [currentPage, data.length, pageSize]);
 
     const loadData = async () => {
         setLoading(true);
@@ -163,6 +180,7 @@ const DataSourcePage: React.FC = () => {
             {contextHolder}
             <Card
                 title="数据源管理"
+                loading={loading}
                 extra={
                     <Space>
                         <Button icon={<ReloadOutlined />} onClick={() => void loadData()}>
@@ -178,98 +196,118 @@ const DataSourcePage: React.FC = () => {
                     </Space>
                 }
             >
-                <List<DataSourceItem>
-                    className={styles.cardList}
-                    rowKey="id"
-                    loading={loading}
-                    dataSource={data}
-                    locale={{
-                        emptyText: (
-                            <Empty
-                                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                                description="暂无数据源，请先新增"
-                            />
-                        ),
-                    }}
-                    grid={{
-                        gutter: 16,
-                        xs: 1,
-                        sm: 1,
-                        md: 2,
-                        lg: 2,
-                        xl: 3,
-                        xxl: 4,
-                    }}
-                    pagination={{
-                        showSizeChanger: true,
-                        defaultPageSize: 9,
-                        showTotal: (total) => `共 ${total} 条`,
-                    }}
-                    renderItem={(item) => (
-                        <List.Item>
-                            <Card
-                                hoverable
-                                className={styles.sourceCard}
-                                title={
-                                    <Space size={8} wrap={false}>
-                                        <span className={styles.cardTitle}>
-                                            {item.name || '-'}
-                                        </span>
-                                        <Tag color={typeColorMap[item.type]}>
-                                            {typeTextMap[item.type]}
-                                        </Tag>
-                                    </Space>
-                                }
-                            >
-                                <div className={styles.cardContent}>
-                                    <div className={styles.infoRow}>
-                                        <span className={styles.infoLabel}>连接地址</span>
-                                        <span className={styles.infoValue}>
-                                            {item.connectionUrl || '-'}
-                                        </span>
-                                    </div>
-                                    <div className={styles.infoRow}>
-                                        <span className={styles.infoLabel}>描述</span>
-                                        <span className={styles.infoValue}>
-                                            {item.description || '-'}
-                                        </span>
-                                    </div>
-                                    <div className={styles.infoRow}>
-                                        <span className={styles.infoLabel}>创建时间</span>
-                                        <span className={styles.infoValue}>
-                                            {formatTime(item.createdAt)}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className={styles.cardActions}>
-                                    <Button
-                                        type="link"
-                                        size="small"
-                                        icon={<EditOutlined />}
-                                        onClick={() => onOpenEdit(item)}
-                                    >
-                                        编辑
-                                    </Button>
-                                    <Popconfirm
-                                        title="确认删除该数据源吗？"
-                                        okText="确认"
-                                        cancelText="取消"
-                                        onConfirm={() => onDelete(item.id)}
-                                    >
-                                        <Button
-                                            type="link"
-                                            danger
-                                            size="small"
-                                            icon={<DeleteOutlined />}
+                {!loading && data.length === 0 ? (
+                    <Empty
+                        image={Empty.PRESENTED_IMAGE_SIMPLE}
+                        description="暂无数据源，请先新增"
+                    />
+                ) : (
+                    !loading && (
+                        <>
+                            <div className={styles.cardList}>
+                                <Row gutter={[16, 16]}>
+                                    {pagedData.map((item) => (
+                                        <Col
+                                            key={item.id}
+                                            xs={24}
+                                            sm={24}
+                                            md={12}
+                                            lg={12}
+                                            xl={8}
+                                            xxl={6}
                                         >
-                                            删除
-                                        </Button>
-                                    </Popconfirm>
-                                </div>
-                            </Card>
-                        </List.Item>
-                    )}
-                />
+                                            <Card
+                                                hoverable
+                                                className={styles.sourceCard}
+                                                title={
+                                                    <Space size={8} wrap={false}>
+                                                        <span className={styles.cardTitle}>
+                                                            {item.name || '-'}
+                                                        </span>
+                                                        <Tag color={typeColorMap[item.type]}>
+                                                            {typeTextMap[item.type]}
+                                                        </Tag>
+                                                    </Space>
+                                                }
+                                            >
+                                                <div className={styles.cardContent}>
+                                                    <div className={styles.infoRow}>
+                                                        <span className={styles.infoLabel}>
+                                                            连接地址
+                                                        </span>
+                                                        <span className={styles.infoValue}>
+                                                            {item.connectionUrl || '-'}
+                                                        </span>
+                                                    </div>
+                                                    <div className={styles.infoRow}>
+                                                        <span className={styles.infoLabel}>描述</span>
+                                                        <span className={styles.infoValue}>
+                                                            {item.description || '-'}
+                                                        </span>
+                                                    </div>
+                                                    <div className={styles.infoRow}>
+                                                        <span className={styles.infoLabel}>
+                                                            创建时间
+                                                        </span>
+                                                        <span className={styles.infoValue}>
+                                                            {formatTime(item.createdAt)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div className={styles.cardActions}>
+                                                    <Button
+                                                        type="link"
+                                                        size="small"
+                                                        icon={<EditOutlined />}
+                                                        onClick={() => onOpenEdit(item)}
+                                                    >
+                                                        编辑
+                                                    </Button>
+                                                    <Popconfirm
+                                                        title="确认删除该数据源吗？"
+                                                        okText="确认"
+                                                        cancelText="取消"
+                                                        onConfirm={() => onDelete(item.id)}
+                                                    >
+                                                        <Button
+                                                            type="link"
+                                                            danger
+                                                            size="small"
+                                                            icon={<DeleteOutlined />}
+                                                        >
+                                                            删除
+                                                        </Button>
+                                                    </Popconfirm>
+                                                </div>
+                                            </Card>
+                                        </Col>
+                                    ))}
+                                </Row>
+                            </div>
+
+                            <div
+                                style={{
+                                    marginTop: 16,
+                                    display: 'flex',
+                                    justifyContent: 'flex-end',
+                                }}
+                            >
+                                <Pagination
+                                    current={currentPage}
+                                    pageSize={pageSize}
+                                    total={data.length}
+                                    showSizeChanger
+                                    pageSizeOptions={[9, 18, 36, 72]}
+                                    onChange={(page, size) => {
+                                        setCurrentPage(page);
+                                        setPageSize(size);
+                                    }}
+                                    showTotal={(total) => `共 ${total} 条`}
+                                />
+                            </div>
+                        </>
+                    )
+                )}
             </Card>
 
             <Modal
@@ -278,8 +316,7 @@ const DataSourcePage: React.FC = () => {
                 confirmLoading={saving}
                 onCancel={onCancelModal}
                 onOk={() => void onSubmit()}
-                destroyOnClose
-                maskClosable={false}
+                mask={{ closable: false }}
             >
                 <Form form={form} layout="vertical" initialValues={{ type: 'DATABASE' }}>
                     <Form.Item

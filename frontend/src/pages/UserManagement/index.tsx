@@ -1,4 +1,4 @@
-import {
+﻿import {
     fetchAuthUsers,
     updateAuthUserRole,
     type AuthCenterUserProfile,
@@ -18,7 +18,7 @@ import {
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useMemo, useState } from 'react';
-import styles from './index.less';
+import styles from './index.module.less';
 
 const formatTime = (value?: string) => {
     if (!value) return '-';
@@ -224,12 +224,15 @@ const UserManagementPage: React.FC = () => {
                 confirmLoading={saving}
                 onCancel={closeRoleModal}
                 onOk={() => void submitRoleUpdate()}
-                destroyOnClose
-                maskClosable={false}
+                destroyOnHidden={true}
+                mask={{ closable: false }}
             >
                 <div className={styles.userInfo}>
                     <div>用户名：{editingUser?.username || '-'}</div>
-                    <div>当前角色：{editingUser ? roleTextMap[editingUser.role] : '-'}</div>
+                    <div>
+                        当前角色：
+                        {editingUser ? roleTextMap[editingUser.role] : '-'}
+                    </div>
                 </div>
                 <Select<AuthCenterUserRole>
                     value={nextRole}
