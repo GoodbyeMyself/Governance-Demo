@@ -2,27 +2,30 @@ package com.governance.platform.shared.config;
 
 import com.governance.platform.shared.web.ClientRequestHeaderInterceptor;
 import com.governance.platform.shared.web.ClientRequestHeaders;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
     private final ClientRequestHeaderInterceptor clientRequestHeaderInterceptor;
+    private final String[] allowedOriginPatterns;
+
+    public WebConfig(
+            ClientRequestHeaderInterceptor clientRequestHeaderInterceptor,
+            @Value("${app.cors.allowed-origin-patterns:http://localhost:*,http://127.0.0.1:*}") String[] allowedOriginPatterns
+    ) {
+        this.clientRequestHeaderInterceptor = clientRequestHeaderInterceptor;
+        this.allowedOriginPatterns = allowedOriginPatterns;
+    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-                .allowedOrigins(
-                        "http://localhost:3000",
-                        "http://localhost:8000",
-                        "http://localhost:8001",
-                        "http://localhost:9003"
-                )
+                .allowedOriginPatterns(allowedOriginPatterns)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .exposedHeaders(ClientRequestHeaders.HEADER_REQUEST_ID);
