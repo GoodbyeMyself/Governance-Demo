@@ -184,6 +184,50 @@ server {
 
     client_max_body_size 20m;
 
+    location = /swagger-ui.html {
+        proxy_pass http://127.0.0.1:${APP_PORT};
+        proxy_http_version 1.1;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_set_header X-Request-Id \$request_id;
+        proxy_read_timeout 60s;
+    }
+
+    location /swagger-ui/ {
+        proxy_pass http://127.0.0.1:${APP_PORT};
+        proxy_http_version 1.1;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_set_header X-Request-Id \$request_id;
+        proxy_read_timeout 60s;
+    }
+
+    location = /v3/api-docs {
+        proxy_pass http://127.0.0.1:${APP_PORT};
+        proxy_http_version 1.1;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_set_header X-Request-Id \$request_id;
+        proxy_read_timeout 60s;
+    }
+
+    location /v3/api-docs/ {
+        proxy_pass http://127.0.0.1:${APP_PORT};
+        proxy_http_version 1.1;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_set_header X-Request-Id \$request_id;
+        proxy_read_timeout 60s;
+    }
+
     location / {
         try_files \$uri \$uri/ /index.html;
     }
@@ -243,11 +287,14 @@ verify_deployment() {
 
   local http_code_root
   local http_code_api
+  local http_code_swagger
   http_code_root="$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:${NGINX_PORT}/")"
   http_code_api="$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:${NGINX_PORT}/api/workbench/overview")"
+  http_code_swagger="$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:${NGINX_PORT}/swagger-ui/index.html")"
 
   log "HTTP / status: ${http_code_root} (expected 200)"
   log "HTTP /api/workbench/overview status: ${http_code_api} (expected 401 before login)"
+  log "HTTP /swagger-ui/index.html status: ${http_code_swagger} (expected 200)"
 }
 
 print_summary() {
@@ -256,6 +303,7 @@ print_summary() {
 [DONE] Deployment finished.
   Frontend URL:  http://<server-ip>:${NGINX_PORT}/
   Backend proxy: http://<server-ip>:${NGINX_PORT}/api
+  Swagger URL:   http://<server-ip>:${NGINX_PORT}/swagger-ui/index.html
 
 Useful commands:
   systemctl status governance-backend --no-pager
