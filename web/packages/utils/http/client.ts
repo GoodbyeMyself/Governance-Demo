@@ -1,4 +1,4 @@
-import { translate } from '@governance/i18n';
+import { getLocale, translate } from '@governance/i18n';
 import type { AxiosRequestConfig } from 'axios';
 import axios, { isAxiosError } from 'axios';
 import { clearAuthState, getToken } from '../auth';
@@ -80,6 +80,7 @@ const getDefaultHeaders = (): Record<string, string> => {
         'X-Request-Id': buildRequestId(),
         'X-Request-Time': new Date().toISOString(),
         'X-Client-App': config.clientAppName,
+        'Accept-Language': getLocale(),
     };
 
     const tenantId = config.getStorageValue('tenantId');
@@ -250,11 +251,9 @@ export async function httpRequest<T = unknown>(
 
     if (!skipAuth) {
         const authorization = getAuthorization();
-        if (authorization) {
+        if (authorization && !headers.Authorization) {
             headers.Authorization = authorization;
         }
-    } else {
-        delete headers.Authorization;
     }
 
     try {

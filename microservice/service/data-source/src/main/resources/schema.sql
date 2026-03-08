@@ -1,3 +1,4 @@
+-- 数据源主表：保存数据源类型、连接信息与描述字段。
 CREATE TABLE IF NOT EXISTS data_sources (
     id BIGINT NOT NULL AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,

@@ -8,16 +8,22 @@ import {
 } from '@governance/api';
 import { RoleTag, UserStatusTag } from '@governance/components';
 import { useI18n } from '@governance/i18n';
-import { formatDateTime, getUserRoleText } from '@governance/utils';
+import {
+    ROLE_MANAGEMENT_PATH,
+    formatDateTime,
+    getUserRoleText,
+} from '@governance/utils';
 import { Button, Card, Modal, Select, Space, Table, Tooltip, message } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './index.module.less';
 
 const DEFAULT_ROLE_OPTIONS: BmsUserRole[] = ['ADMIN', 'USER'];
 
 const UserManagementPage: React.FC = () => {
     const { t } = useI18n();
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [saving, setSaving] = useState(false);
     const [users, setUsers] = useState<BmsUserProfile[]>([]);
@@ -204,6 +210,9 @@ const UserManagementPage: React.FC = () => {
                 title={t('userManagement.pageTitle')}
                 extra={
                     <Space>
+                        <Button onClick={() => navigate(ROLE_MANAGEMENT_PATH)}>
+                            {t('userManagement.goToRoleManagement')}
+                        </Button>
                         <Button
                             icon={<ReloadOutlined />}
                             onClick={() =>

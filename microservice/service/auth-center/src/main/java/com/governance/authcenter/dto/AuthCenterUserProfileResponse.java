@@ -10,37 +10,70 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * 认证中心对外返回的用户资料对象。
+ * <p>
+ * 该对象只包含前端展示所需的安全字段，
+ * 不包含密码摘要等敏感信息。
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "用户信息响应")
 public class AuthCenterUserProfileResponse {
-    @Schema(description = "用户ID", example = "1")
+
+    /**
+     * 用户 ID。
+     */
+    @Schema(description = "用户 ID", example = "1")
     private Long id;
 
+    /**
+     * 用户名。
+     */
     @Schema(description = "用户名", example = "admin")
     private String username;
 
+    /**
+     * 用户昵称。
+     */
     @Schema(description = "昵称", example = "系统管理员")
     private String nickname;
 
+    /**
+     * 用户邮箱。
+     */
     @Schema(description = "邮箱", example = "admin@example.com")
     private String email;
 
+    /**
+     * 用户手机号。
+     */
     @Schema(description = "手机号", example = "13800138000")
     private String phone;
 
+    /**
+     * 用户角色。
+     */
     @Schema(description = "角色", allowableValues = {"USER", "ADMIN"}, example = "ADMIN")
     private AuthCenterUserRole role;
 
+    /**
+     * 账号状态。
+     */
     @Schema(description = "账号状态", allowableValues = {"ENABLED", "DISABLED"}, example = "ENABLED")
     private AuthCenterUserStatus status;
 
+    /**
+     * 最近登录时间。
+     */
     @Schema(description = "最近登录时间")
     private LocalDateTime lastLoginAt;
 
+    /**
+     * 创建时间。
+     */
     @Schema(description = "创建时间")
     private LocalDateTime createdAt;
 }
-

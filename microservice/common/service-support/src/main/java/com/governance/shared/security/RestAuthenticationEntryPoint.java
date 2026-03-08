@@ -2,6 +2,7 @@ package com.governance.shared.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.governance.shared.api.ApiResponse;
+import com.governance.shared.i18n.MessageResolver;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,12 +16,31 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * REST 场景下的认证入口处理器。
+ * <p>
+ * 当请求未携带有效令牌或令牌已失效时，
+ * Spring Security 会通过该入口统一返回 401 JSON 响应。
+ */
 @Component
 @RequiredArgsConstructor
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
+    /**
+     * JSON 序列化器，用于输出统一响应体。
+     */
     private final ObjectMapper objectMapper;
+    private final MessageResolver messageResolver;
 
+    /**
+     * 处理未认证访问异常。
+     *
+     * @param request       当前请求
+     * @param response      当前响应
+     * @param authException 认证异常
+     * @throws IOException      输出响应时可能抛出
+     * @throws ServletException Servlet 处理异常
+     */
     @Override
     public void commence(
             HttpServletRequest request,
@@ -32,7 +52,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         objectMapper.writeValue(
                 response.getWriter(),
-                ApiResponse.failure("Authentication required or token expired")
+                ApiResponse.failure(messageResolver.getMessage("security.unauthenticated"))
         );
     }
 }

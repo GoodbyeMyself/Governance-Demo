@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# 单容器运行时引导脚本。
+# 负责初始化 MySQL、启动 Nacos、加载配置、拉起 nginx/sshd，并最终启动各微服务。
 set -euo pipefail
 
 BASE_DIR=/opt/governance-demo
@@ -6,6 +8,7 @@ RUN_DIR="${BASE_DIR}/run"
 NACOS_DIR=/opt/nacos
 
 if [ -f "${RUN_DIR}/runtime.env" ]; then
+  # 加载初始化脚本生成的运行时环境变量。
   source "${RUN_DIR}/runtime.env"
 fi
 
@@ -15,6 +18,7 @@ chown -R mysql:mysql /var/run/mysqld /var/lib/mysql
 setcap -r /usr/libexec/mysqld >/dev/null 2>&1 || true
 
 if [ ! -d /var/lib/mysql/mysql ]; then
+  # 首次启动时初始化 MySQL 数据目录。
   mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql
 fi
 
@@ -34,6 +38,7 @@ for _ in $(seq 1 30); do
 done
 
 if ! pgrep -f 'nacos-server.jar' >/dev/null 2>&1; then
+  # 启动单机模式 Nacos，并复用容器内预置插件目录。
   mkdir -p "${NACOS_DIR}/plugins" "${NACOS_DIR}/plugins/health" "${NACOS_DIR}/plugins/cmdb" "${NACOS_DIR}/plugins/selector"
   nohup java -Xms256m -Xmx256m -Xmn128m \
     -Dnacos.standalone=true \
@@ -55,6 +60,7 @@ for _ in $(seq 1 60); do
 done
 
 for file in "${BASE_DIR}"/nacos-config/*.yaml; do
+  # 将本地生成的服务配置发布到 Nacos。
   data_id=$(basename "${file}")
   curl -fsS -X POST 'http://127.0.0.1:8848/nacos/v1/cs/configs' \
     -d "dataId=${data_id}" \
@@ -69,7 +75,13 @@ else
   nginx -s reload
 fi
 
+if ! pgrep -f 'mail-catcher.py' >/dev/null 2>&1; then
+  mkdir -p "${BASE_DIR}/mailbox"
+  nohup python3 "${RUN_DIR}/mail-catcher.py" >"${BASE_DIR}/logs/mail-catcher.log" 2>&1 &
+fi
+
 if command -v sshd >/dev/null 2>&1; then
+  # 可选启动 SSH，方便宿主机直接登录单容器环境。
   mkdir -p /var/run/sshd
   ssh-keygen -A >/dev/null 2>&1 || true
   if [ -n "${SSH_ROOT_PASSWORD:-}" ]; then

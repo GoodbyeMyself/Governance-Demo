@@ -17,6 +17,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 工作台服务实现。
+ *
+ * <p>负责聚合数据源服务与元数据服务自身的数据，
+ * 生成前端首页直接可消费的概览模型。</p>
+ */
 @Service
 @RequiredArgsConstructor
 public class WorkbenchServiceImpl implements WorkbenchService {
@@ -24,6 +30,11 @@ public class WorkbenchServiceImpl implements WorkbenchService {
     private final DataSourceClient dataSourceClient;
     private final MetadataCollectionTaskRepository metadataCollectionTaskRepository;
 
+    /**
+     * 组装工作台首页概览数据。
+     *
+     * @return 工作台概览
+     */
     @Override
     public WorkbenchOverviewResponse getOverview() {
         DataSourceStatsOverviewResponse dataSourceOverview = getDataSourceOverview();
@@ -84,6 +95,13 @@ public class WorkbenchServiceImpl implements WorkbenchService {
                 .build();
     }
 
+    /**
+     * 查询数据源概览。
+     *
+     * <p>如果远程调用失败，则返回空概览，避免首页完全不可用。</p>
+     *
+     * @return 数据源概览
+     */
     private DataSourceStatsOverviewResponse getDataSourceOverview() {
         try {
             DataSourceStatsOverviewResponse overview = dataSourceClient.getOverview();
@@ -108,6 +126,11 @@ public class WorkbenchServiceImpl implements WorkbenchService {
         }
     }
 
+    /**
+     * 构建最近 7 天的元数据任务更新趋势。
+     *
+     * @return 按天聚合的趋势列表
+     */
     private List<WorkbenchOverviewResponse.DailyTrendItem> buildMetadataTaskTrend7d() {
         LocalDate today = LocalDate.now();
         LocalDate startDate = today.minusDays(6);
@@ -132,6 +155,12 @@ public class WorkbenchServiceImpl implements WorkbenchService {
                 .toList();
     }
 
+    /**
+     * 把任务实体转换为工作台最近任务条目。
+     *
+     * @param entity 任务实体
+     * @return 最近任务条目
+     */
     private WorkbenchOverviewResponse.RecentMetadataTaskItem toRecentMetadataTaskItem(MetadataCollectionTask entity) {
         return WorkbenchOverviewResponse.RecentMetadataTaskItem.builder()
                 .id(entity.getId())

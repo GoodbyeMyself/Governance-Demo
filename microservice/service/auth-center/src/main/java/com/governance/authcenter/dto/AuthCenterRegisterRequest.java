@@ -10,6 +10,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 认证中心用户注册请求参数。
+ *
+ * <p>当前注册流程只保留用户名、密码、邮箱和邮箱验证码，
+ * 用户其他资料在注册成功后再补充。</p>
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -17,29 +23,37 @@ import lombok.NoArgsConstructor;
 @Schema(description = "用户注册请求参数")
 public class AuthCenterRegisterRequest {
 
-    @Schema(description = "用户名（4-64位，仅支持字母/数字/下划线）", example = "new_user_01")
-    @NotBlank(message = "username is required")
-    @Size(min = 4, max = 64, message = "username length must be between 4 and 64")
-    @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "username only supports letters, digits and underscore")
+    /**
+     * 登录用户名。
+     */
+    @Schema(description = "用户名（4-64 位，仅支持字母、数字和下划线）", example = "new_user_01")
+    @NotBlank(message = "{validation.username.required}")
+    @Size(min = 4, max = 64, message = "{validation.username.length}")
+    @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "{validation.username.pattern}")
     private String username;
 
-    @Schema(description = "密码（8-20位，必须包含字母和数字）", example = "Password123")
-    @NotBlank(message = "password is required")
-    @Size(min = 8, max = 20, message = "password length must be between 8 and 20")
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d).+$", message = "password must include letters and numbers")
+    /**
+     * 登录密码。
+     */
+    @Schema(description = "密码（8-20 位，必须包含字母和数字）", example = "Password123")
+    @NotBlank(message = "{validation.password.required}")
+    @Size(min = 8, max = 20, message = "{validation.password.length}")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d).+$", message = "{validation.password.pattern}")
     private String password;
 
-    @Schema(description = "昵称", example = "张三")
-    @Size(max = 100, message = "nickname length must be at most 100")
-    private String nickname;
-
+    /**
+     * 注册邮箱。
+     */
     @Schema(description = "邮箱", example = "zhangsan@example.com")
-    @Email(message = "email format is invalid")
-    @Size(max = 100, message = "email length must be at most 100")
+    @NotBlank(message = "{validation.email.required}")
+    @Email(message = "{validation.email.invalid}")
+    @Size(max = 100, message = "{validation.email.max}")
     private String email;
 
-    @Schema(description = "手机号", example = "13800138000")
-    @Pattern(regexp = "^[0-9+\\-]{6,30}$", message = "phone format is invalid")
-    @Size(max = 30, message = "phone length must be at most 30")
-    private String phone;
+    /**
+     * 邮箱验证码。
+     */
+    @Schema(description = "邮箱验证码", example = "123456")
+    @NotBlank(message = "{validation.emailCode.required}")
+    private String emailVerificationCode;
 }

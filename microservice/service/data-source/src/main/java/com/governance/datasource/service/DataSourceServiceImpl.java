@@ -21,6 +21,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 数据源服务实现。
+ *
+ * <p>负责处理数据源 CRUD、引用校验以及首页概览统计。</p>
+ */
 @Service
 @RequiredArgsConstructor
 public class DataSourceServiceImpl implements DataSourceService {
@@ -28,6 +33,12 @@ public class DataSourceServiceImpl implements DataSourceService {
     private final DataSourceRepository dataSourceRepository;
     private final MetadataTaskClient metadataTaskClient;
 
+    /**
+     * 创建数据源。
+     *
+     * @param request 数据源请求
+     * @return 创建后的数据源
+     */
     @Override
     public DataSourceResponse createDataSource(DataSourceRequest request) {
         if (dataSourceRepository.existsByName(request.getName())) {
@@ -47,6 +58,13 @@ public class DataSourceServiceImpl implements DataSourceService {
         return toResponse(saved);
     }
 
+    /**
+     * 删除数据源。
+     *
+     * <p>删除前会先检查该数据源是否仍被采集任务引用。</p>
+     *
+     * @param id 数据源 ID
+     */
     @Override
     public void deleteDataSource(Long id) {
         DataSourceInfo existing = dataSourceRepository.findById(id)
@@ -62,6 +80,13 @@ public class DataSourceServiceImpl implements DataSourceService {
         dataSourceRepository.delete(existing);
     }
 
+    /**
+     * 更新数据源。
+     *
+     * @param id 数据源 ID
+     * @param request 更新请求
+     * @return 更新后的数据源
+     */
     @Override
     public DataSourceResponse updateDataSource(Long id, DataSourceRequest request) {
         DataSourceInfo existing = dataSourceRepository.findById(id)
@@ -82,6 +107,11 @@ public class DataSourceServiceImpl implements DataSourceService {
         return toResponse(updated);
     }
 
+    /**
+     * 查询全部数据源。
+     *
+     * @return 数据源列表
+     */
     @Override
     public List<DataSourceResponse> getAllDataSources() {
         return dataSourceRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))
@@ -90,6 +120,12 @@ public class DataSourceServiceImpl implements DataSourceService {
                 .toList();
     }
 
+    /**
+     * 按 ID 查询数据源详情。
+     *
+     * @param id 数据源 ID
+     * @return 数据源详情
+     */
     @Override
     public DataSourceResponse getDataSourceById(Long id) {
         DataSourceInfo entity = dataSourceRepository.findById(id)
@@ -97,6 +133,13 @@ public class DataSourceServiceImpl implements DataSourceService {
         return toResponse(entity);
     }
 
+    /**
+     * 统计数据源概览。
+     *
+     * <p>用于门户与后台工作台首页展示。</p>
+     *
+     * @return 数据源概览
+     */
     @Override
     public DataSourceStatsOverviewResponse getOverview() {
         long totalDataSources = dataSourceRepository.count();
@@ -145,6 +188,12 @@ public class DataSourceServiceImpl implements DataSourceService {
                 .build();
     }
 
+    /**
+     * 查询某个数据源被采集任务引用的次数。
+     *
+     * @param dataSourceId 数据源 ID
+     * @return 引用次数
+     */
     private long getTaskReferenceCount(Long dataSourceId) {
         try {
             Long count = metadataTaskClient.countByDataSourceId(dataSourceId);
@@ -154,6 +203,12 @@ public class DataSourceServiceImpl implements DataSourceService {
         }
     }
 
+    /**
+     * 实体转响应对象。
+     *
+     * @param entity 数据源实体
+     * @return 数据源响应
+     */
     private DataSourceResponse toResponse(DataSourceInfo entity) {
         return DataSourceResponse.builder()
                 .id(entity.getId())

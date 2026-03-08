@@ -9,6 +9,7 @@ const navigationMessages: LocaleMessages = {
     'nav.logout': '退出登录',
     'nav.metadataCollection': '元数据采集',
     'nav.profile': '个人中心',
+    'nav.roleManagement': '角色定义',
     'nav.userManagement': '用户管理',
 };
 

@@ -9,6 +9,7 @@ import dataMetadataMessages from './modules/data-metadata';
 import dataSourceMessages from './modules/data-source';
 import portalDemoMessages from './modules/portal-demo';
 import profileMessages from './modules/profile';
+import roleManagementMessages from './modules/role-management';
 import userManagementMessages from './modules/user-management';
 import commonMessages from './shared/common';
 import enumMessages from './shared/enums';
@@ -28,6 +29,7 @@ const zhCN: LocaleMessages = {
     ...dataMetadataMessages,
     ...portalDemoMessages,
     ...profileMessages,
+    ...roleManagementMessages,
     ...userManagementMessages,
     ...accessMessages,
     ...assistantMessages,

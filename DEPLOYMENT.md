@@ -60,6 +60,7 @@ powershell -ExecutionPolicy Bypass -File .\microservice\scripts\docker-centos9\i
 
 - 后台管理系统 Govern：`http://127.0.0.1:19001`
 - 门户 Portal：`http://127.0.0.1:19002`
+- Govern 登录页已支持：图形验证码、记住密码、注册、找回密码、协议勾选
 
 ### 后端与中间件
 
@@ -70,6 +71,10 @@ powershell -ExecutionPolicy Bypass -File .\microservice\scripts\docker-centos9\i
 ### Swagger 文档地址
 
 - 聚合入口：`http://127.0.0.1:18080/swagger-ui.html`
+- 认证中心 UI：`http://127.0.0.1:18081/swagger-ui.html`
+- 后台管理 UI：`http://127.0.0.1:18082/swagger-ui.html`
+- 数据源服务 UI：`http://127.0.0.1:18083/swagger-ui.html`
+- 元数据服务 UI：`http://127.0.0.1:18084/swagger-ui.html`
 - 认证中心：`http://127.0.0.1:18080/auth/v3/api-docs`
 - 后台管理：`http://127.0.0.1:18080/bms/v3/api-docs`
 - 数据源服务：`http://127.0.0.1:18080/source/v3/api-docs`
@@ -95,6 +100,20 @@ powershell -ExecutionPolicy Bypass -File .\microservice\scripts\docker-centos9\i
 
 - Username：`admin`
 - Password：`Admin@123456`
+
+### 邮箱验证码模式
+
+- 当前单容器演示环境默认启用真实 SMTP 发送链路，但 SMTP 服务使用容器内本地捕获器承接
+- 发送邮箱验证码接口：`POST http://127.0.0.1:18080/api/auth-center/email-codes/send`
+- 当前环境不会再通过接口返回 `data.debugCode`
+- 认证中心当前邮件环境变量：
+  - `AUTH_CENTER_MAIL_MOCK_ENABLED=false`
+  - `MAIL_HOST=127.0.0.1`
+  - `MAIL_PORT=1025`
+  - `AUTH_CENTER_MAIL_FROM=no-reply@governance.local`
+- 邮件原文存放目录：`/opt/governance-demo/mailbox`
+- 如需切换到真实外部 SMTP，只需把 `MAIL_HOST`、`MAIL_PORT`、`MAIL_USERNAME`、`MAIL_PASSWORD`、`MAIL_SMTP_AUTH`、`MAIL_SMTP_STARTTLS_ENABLE` 改成目标邮件服务配置
+- 后端接口已支持 `zh-CN` / `en-US` 多语言响应，前端会自动按当前语言透传 `Accept-Language`
 
 ## 6. 容器外如何连接并进入 Shell
 
@@ -191,8 +210,14 @@ docker stop governance-centos9
 
 ### 网关与认证
 
-- `POST http://127.0.0.1:18080/api/auth-center/login`
-- 使用 `admin / Admin@123456` 登录成功
+- `GET http://127.0.0.1:18080/actuator/health` 返回 `200`
+- `GET http://127.0.0.1:18080/api/auth-center/captcha` 返回 `200`
+- 认证中心公开接口已通过网关白名单放行：
+  - `/api/auth-center/captcha`
+  - `/api/auth-center/login`
+  - `/api/auth-center/register`
+  - `/api/auth-center/email-codes/send`
+  - `/api/auth-center/password/reset`
 
 ### Swagger
 
@@ -201,6 +226,10 @@ docker stop governance-centos9
 - `http://127.0.0.1:18080/bms/v3/api-docs` 返回 `200`
 - `http://127.0.0.1:18080/source/v3/api-docs` 返回 `200`
 - `http://127.0.0.1:18080/metadata/v3/api-docs` 返回 `200`
+- `http://127.0.0.1:18081/swagger-ui.html` 返回 `200`
+- `http://127.0.0.1:18082/swagger-ui.html` 返回 `200`
+- `http://127.0.0.1:18083/swagger-ui.html` 返回 `200`
+- `http://127.0.0.1:18084/swagger-ui.html` 返回 `200`
 
 ### 数据库外部访问
 
@@ -211,9 +240,11 @@ docker stop governance-centos9
 本次部署基于以下结构调整后的代码：
 
 - 后端公共能力抽到 `microservice/common/service-support`
-- `auth-center` 只保留认证职责
+- `auth-center` 已补齐验证码、邮箱验证码、注册、登录、找回密码、资料修改职责
+- `bms-service` 已补齐资料唯一性校验、密码重置与角色定义管理
 - 后台前端由 `apps/web` 调整为 `apps/govern`
 - 新增 `apps/portal` 门户应用
 - 前端新增 `packages/i18n`，支持中英文切换
 - 后台首页与门户首页统计面板统一复用 `packages/ui/workbench`
 - 已拆除前端 `packages/api` 与 `packages/utils` 的循环依赖
+- 前端已补齐登录/注册/找回密码流转、记住密码、协议勾选、个人资料编辑与角色定义页面

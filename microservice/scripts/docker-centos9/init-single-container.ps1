@@ -1,4 +1,7 @@
 [CmdletBinding()]
+# 单容器初始化入口脚本。
+# 负责构建产物、准备运行目录、创建并初始化 CentOS 9 容器，
+# 再在容器内拉起 MySQL、Nacos、nginx、sshd 以及整套治理平台服务。
 param(
     [string]$ContainerName = 'governance-centos9',
     [string]$CentosImage = 'centos9:latest',
@@ -327,6 +330,7 @@ pkill -x sshd >/dev/null 2>&1 || true
     Invoke-Docker @('cp', (Join-Path $scriptDir 'bootstrap.sh'), "${ContainerName}:/opt/governance-demo/run/bootstrap.sh")
     Invoke-Docker @('cp', (Join-Path $scriptDir 'start-services.sh'), "${ContainerName}:/opt/governance-demo/run/start-services.sh")
     Invoke-Docker @('cp', (Join-Path $scriptDir 'stop-services.sh'), "${ContainerName}:/opt/governance-demo/run/stop-services.sh")
+    Invoke-Docker @('cp', (Join-Path $scriptDir 'mail-catcher.py'), "${ContainerName}:/opt/governance-demo/run/mail-catcher.py")
     Invoke-Docker @('cp', (Join-Path $scriptDir 'nginx.governance-demo.conf'), "${ContainerName}:/etc/nginx/conf.d/governance-demo.conf")
 
     Write-Step 'Generate runtime environment file'
@@ -344,6 +348,13 @@ export AUTH_CENTER_ADMIN_PASSWORD=$(ConvertTo-BashSingleQuoted $AdminPassword)
 export AUTH_CENTER_ADMIN_NICKNAME=$(ConvertTo-BashSingleQuoted $AdminNickname)
 export APP_CORS_ALLOWED_ORIGIN_PATTERNS='http://localhost:*,http://127.0.0.1:*'
 export SSH_ROOT_PASSWORD=$(ConvertTo-BashSingleQuoted $SshRootPassword)
+export AUTH_CENTER_MAIL_MOCK_ENABLED='false'
+export AUTH_CENTER_MAIL_DEBUG_RETURN_CODE='false'
+export AUTH_CENTER_MAIL_FROM='no-reply@governance.local'
+export MAIL_HOST='127.0.0.1'
+export MAIL_PORT='1025'
+export MAIL_SMTP_AUTH='false'
+export MAIL_SMTP_STARTTLS_ENABLE='false'
 "@
     Write-Utf8NoBom -Path $runtimeEnvPath -Content $runtimeEnv
     Invoke-Docker @('cp', $runtimeEnvPath, "${ContainerName}:/opt/governance-demo/run/runtime.env")
@@ -386,7 +397,7 @@ mysql --socket=/var/run/mysqld/mysqld.sock -uroot < /tmp/init-mysql.sql
     Invoke-DockerExec $mysqlInitCommand
 
     Write-Step 'Bootstrap Nacos, nginx, sshd and microservices'
-    Invoke-DockerExec 'chmod +x /opt/governance-demo/run/bootstrap.sh /opt/governance-demo/run/start-services.sh /opt/governance-demo/run/stop-services.sh && /opt/governance-demo/run/bootstrap.sh >/opt/governance-demo/logs/bootstrap.log 2>&1'
+    Invoke-DockerExec 'chmod +x /opt/governance-demo/run/bootstrap.sh /opt/governance-demo/run/start-services.sh /opt/governance-demo/run/stop-services.sh /opt/governance-demo/run/mail-catcher.py && /opt/governance-demo/run/bootstrap.sh >/opt/governance-demo/logs/bootstrap.log 2>&1'
 
     if (-not $SkipValidation) {
         Write-Step 'Validate host-exposed ports and endpoints'
@@ -398,15 +409,13 @@ mysql --socket=/var/run/mysqld/mysqld.sock -uroot < /tmp/init-mysql.sql
         Wait-HttpOk -Name 'Portal frontend' -Url 'http://127.0.0.1:19002'
         Wait-HttpOk -Name 'Swagger' -Url 'http://127.0.0.1:18080/swagger-ui.html'
 
-        Write-Step 'Validate application login flow'
-        $loginResponse = Invoke-WebRequest -UseBasicParsing `
-            -Method POST `
-            -Uri 'http://127.0.0.1:18080/api/auth-center/login' `
-            -ContentType 'application/json' `
-            -Body (@{ username = $AdminUsername; password = $AdminPassword } | ConvertTo-Json)
-        $loginPayload = $loginResponse.Content | ConvertFrom-Json
-        if (-not $loginPayload.success) {
-            throw 'Login validation failed'
+        Write-Step 'Validate auth-center captcha endpoint'
+        $captchaResponse = Invoke-WebRequest -UseBasicParsing `
+            -Method GET `
+            -Uri 'http://127.0.0.1:18080/api/auth-center/captcha'
+        $captchaPayload = $captchaResponse.Content | ConvertFrom-Json
+        if (-not $captchaPayload.success) {
+            throw 'Captcha validation failed'
         }
 
         Write-Step 'Validate SSH password login through host port'

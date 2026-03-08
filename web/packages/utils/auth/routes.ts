@@ -4,6 +4,7 @@ export const PORTAL_DEMO_PATH = '/demo';
 export const DATA_SOURCE_PATH = '/data-source';
 export const METADATA_COLLECTION_PATH = '/metadata-collection';
 export const USER_MANAGEMENT_PATH = '/user-management';
+export const ROLE_MANAGEMENT_PATH = '/role-management';
 export const PROFILE_PATH = '/profile';
 export const ACCESS_PATH = '/access';
 

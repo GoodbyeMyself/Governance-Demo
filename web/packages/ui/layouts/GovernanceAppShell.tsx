@@ -9,6 +9,7 @@ import {
     LOGIN_PATH,
     METADATA_COLLECTION_PATH,
     PROFILE_PATH,
+    ROLE_MANAGEMENT_PATH,
     USER_MANAGEMENT_PATH,
     buildPortalAppUrl,
     clearAuthState,
@@ -27,6 +28,7 @@ const NAV_PATHS = [
     DATA_SOURCE_PATH,
     METADATA_COLLECTION_PATH,
     USER_MANAGEMENT_PATH,
+    ROLE_MANAGEMENT_PATH,
     ACCESS_PATH,
 ] as const;
 
@@ -59,6 +61,10 @@ export const GovernanceAppShell: React.FC = () => {
             items.push({
                 key: USER_MANAGEMENT_PATH,
                 label: t('nav.userManagement'),
+            });
+            items.push({
+                key: ROLE_MANAGEMENT_PATH,
+                label: t('nav.roleManagement'),
             });
         }
 

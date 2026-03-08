@@ -1,4 +1,6 @@
-﻿server:
+# 基础管理服务配置。
+# 负责系统用户管理、管理员初始化以及 MySQL 持久化。
+server:
   port: ${SERVER_PORT:8082}
 
 spring:
@@ -7,12 +9,14 @@ spring:
   config:
     import: optional:nacos:${spring.application.name}.yaml
   datasource:
+    # 默认连接本地或容器内 MySQL，可通过环境变量覆盖。
     url: ${DB_URL:jdbc:mysql://localhost:3306/bms_service_db?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true}
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:mayunlong}
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:
+      # 启动时执行 schema.sql，确保基础表结构与种子数据存在。
       mode: always
       encoding: UTF-8
   jpa:
@@ -35,6 +39,7 @@ app:
 
 bms:
   admin:
+    # 系统启动后用于自动补齐的默认管理员账号。
     username: ${BMS_ADMIN_USERNAME:admin}
     password: ${BMS_ADMIN_PASSWORD:Admin@123456}
     nickname: ${BMS_ADMIN_NICKNAME:System Admin}
@@ -48,4 +53,3 @@ management:
     web:
       exposure:
         include: health,info
-

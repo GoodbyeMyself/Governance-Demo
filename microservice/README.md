@@ -1,6 +1,15 @@
-﻿# Governance 微服务说明
+# Governance 微服务说明
 
-## 1. 优化后的目录结构
+## 1. 工程概览
+
+当前后端采用 Spring Boot 多模块结构，重点目标是：
+
+- 按服务边界拆分领域能力
+- 把重复的安全、异常、请求透传能力收敛到公共层
+- 避免服务内部继续出现“层级很多但目录很空”的结构
+- 通过网关统一对外暴露接口与 Swagger 聚合入口
+
+## 2. 顶层目录
 
 ```text
 microservice/
@@ -15,156 +24,173 @@ microservice/
 │  └─ data-metadata/
 ├─ nacos-config/
 └─ scripts/
+   ├─ local-dev/
+   └─ docker-centos9/
 ```
 
-## 2. 目录职责
+## 3. 模块职责
 
 ### `common/service-support`
 
-公共支撑层，负责收敛多个服务重复实现：
+公共支撑层，统一放置多个服务都要复用的基础能力：
 
-- `shared/api`：统一响应模型 `ApiResponse`
-- `shared/config`：CORS 与请求拦截器配置
-- `shared/exception`：公共异常基类与通用异常
-- `shared/security`：网关透传鉴权、统一 Spring Security 配置
+- `shared/api`：统一响应模型
+- `shared/config`：CORS 与请求链路相关配置
+- `shared/exception`：公共异常与通用异常处理
+- `shared/security`：网关透传鉴权、安全入口、访问拒绝处理
 - `shared/web`：请求头透传与上下文保存
-
-这层的目标是让各业务服务只保留领域代码，避免在每个服务内复制一套 `shared/*`。
 
 ### `gateway`
 
-统一 API 入口，负责：
+网关是所有前端请求的统一入口，负责：
 
-- 基于 Nacos 的服务发现与路由转发
-- 认证上下文透传
-- 对外暴露统一访问地址 `/api/**`
+- JWT 鉴权与上下文解析
+- 向下游服务透传用户、角色、请求 ID
+- 对外统一暴露 `/auth`、`/bms`、`/source`、`/metadata` 等访问前缀
+- 聚合 Swagger UI
 
 ### `service/auth-center`
 
-认证中心，当前只负责：
+认证中心，负责：
 
-- `POST /api/auth-center/register`
-- `POST /api/auth-center/login`
-- `GET /api/auth-center/me`
-- `POST /api/auth-center/logout`
+- 图形验证码生成
+- 注册邮箱验证码发送
+- 登录
+- 注册
+- 找回密码 / 重置密码
+- 获取当前登录用户
+- 更新当前用户资料
+- 退出登录
 
-已去掉的内容：
+说明：
+- 认证中心接口已支持 `zh-CN` / `en-US` 多语言响应
+- 单容器演示环境中的邮箱验证码通过本地 SMTP 捕获器发送，邮件文件位于 `/opt/governance-demo/mailbox`
 
-- 本地用户表残留实体 / 仓库 / JPA 依赖
-- 用户列表与角色修改代理接口
+- 该服务不再承担用户列表、角色修改等后台管理职责
+- 用户主数据由 `bms-service` 维护，`auth-center` 通过内部接口调用
 
 ### `service/bms-service`
 
-基础管理服务，负责：
+后台基础管理服务，负责：
 
-- 用户管理
-- 角色管理
-- 权限管理
-- 供 `auth-center` 调用的内部用户接口
-
-对外用户管理接口：
-
-- `GET /api/bms/users`
-- `PUT /api/bms/users/{id}/role`
-- `GET /api/bms/roles`
-- `GET /api/bms/permissions`
+- 用户注册与档案维护
+- 用户资料唯一性校验（用户名 / 邮箱 / 手机号）
+- 用户密码重置
+- 用户角色更新
+- 角色定义管理（`ADMIN` 只读）
+- 角色、权限枚举输出
+- 对 `auth-center` 提供内部用户查询与登录时间更新接口
 
 ### `service/data-source`
 
-数据源管理服务，负责数据源 CRUD 以及对元数据服务提供内部查询能力。
+数据源管理服务，负责：
+
+- 数据源新增、修改、删除、查询
+- 输出数据源概览统计
+- 对 `data-metadata` 提供内部数据源查询能力
 
 ### `service/data-metadata`
 
-元数据采集与工作台服务，负责采集任务、任务明细、工作台统计等能力。
+元数据服务，负责：
 
-## 3. 服务内源码包规范
+- 元数据采集任务管理
+- 采集任务详情查询
+- 工作台统计与趋势数据
+- 对 `data-source` 提供内部引用计数能力
 
-为避免单个微服务内部继续出现过深的“空壳层级”，当前各服务统一按“服务根包 + 领域包”组织源码：
+## 4. 服务内目录设计原则
 
-- 不再保留仅起中转作用的 `modules/*` 包层级
-- 服务私有配置不再放在本地 `shared/*` 下，统一收口到服务根包的 `config`、`exception`、`security`
-- 只有一个实现类的场景，`service/impl` 会合并回 `service`
-- 对外部服务的 Feign 调用统一放到 `integration/<target>`，不再额外套一层 `client`
+当前每个微服务都遵循“够用即可”的目录组织方式，不再强行保留过深的空壳层级。
 
-以 `data-source` 为例，当前推荐结构如下：
+建议优先保留这些真实有内容的目录：
 
-```text
-com.governance
-├─ datasource
-│  ├─ controller
-│  ├─ dto
-│  ├─ entity
-│  ├─ exception
-│  ├─ integration/metadata
-│  ├─ repository
-│  └─ service
-├─ config
-└─ exception
-```
+- `controller`：对外或对内接口
+- `service`：领域服务接口与实现
+- `repository`：持久化访问
+- `entity`：实体与枚举
+- `dto`：接口入参与出参
+- `exception`：领域异常
+- `config`：只保留当前服务真实需要的配置
 
-其他服务对应关系如下：
+统一约束：
 
-- `auth-center`：`authcenter/*`
-- `bms-service`：`bms/user/*`
-- `data-metadata`：`metadata/*`、`workbench/*`
+- 根包统一使用 `com.governance`
+- 如果某一层只有一个实现，也可以将接口与实现同目录保留，避免制造空层级
+- 共享能力优先沉到 `common/service-support`，而不是在每个服务各复制一份
 
-## 4. 当前结构调整结论
+## 5. 本地联调脚本
 
-### 已修正的问题
+本地联调脚本目录：
 
-- 多个服务内重复的 `shared` 代码已抽到 `common/service-support`
-- `auth-center` 与 `bms-service` 的职责边界已分清
-- Nacos 配置已改为环境变量可覆盖，便于 Docker / 本地双场景复用
-- 统一异常处理已限制在业务控制器范围内，避免误作用于框架端点
-- 服务内部包层级已压平，去掉了多余的 `modules/*` 与本地 `shared/*` 过渡目录
+- `microservice/scripts/local-dev/start-local.ps1`
+- `microservice/scripts/local-dev/stop-local.ps1`
+- `microservice/scripts/local-dev/health-check.ps1`
+- `microservice/scripts/local-dev/docker-compose.nacos.yml`
 
-### 当前推荐分层
+说明：
 
-- `common/*`：跨服务公共能力
-- `gateway/`：接入层
-- `service/*`：业务服务层
-- `nacos-config/`：运行期配置中心内容
-- `scripts/`：本地开发脚本
+- `docker-compose.nacos.yml` 仅用于本地联调快速拉起 Nacos
+- 本地联调默认依赖本机可访问的 MySQL
+- 启动脚本会将 PID 写入 `microservice/logs/local-dev-pids.json`
 
-这个层级对当前规模是合理的，不建议再额外拆更细的“基础设施服务层目录”，否则会增加迁移成本而收益有限。
+## 6. 单容器部署脚本
 
-## 5. 配置说明
+单容器部署目录：
 
-### Nacos
+- `microservice/scripts/docker-centos9/init-single-container.ps1`
+- `microservice/scripts/docker-centos9/bootstrap.sh`
+- `microservice/scripts/docker-centos9/start-services.sh`
+- `microservice/scripts/docker-centos9/stop-services.sh`
+- `microservice/scripts/docker-centos9/nginx.governance-demo.conf`
 
-版本化配置位于 `microservice/nacos-config`。
+## 7. 常用命令
 
-当前已支持通过环境变量覆盖：
-
-- `MYSQL_HOST`
-- `MYSQL_PORT`
-- `MYSQL_USERNAME`
-- `MYSQL_PASSWORD`
-- `NACOS_SERVER_ADDR`
-- `GATEWAY_TRUSTED_TOKEN`
-- `AUTH_CENTER_JWT_SECRET`
-- `AUTH_CENTER_JWT_EXPIRE_SECONDS`
-
-### 数据库
-
-当前服务使用的库：
-
-- `bms_service_db`
-- `data_source_db`
-- `data_metadata_db`
-
-`auth-center` 不再持有独立业务库。
-
-## 6. 本地构建
+### 构建全部后端模块
 
 ```powershell
 cd microservice
 mvn -DskipTests package
 ```
 
-## 7. 本地运行建议
+### 本地启动后端
 
-如果只做后端联调，推荐顺序：
+```powershell
+powershell -ExecutionPolicy Bypass -File .\microservice\scripts\local-dev\start-local.ps1
+```
+
+### 停止本地后端
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\microservice\scripts\local-dev\stop-local.ps1
+```
+
+### 健康检查
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\microservice\scripts\local-dev\health-check.ps1
+```
+
+## 8. Swagger 地址
+
+### 本地联调模式
+
+- 聚合 Swagger：`http://localhost:8080/swagger-ui.html`
+- 认证服务文档：`http://localhost:8080/auth/v3/api-docs`
+- 基础管理文档：`http://localhost:8080/bms/v3/api-docs`
+- 数据源文档：`http://localhost:8080/source/v3/api-docs`
+- 元数据文档：`http://localhost:8080/metadata/v3/api-docs`
+
+### 单容器部署模式
+
+- 聚合 Swagger：`http://127.0.0.1:18080/swagger-ui.html`
+- 认证服务：`http://127.0.0.1:18081/swagger-ui.html`
+- 基础管理：`http://127.0.0.1:18082/swagger-ui.html`
+- 数据源：`http://127.0.0.1:18083/swagger-ui.html`
+- 元数据：`http://127.0.0.1:18084/swagger-ui.html`
+
+## 9. 运行顺序建议
+
+本地联调建议顺序：
 
 1. 启动 Nacos
 2. 启动 MySQL
@@ -173,65 +199,3 @@ mvn -DskipTests package
 5. 启动 `data-metadata`
 6. 启动 `auth-center`
 7. 启动 `gateway`
-
-项目内脚本已按用途拆分目录：
-
-- 本地联调脚本目录：`microservice/scripts/local-dev`
-- 单容器部署脚本目录：`microservice/scripts/docker-centos9`
-
-本地联调常用脚本：
-
-- `microservice/scripts/local-dev/start-local.ps1`
-- `microservice/scripts/local-dev/stop-local.ps1`
-- `microservice/scripts/local-dev/health-check.ps1`
-- `microservice/scripts/local-dev/docker-compose.nacos.yml`（仅用于本地联调启动 Nacos）
-
-## 8. Swagger 入口
-
-推荐优先使用网关聚合入口：
-
-- 聚合 Swagger：`http://localhost:8080/swagger-ui.html`
-- 认证服务 OpenAPI：`http://localhost:8080/auth/v3/api-docs`
-- 基础管理服务 OpenAPI：`http://localhost:8080/bms/v3/api-docs`
-- 数据源服务 OpenAPI：`http://localhost:8080/source/v3/api-docs`
-- 元数据服务 OpenAPI：`http://localhost:8080/metadata/v3/api-docs`
-
-如果需要直连单个服务的 Swagger UI：
-
-- `auth-center`：`http://localhost:8081/swagger-ui.html`
-- `bms-service`：`http://localhost:8082/swagger-ui.html`
-- `data-source`：`http://localhost:8083/swagger-ui.html`
-- `data-metadata`：`http://localhost:8084/swagger-ui.html`
-
-## 9. Docker CentOS9 脚本
-
-仓库内已补充与当前容器一致的部署脚本模板，位置如下：
-
-- `microservice/scripts/docker-centos9/init-single-container.ps1`
-- `microservice/scripts/docker-centos9/bootstrap.sh`
-- `microservice/scripts/docker-centos9/start-services.sh`
-- `microservice/scripts/docker-centos9/stop-services.sh`
-- `microservice/scripts/docker-centos9/runtime.env.example`
-- `microservice/scripts/docker-centos9/nginx.governance-demo.conf`
-
-推荐优先使用宿主机一键脚本：
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\microservice\scripts\docker-centos9\init-single-container.ps1
-```
-
-如果前后端产物已经提前构建完成，可以直接执行：
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\microservice\scripts\docker-centos9\init-single-container.ps1 -SkipBuild
-```
-
-该脚本会在宿主机侧完成以下动作：
-
-- 创建并启动单个 `governance-centos9` 容器
-- 在容器内安装 `mysql-server`、`nginx`、`openssh-server`、`java-17`
-- 复制 Nacos 运行目录、前端静态产物、后端 JAR、Nacos 配置和启动脚本
-- 初始化数据库、导入运行时环境变量并拉起全部服务
-- 自动验证 SSH、Nacos、网关、前端、Swagger 和登录链路
-
-这些脚本与当前已部署容器 `governance-centos9` 内使用的脚本保持一致，已可直接用于后续复现部署。

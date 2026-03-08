@@ -1,3 +1,5 @@
+# 认证中心基础配置。
+# 包含服务注册、JWT 参数以及调用用户中心的内部集成配置。
 server:
   port: ${SERVER_PORT:8081}
 
@@ -6,6 +8,14 @@ spring:
     name: auth-center
   config:
     import: optional:nacos:${spring.application.name}.yaml
+  mail:
+    host: ${MAIL_HOST:}
+    port: ${MAIL_PORT:25}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail.smtp.auth: ${MAIL_SMTP_AUTH:false}
+      mail.smtp.starttls.enable: ${MAIL_SMTP_STARTTLS_ENABLE:false}
   cloud:
     nacos:
       discovery:
@@ -17,14 +27,26 @@ spring:
 
 app:
   cors:
+    # 便于本地门户与后台前端联调。
     allowed-origin-patterns: ${APP_CORS_ALLOWED_ORIGIN_PATTERNS:http://localhost:*,http://127.0.0.1:*}
 
 auth-center:
+  # JWT 签名与过期时间配置。
   jwt-secret: ${AUTH_CENTER_JWT_SECRET:governance-auth-center-jwt-secret-please-change-it}
   jwt-expire-seconds: ${AUTH_CENTER_JWT_EXPIRE_SECONDS:86400}
+  # 图形验证码与邮箱验证码基础参数。
+  captcha-expire-seconds: ${AUTH_CENTER_CAPTCHA_EXPIRE_SECONDS:180}
+  email-code-expire-seconds: ${AUTH_CENTER_EMAIL_CODE_EXPIRE_SECONDS:300}
+  email-code-resend-seconds: ${AUTH_CENTER_EMAIL_CODE_RESEND_SECONDS:60}
+  mail:
+    # 演示环境默认开启 mock 模式；如配置 SMTP 并关闭 mock，即可真实发邮件。
+    mock-enabled: ${AUTH_CENTER_MAIL_MOCK_ENABLED:true}
+    debug-return-code: ${AUTH_CENTER_MAIL_DEBUG_RETURN_CODE:true}
+    from: ${AUTH_CENTER_MAIL_FROM:}
 
 integration:
   user-service:
+    # 认证中心通过内部接口调用基础用户服务。
     name: ${USER_SERVICE_NAME:bms-service}
     path: ${USER_SERVICE_PATH:/internal/users}
 

@@ -19,6 +19,11 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+/**
+ * 元数据采集任务服务实现。
+ *
+ * <p>负责采集任务的校验、数据源依赖检查、字段规范化以及响应组装。</p>
+ */
 @Service
 @RequiredArgsConstructor
 public class MetadataCollectionTaskServiceImpl implements MetadataCollectionTaskService {
@@ -27,6 +32,12 @@ public class MetadataCollectionTaskServiceImpl implements MetadataCollectionTask
     private final DataSourceClient dataSourceClient;
     private final ObjectMapper objectMapper;
 
+    /**
+     * 创建采集任务。
+     *
+     * @param request 任务请求
+     * @return 创建后的任务详情
+     */
     @Override
     public MetadataCollectionTaskResponse createTask(MetadataCollectionTaskRequest request) {
         String normalizedTaskName = request.getTaskName().trim();
@@ -57,12 +68,25 @@ public class MetadataCollectionTaskServiceImpl implements MetadataCollectionTask
         return toResponse(saved);
     }
 
+    /**
+     * 根据 ID 查询采集任务。
+     *
+     * @param id 任务 ID
+     * @return 任务详情
+     */
     @Override
     public MetadataCollectionTaskResponse getTaskById(Long id) {
         MetadataCollectionTask task = getTaskEntityById(id);
         return toResponse(task);
     }
 
+    /**
+     * 更新采集任务。
+     *
+     * @param id 任务 ID
+     * @param request 更新请求
+     * @return 更新后的任务详情
+     */
     @Override
     public MetadataCollectionTaskResponse updateTask(Long id, MetadataCollectionTaskRequest request) {
         MetadataCollectionTask existing = getTaskEntityById(id);
@@ -93,12 +117,22 @@ public class MetadataCollectionTaskServiceImpl implements MetadataCollectionTask
         return toResponse(updated);
     }
 
+    /**
+     * 删除采集任务。
+     *
+     * @param id 任务 ID
+     */
     @Override
     public void deleteTask(Long id) {
         MetadataCollectionTask existing = getTaskEntityById(id);
         metadataCollectionTaskRepository.delete(existing);
     }
 
+    /**
+     * 查询全部采集任务。
+     *
+     * @return 任务列表
+     */
     @Override
     public List<MetadataCollectionTaskResponse> getAllTasks() {
         return metadataCollectionTaskRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))
@@ -107,6 +141,15 @@ public class MetadataCollectionTaskServiceImpl implements MetadataCollectionTask
                 .toList();
     }
 
+    /**
+     * 规范化 Cron 表达式。
+     *
+     * <p>仅在调度类型为 Cron 时保留表达式，其他调度方式统一返回空值。</p>
+     *
+     * @param scheduleType 调度类型
+     * @param cronExpression 原始 Cron 表达式
+     * @return 规范化后的 Cron 表达式
+     */
     private String normalizeCronExpression(MetadataCollectionScheduleType scheduleType, String cronExpression) {
         if (scheduleType == MetadataCollectionScheduleType.CRON) {
             if (!StringUtils.hasText(cronExpression)) {
@@ -117,6 +160,12 @@ public class MetadataCollectionTaskServiceImpl implements MetadataCollectionTask
         return null;
     }
 
+    /**
+     * 规范化 JSON 配置串。
+     *
+     * @param configJson 原始 JSON 文本
+     * @return 规范化后的 JSON 文本
+     */
     private String normalizeConfigJson(String configJson) {
         if (!StringUtils.hasText(configJson)) {
             return null;
@@ -131,6 +180,12 @@ public class MetadataCollectionTaskServiceImpl implements MetadataCollectionTask
         return normalized;
     }
 
+    /**
+     * 按数据源 ID 查询数据源信息。
+     *
+     * @param dataSourceId 数据源 ID
+     * @return 数据源内部响应
+     */
     private DataSourceInternalResponse getDataSourceById(Long dataSourceId) {
         try {
             DataSourceInternalResponse response = dataSourceClient.getById(dataSourceId);
@@ -145,11 +200,23 @@ public class MetadataCollectionTaskServiceImpl implements MetadataCollectionTask
         }
     }
 
+    /**
+     * 按 ID 查询任务实体，不存在则抛出异常。
+     *
+     * @param id 任务 ID
+     * @return 任务实体
+     */
     private MetadataCollectionTask getTaskEntityById(Long id) {
         return metadataCollectionTaskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Metadata collection task not found: " + id));
     }
 
+    /**
+     * 去除字符串首尾空白，空串转为 {@code null}。
+     *
+     * @param value 原始字符串
+     * @return 处理后的值
+     */
     private String trimToNull(String value) {
         if (!StringUtils.hasText(value)) {
             return null;
@@ -157,6 +224,12 @@ public class MetadataCollectionTaskServiceImpl implements MetadataCollectionTask
         return value.trim();
     }
 
+    /**
+     * 实体转任务响应对象。
+     *
+     * @param entity 任务实体
+     * @return 任务响应
+     */
     private MetadataCollectionTaskResponse toResponse(MetadataCollectionTask entity) {
         return MetadataCollectionTaskResponse.builder()
                 .id(entity.getId())

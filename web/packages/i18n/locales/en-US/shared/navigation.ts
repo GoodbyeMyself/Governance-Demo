@@ -9,6 +9,7 @@ const navigationMessages: LocaleMessages = {
     'nav.logout': 'Logout',
     'nav.metadataCollection': 'Metadata Collection',
     'nav.profile': 'Profile',
+    'nav.roleManagement': 'Role Definitions',
     'nav.userManagement': 'Users',
 };
 

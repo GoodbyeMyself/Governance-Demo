@@ -1,3 +1,4 @@
+-- 元数据采集任务表：保存任务与数据源绑定关系、调度配置和启停状态。
 CREATE TABLE IF NOT EXISTS metadata_collection_tasks (
     id BIGINT NOT NULL AUTO_INCREMENT,
     task_name VARCHAR(100) NOT NULL,

@@ -1,3 +1,5 @@
+# 网关服务基础配置。
+# 负责统一入口路由、聚合 Swagger 以及网关层令牌校验参数。
 server:
   port: ${SERVER_PORT:8080}
 
@@ -15,6 +17,7 @@ spring:
         group: ${NACOS_GROUP:DEFAULT_GROUP}
         file-extension: yaml
     gateway:
+      # 统一维护各微服务的业务路由与 Swagger 路由。
       routes:
         - id: auth-center
           uri: lb://auth-center
@@ -58,6 +61,7 @@ spring:
             - StripPrefix=1
 
 springdoc:
+  # 聚合后的 Swagger UI 入口配置。
   api-docs:
     enabled: true
     groups:
@@ -77,10 +81,12 @@ springdoc:
         url: /metadata/v3/api-docs
 
 auth-center:
+  # 网关解析 JWT 时需要与认证中心保持一致的签名密钥。
   jwt-secret: ${AUTH_CENTER_JWT_SECRET:governance-auth-center-jwt-secret-please-change-it}
 
 gateway:
   auth:
+    # 仅对 /api/ 前缀的业务接口启用网关鉴权，静态资源与聚合 Swagger 不走该规则。
     required-prefix: /api/
     internal-token: ${GATEWAY_TRUSTED_TOKEN:change-me-gateway-token}
 

@@ -5,6 +5,7 @@ import HomePage from '@/features/home';
 import MetadataCollectionPage from '@/features/metadata-collection';
 import MetadataCollectionDetailPage from '@/features/metadata-collection/detail';
 import ProfilePage from '@/features/profile';
+import RoleManagementPage from '@/features/role-management';
 import UserManagementPage from '@/features/user-management';
 import { useI18n } from '@governance/i18n';
 import { GovernanceAppShell, RequireAdmin, RequireAuth } from '@governance/ui';
@@ -15,6 +16,7 @@ import {
     LOGIN_PATH,
     METADATA_COLLECTION_PATH,
     PROFILE_PATH,
+    ROLE_MANAGEMENT_PATH,
     USER_MANAGEMENT_PATH,
     hasToken,
 } from '@governance/utils';
@@ -51,6 +53,14 @@ const App: React.FC = () => {
                     element={
                         <RequireAdmin>
                             <UserManagementPage />
+                        </RequireAdmin>
+                    }
+                />
+                <Route
+                    path={ROLE_MANAGEMENT_PATH}
+                    element={
+                        <RequireAdmin>
+                            <RoleManagementPage />
                         </RequireAdmin>
                     }
                 />

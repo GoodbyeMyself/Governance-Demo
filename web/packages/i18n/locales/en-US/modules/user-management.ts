@@ -4,6 +4,7 @@ const userManagementMessages: LocaleMessages = {
     'userManagement.changeRole': 'Change Role',
     'userManagement.currentRole': 'Current Role',
     'userManagement.editRoleTitle': 'Change User Role',
+    'userManagement.goToRoleManagement': 'Role Definitions',
     'userManagement.loadRolesFailed': 'Failed to load roles',
     'userManagement.loadUsersFailed': 'Failed to load users',
     'userManagement.pageTitle': 'User Management',

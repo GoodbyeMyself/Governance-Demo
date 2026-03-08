@@ -15,6 +15,12 @@ import org.springframework.util.StringUtils;
 
 import java.util.Locale;
 
+/**
+ * 默认管理员初始化器。
+ *
+ * <p>服务启动时检查系统内是否已存在管理员账号；
+ * 如果不存在，则按照配置创建一个默认管理员，方便首次部署后直接登录。</p>
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -32,6 +38,11 @@ public class BmsAdminInitializer implements ApplicationRunner {
     @Value("${bms.admin.nickname:System Admin}")
     private String adminNickname;
 
+    /**
+     * 启动后初始化管理员账号。
+     *
+     * @param args 应用启动参数
+     */
     @Override
     public void run(ApplicationArguments args) {
         String username = normalizeUsername(adminUsername);
@@ -76,6 +87,12 @@ public class BmsAdminInitializer implements ApplicationRunner {
         }
     }
 
+    /**
+     * 规范化管理员用户名。
+     *
+     * @param username 原始用户名
+     * @return 规范化后的用户名
+     */
     private String normalizeUsername(String username) {
         if (!StringUtils.hasText(username)) {
             return null;
