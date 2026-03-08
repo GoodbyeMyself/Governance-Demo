@@ -1,0 +1,15 @@
+server:
+  port: 8081
+
+auth-center:
+  jwt-secret: ${AUTH_CENTER_JWT_SECRET:governance-auth-center-jwt-secret-please-change-it}
+  jwt-expire-seconds: ${AUTH_CENTER_JWT_EXPIRE_SECONDS:86400}
+
+integration:
+  user-service:
+    name: bms-service
+    path: /internal/users
+
+security:
+  gateway:
+    trusted-token: ${GATEWAY_TRUSTED_TOKEN:change-me-gateway-token}

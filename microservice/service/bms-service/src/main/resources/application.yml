@@ -1,0 +1,51 @@
+﻿server:
+  port: ${SERVER_PORT:8082}
+
+spring:
+  application:
+    name: bms-service
+  config:
+    import: optional:nacos:${spring.application.name}.yaml
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/bms_service_db?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:mayunlong}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: always
+      encoding: UTF-8
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+      config:
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+        file-extension: yaml
+
+app:
+  cors:
+    allowed-origin-patterns: ${APP_CORS_ALLOWED_ORIGIN_PATTERNS:http://localhost:*,http://127.0.0.1:*}
+
+bms:
+  admin:
+    username: ${BMS_ADMIN_USERNAME:admin}
+    password: ${BMS_ADMIN_PASSWORD:Admin@123456}
+    nickname: ${BMS_ADMIN_NICKNAME:System Admin}
+
+security:
+  gateway:
+    trusted-token: ${GATEWAY_TRUSTED_TOKEN:change-me-gateway-token}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+

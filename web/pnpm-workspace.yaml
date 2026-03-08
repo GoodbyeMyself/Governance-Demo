@@ -1,0 +1,8 @@
+packages:
+    - 'apps/govern'
+    - 'apps/portal'
+    - 'packages/api'
+    - 'packages/components'
+    - 'packages/i18n'
+    - 'packages/utils'
+    - 'packages/ui'

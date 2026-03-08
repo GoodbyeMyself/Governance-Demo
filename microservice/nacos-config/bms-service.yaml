@@ -1,0 +1,18 @@
+server:
+  port: 8082
+
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/bms_service_db?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+    username: ${MYSQL_USERNAME:governance}
+    password: ${MYSQL_PASSWORD:Governance@2026}
+
+bms:
+  admin:
+    username: ${AUTH_CENTER_ADMIN_USERNAME:admin}
+    password: ${AUTH_CENTER_ADMIN_PASSWORD:Admin@123456}
+    nickname: ${AUTH_CENTER_ADMIN_NICKNAME:System Admin}
+
+security:
+  gateway:
+    trusted-token: ${GATEWAY_TRUSTED_TOKEN:change-me-gateway-token}

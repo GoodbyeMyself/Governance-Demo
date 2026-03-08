@@ -1,0 +1,47 @@
+﻿[
+    {
+        "name":  "bms-service",
+        "port":  8082,
+        "pid":  null,
+        "reused":  true,
+        "healthUrl":  "http://localhost:8082/actuator/health",
+        "outLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\bms-service.out.log",
+        "errLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\bms-service.err.log"
+    },
+    {
+        "name":  "data-source",
+        "port":  8083,
+        "pid":  null,
+        "reused":  true,
+        "healthUrl":  "http://localhost:8083/actuator/health",
+        "outLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\data-source.out.log",
+        "errLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\data-source.err.log"
+    },
+    {
+        "name":  "data-metadata",
+        "port":  8084,
+        "pid":  null,
+        "reused":  true,
+        "healthUrl":  "http://localhost:8084/actuator/health",
+        "outLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\data-metadata.out.log",
+        "errLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\data-metadata.err.log"
+    },
+    {
+        "name":  "auth-center",
+        "port":  8081,
+        "pid":  8488,
+        "reused":  false,
+        "healthUrl":  "http://localhost:8081/actuator/health",
+        "outLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\auth-center.out.log",
+        "errLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\auth-center.err.log"
+    },
+    {
+        "name":  "gateway",
+        "port":  8080,
+        "pid":  null,
+        "reused":  true,
+        "healthUrl":  "http://localhost:8080/actuator/health",
+        "outLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\gateway.out.log",
+        "errLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\gateway.err.log"
+    }
+]

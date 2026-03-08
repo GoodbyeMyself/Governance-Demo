@@ -1,0 +1,74 @@
+server:
+  port: 8080
+
+auth-center:
+  jwt-secret: ${AUTH_CENTER_JWT_SECRET:governance-auth-center-jwt-secret-please-change-it}
+
+gateway:
+  auth:
+    required-prefix: /api/
+    internal-token: ${GATEWAY_TRUSTED_TOKEN:change-me-gateway-token}
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: auth-center
+          uri: lb://auth-center
+          predicates:
+            - Path=/api/auth-center/**
+        - id: auth-swagger
+          uri: lb://auth-center
+          predicates:
+            - Path=/auth/swagger-ui.html,/auth/swagger-ui/**,/auth/v3/api-docs,/auth/v3/api-docs/**
+          filters:
+            - StripPrefix=1
+        - id: bms-service
+          uri: lb://bms-service
+          predicates:
+            - Path=/api/bms/**
+        - id: bms-swagger
+          uri: lb://bms-service
+          predicates:
+            - Path=/bms/swagger-ui.html,/bms/swagger-ui/**,/bms/v3/api-docs,/bms/v3/api-docs/**
+          filters:
+            - StripPrefix=1
+        - id: data-source
+          uri: lb://data-source
+          predicates:
+            - Path=/api/data-source/**
+        - id: source-swagger
+          uri: lb://data-source
+          predicates:
+            - Path=/source/swagger-ui.html,/source/swagger-ui/**,/source/v3/api-docs,/source/v3/api-docs/**
+          filters:
+            - StripPrefix=1
+        - id: data-metadata
+          uri: lb://data-metadata
+          predicates:
+            - Path=/api/data-metadata/**
+        - id: metadata-swagger
+          uri: lb://data-metadata
+          predicates:
+            - Path=/metadata/swagger-ui.html,/metadata/swagger-ui/**,/metadata/v3/api-docs,/metadata/v3/api-docs/**
+          filters:
+            - StripPrefix=1
+
+springdoc:
+  api-docs:
+    enabled: true
+    groups:
+      enabled: false
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    urls-primary-name: Auth Center
+    urls:
+      - name: Auth Center
+        url: /auth/v3/api-docs
+      - name: BMS Service
+        url: /bms/v3/api-docs
+      - name: Data Source Service
+        url: /source/v3/api-docs
+      - name: Data Metadata Service
+        url: /metadata/v3/api-docs

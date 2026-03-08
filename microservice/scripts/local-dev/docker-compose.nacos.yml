@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  nacos:
+    image: nacos/nacos-server:v2.3.2
+    container_name: governance-nacos
+    environment:
+      MODE: standalone
+      SPRING_DATASOURCE_PLATFORM: derby
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+    restart: unless-stopped

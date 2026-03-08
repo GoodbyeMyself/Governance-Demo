@@ -23,5 +23,11 @@
 hs_err_pid*
 replay_pid*
 
-# Backend build output
-backend/target/
+# Build output
+**/target/
+web/apps/web/dist/
+.tmp/
+
+node_modules
+**/node_modules/
+/node_modules

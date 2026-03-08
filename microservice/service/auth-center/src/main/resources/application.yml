@@ -1,0 +1,39 @@
+server:
+  port: ${SERVER_PORT:8081}
+
+spring:
+  application:
+    name: auth-center
+  config:
+    import: optional:nacos:${spring.application.name}.yaml
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+      config:
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+        file-extension: yaml
+
+app:
+  cors:
+    allowed-origin-patterns: ${APP_CORS_ALLOWED_ORIGIN_PATTERNS:http://localhost:*,http://127.0.0.1:*}
+
+auth-center:
+  jwt-secret: ${AUTH_CENTER_JWT_SECRET:governance-auth-center-jwt-secret-please-change-it}
+  jwt-expire-seconds: ${AUTH_CENTER_JWT_EXPIRE_SECONDS:86400}
+
+integration:
+  user-service:
+    name: ${USER_SERVICE_NAME:bms-service}
+    path: ${USER_SERVICE_PATH:/internal/users}
+
+security:
+  gateway:
+    trusted-token: ${GATEWAY_TRUSTED_TOKEN:change-me-gateway-token}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
