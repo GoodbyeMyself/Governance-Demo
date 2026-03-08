@@ -1,33 +1,58 @@
+import { UserOutlined } from '@ant-design/icons';
 import { logout, type AuthCenterUserProfile } from '@governance/api';
 import { LanguageSelect } from '@governance/components';
 import { useI18n } from '@governance/i18n';
 import {
     HOME_PATH,
     LOGIN_PATH,
+    PORTAL_DEMO_PATH,
+    buildGovernAppUrl,
     clearAuthState,
     getStoredUser,
 } from '@governance/utils';
-import { UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Avatar, Dropdown, Layout, Space, Typography } from 'antd';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useMemo } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const { Header, Content } = Layout;
 
+const NAV_PATHS = [HOME_PATH, PORTAL_DEMO_PATH] as const;
+
+const getSelectedMenuKey = (pathname: string) =>
+    NAV_PATHS.find((path) => pathname.startsWith(path)) || HOME_PATH;
+
 export const PortalAppShell: React.FC = () => {
     const { t } = useI18n();
+    const location = useLocation();
     const navigate = useNavigate();
     const currentUser = getStoredUser<AuthCenterUserProfile>();
     const displayName =
         currentUser?.nickname?.trim() ||
         currentUser?.username ||
         t('common.currentUser');
+    const selectedMenuKey = getSelectedMenuKey(location.pathname);
+
+    const navItems = useMemo(
+        () => [
+            { key: HOME_PATH, label: t('portal.nav.home') },
+            { key: PORTAL_DEMO_PATH, label: t('portal.nav.demo') },
+        ],
+        [t],
+    );
 
     const userMenuProps: MenuProps = {
         items: [
+            { key: 'govern', label: t('nav.goToGovern') },
+            { type: 'divider' },
             { key: 'logout', label: t('nav.logout') },
         ],
         onClick: async ({ key }) => {
+            if (key === 'govern') {
+                window.location.assign(buildGovernAppUrl(HOME_PATH));
+                return;
+            }
+
             if (key === 'logout') {
                 try {
                     await logout();
@@ -52,23 +77,43 @@ export const PortalAppShell: React.FC = () => {
                     paddingInline: 24,
                 }}
             >
-                <Typography.Text
-                    style={{
-                        fontSize: 18,
-                        fontWeight: 700,
-                        color: '#1677ff',
-                        cursor: 'pointer',
-                    }}
-                    onClick={() => navigate(HOME_PATH)}
-                >
-                    {t('common.portalName')}
-                </Typography.Text>
+                <Space size={24} align="center">
+                    <Typography.Text
+                        style={{
+                            fontSize: 18,
+                            fontWeight: 700,
+                            color: '#1677ff',
+                            cursor: 'pointer',
+                        }}
+                        onClick={() => navigate(HOME_PATH)}
+                    >
+                        {t('common.portalName')}
+                    </Typography.Text>
+
+                    <Space size={20}>
+                        {navItems.map((item) => {
+                            const active = selectedMenuKey === item.key;
+                            return (
+                                <Typography.Link
+                                    key={item.key}
+                                    onClick={() => navigate(item.key)}
+                                    style={{
+                                        color: active ? '#1677ff' : undefined,
+                                        fontWeight: active ? 600 : 500,
+                                    }}
+                                >
+                                    {item.label}
+                                </Typography.Link>
+                            );
+                        })}
+                    </Space>
+                </Space>
 
                 <Space size={12}>
                     <LanguageSelect size="small" />
                     <Dropdown
                         menu={userMenuProps}
-                        trigger={['hover']}
+                        trigger={['hover', 'click']}
                         placement="bottomRight"
                     >
                         <span

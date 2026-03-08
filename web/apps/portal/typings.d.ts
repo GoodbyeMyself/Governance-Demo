@@ -5,6 +5,10 @@
                 title?: string;
                 iframeUrl?: string;
             };
+            apps?: {
+                governBaseUrl?: string;
+                portalBaseUrl?: string;
+            };
         };
     }
 }

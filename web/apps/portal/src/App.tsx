@@ -1,8 +1,14 @@
 import LoginPage from '@/features/auth/login';
+import DemoPage from '@/features/demo';
 import HomePage from '@/features/home';
 import { useI18n } from '@governance/i18n';
 import { PortalAppShell, RequireAuth } from '@governance/ui';
-import { HOME_PATH, LOGIN_PATH, hasToken } from '@governance/utils';
+import {
+    HOME_PATH,
+    LOGIN_PATH,
+    PORTAL_DEMO_PATH,
+    hasToken,
+} from '@governance/utils';
 import { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
@@ -26,6 +32,7 @@ const App: React.FC = () => {
             >
                 <Route path="/" element={<Navigate to={HOME_PATH} replace />} />
                 <Route path={HOME_PATH} element={<HomePage />} />
+                <Route path={PORTAL_DEMO_PATH} element={<DemoPage />} />
             </Route>
 
             <Route

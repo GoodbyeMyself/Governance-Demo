@@ -1,3 +1,4 @@
+import { UserOutlined } from '@ant-design/icons';
 import { logout, type AuthCenterUserProfile } from '@governance/api';
 import { GovernanceAssistant, LanguageSelect } from '@governance/components';
 import { useI18n } from '@governance/i18n';
@@ -9,11 +10,11 @@ import {
     METADATA_COLLECTION_PATH,
     PROFILE_PATH,
     USER_MANAGEMENT_PATH,
+    buildPortalAppUrl,
     clearAuthState,
     getStoredUser,
     isAdminUser,
 } from '@governance/utils';
-import { UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Avatar, Dropdown, Layout, Menu, Space, Typography } from 'antd';
 import { useMemo } from 'react';
@@ -68,12 +69,18 @@ export const GovernanceAppShell: React.FC = () => {
     const userMenuProps: MenuProps = {
         items: [
             { key: 'profile', label: t('nav.profile') },
+            { key: 'portal', label: t('nav.goToPortal') },
             { type: 'divider' },
             { key: 'logout', label: t('nav.logout') },
         ],
         onClick: async ({ key }) => {
             if (key === 'profile') {
                 navigate(PROFILE_PATH);
+                return;
+            }
+
+            if (key === 'portal') {
+                window.location.assign(buildPortalAppUrl(HOME_PATH));
                 return;
             }
 
@@ -157,7 +164,7 @@ export const GovernanceAppShell: React.FC = () => {
                             <LanguageSelect size="small" />
                             <Dropdown
                                 menu={userMenuProps}
-                                trigger={['hover']}
+                                trigger={['hover', 'click']}
                                 placement="bottomRight"
                             >
                                 <span

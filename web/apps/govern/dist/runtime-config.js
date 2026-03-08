@@ -14,4 +14,12 @@
         },
         config.assistant || {},
     );
+
+    config.apps = Object.assign(
+        {
+            governBaseUrl: 'http://127.0.0.1:19001',
+            portalBaseUrl: 'http://127.0.0.1:19002',
+        },
+        config.apps || {},
+    );
 })(window);
