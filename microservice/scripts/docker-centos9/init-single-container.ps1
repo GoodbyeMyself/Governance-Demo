@@ -330,6 +330,7 @@ pkill -x sshd >/dev/null 2>&1 || true
     Invoke-Docker @('cp', (Join-Path $scriptDir 'bootstrap.sh'), "${ContainerName}:/opt/governance-demo/run/bootstrap.sh")
     Invoke-Docker @('cp', (Join-Path $scriptDir 'start-services.sh'), "${ContainerName}:/opt/governance-demo/run/start-services.sh")
     Invoke-Docker @('cp', (Join-Path $scriptDir 'stop-services.sh'), "${ContainerName}:/opt/governance-demo/run/stop-services.sh")
+    Invoke-Docker @('cp', (Join-Path $scriptDir 'service-manager.sh'), "${ContainerName}:/opt/governance-demo/run/service-manager.sh")
     Invoke-Docker @('cp', (Join-Path $scriptDir 'mail-catcher.py'), "${ContainerName}:/opt/governance-demo/run/mail-catcher.py")
     Invoke-Docker @('cp', (Join-Path $scriptDir 'nginx.governance-demo.conf'), "${ContainerName}:/etc/nginx/conf.d/governance-demo.conf")
 
@@ -397,7 +398,7 @@ mysql --socket=/var/run/mysqld/mysqld.sock -uroot < /tmp/init-mysql.sql
     Invoke-DockerExec $mysqlInitCommand
 
     Write-Step 'Bootstrap Nacos, nginx, sshd and microservices'
-    Invoke-DockerExec 'chmod +x /opt/governance-demo/run/bootstrap.sh /opt/governance-demo/run/start-services.sh /opt/governance-demo/run/stop-services.sh /opt/governance-demo/run/mail-catcher.py && /opt/governance-demo/run/bootstrap.sh >/opt/governance-demo/logs/bootstrap.log 2>&1'
+    Invoke-DockerExec 'chmod +x /opt/governance-demo/run/bootstrap.sh /opt/governance-demo/run/start-services.sh /opt/governance-demo/run/stop-services.sh /opt/governance-demo/run/service-manager.sh /opt/governance-demo/run/mail-catcher.py && /opt/governance-demo/run/bootstrap.sh >/opt/governance-demo/logs/bootstrap.log 2>&1'
 
     if (-not $SkipValidation) {
         Write-Step 'Validate host-exposed ports and endpoints'
