@@ -132,3 +132,6 @@ powershell -ExecutionPolicy Bypass -File .\microservice\scripts\docker-centos9\i
 - 个人资料：支持修改用户名、邮箱、手机号，后台会校验唯一性
 - 后端接口已支持 `zh-CN` / `en-US` 多语言响应，前端会自动按当前语言透传 `Accept-Language`
 - 单容器演示环境默认启用本地 SMTP 捕获服务，验证码邮件会落到容器目录 `/opt/governance-demo/mailbox`
+- 代码更新后可直接执行增量发布脚本：`microservice/scripts/docker-centos9/update-single-container.ps1`
+- 日志查看脚本：`microservice/scripts/docker-centos9/view-service-logs.ps1`
+- 单服务启停脚本：`microservice/scripts/docker-centos9/manage-service.ps1`

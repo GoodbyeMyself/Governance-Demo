@@ -141,7 +141,70 @@ ssh root@127.0.0.1 -p 12222 "hostname && ps -ef | grep java"
 docker exec -it governance-centos9 bash
 ```
 
-## 7. 外部数据库连接示例
+## 7. 代码更新后如何增量发布
+
+### 一键更新脚本
+
+- 脚本位置：`microservice/scripts/docker-centos9/update-single-container.ps1`
+- 适用前提：`governance-centos9` 单容器已初始化完成并处于运行状态
+- 默认行为：
+  - 重新构建后端 JAR
+  - 重新构建前端静态资源
+  - 覆盖容器内运行脚本与 `nacos-config`
+  - 重启后端服务并刷新前端静态资源
+  - 自动校验核心访问地址
+
+### 常用命令
+
+```powershell
+# 全量增量更新
+powershell -ExecutionPolicy Bypass -File .\microservice\scripts\docker-centos9\update-single-container.ps1
+
+# 仅更新后端
+powershell -ExecutionPolicy Bypass -File .\microservice\scripts\docker-centos9\update-single-container.ps1 -BackendOnly
+
+# 仅更新前端
+powershell -ExecutionPolicy Bypass -File .\microservice\scripts\docker-centos9\update-single-container.ps1 -FrontendOnly
+
+# 跳过构建，直接把当前本地产物覆盖进容器
+powershell -ExecutionPolicy Bypass -File .\microservice\scripts\docker-centos9\update-single-container.ps1 -SkipBuild
+
+# 跳过发布后的连通性校验
+powershell -ExecutionPolicy Bypass -File .\microservice\scripts\docker-centos9\update-single-container.ps1 -SkipValidation
+```
+
+### 更新范围
+
+- 后端 JAR：`gateway`、`auth-center`、`bms-service`、`data-source`、`data-metadata`
+- 配置与脚本：`/opt/governance-demo/nacos-config`、`/opt/governance-demo/run`
+- 前端静态资源：`/opt/governance-demo/govern`、`/opt/governance-demo/portal`
+
+### 配套运维脚本
+
+- 单服务管理脚本：`microservice/scripts/docker-centos9/manage-service.ps1`
+- 日志查看脚本：`microservice/scripts/docker-centos9/view-service-logs.ps1`
+
+```powershell
+# 查看全部服务状态
+powershell -ExecutionPolicy Bypass -File .\microservice\scripts\docker-centos9\manage-service.ps1 -Action status
+
+# 仅重启认证中心
+powershell -ExecutionPolicy Bypass -File .\microservice\scripts\docker-centos9\manage-service.ps1 -Action restart -Service auth-center
+
+# 停止网关
+powershell -ExecutionPolicy Bypass -File .\microservice\scripts\docker-centos9\manage-service.ps1 -Action stop -Service gateway
+
+# 启动网关
+powershell -ExecutionPolicy Bypass -File .\microservice\scripts\docker-centos9\manage-service.ps1 -Action start -Service gateway
+
+# 查看认证中心最近 300 行日志
+powershell -ExecutionPolicy Bypass -File .\microservice\scripts\docker-centos9\view-service-logs.ps1 -Service auth-center -Lines 300
+
+# 持续跟踪网关日志
+powershell -ExecutionPolicy Bypass -File .\microservice\scripts\docker-centos9\view-service-logs.ps1 -Service gateway -Follow
+```
+
+## 8. 外部数据库连接示例
 
 可使用 Navicat、DBeaver 或命令行直接连接：
 
@@ -149,7 +212,7 @@ docker exec -it governance-centos9 bash
 mysql -h127.0.0.1 -P23306 -ugovernance -pGovernance@2026
 ```
 
-## 8. 常用启停命令
+## 9. 常用启停命令
 
 ### 启动容器
 
@@ -175,7 +238,7 @@ docker exec governance-centos9 bash -lc "/opt/governance-demo/run/stop-services.
 docker stop governance-centos9
 ```
 
-## 9. 当前端口映射
+## 10. 当前端口映射
 
 ```text
 12222 -> 22     sshd
@@ -192,7 +255,7 @@ docker stop governance-centos9
 23306 -> 3306   mysql
 ```
 
-## 10. 已执行验证
+## 11. 已执行验证
 
 ### 前端
 
@@ -235,7 +298,7 @@ docker stop governance-centos9
 
 - 已从容器外通过 `127.0.0.1:23306` 连接 MySQL
 
-## 11. 本次部署对应的代码结构说明
+## 12. 本次部署对应的代码结构说明
 
 本次部署基于以下结构调整后的代码：
 
