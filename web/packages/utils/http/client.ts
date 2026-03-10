@@ -1,12 +1,13 @@
 import { getLocale, translate } from '@governance/i18n';
 import type { AxiosRequestConfig } from 'axios';
 import axios, { isAxiosError } from 'axios';
-import { clearAuthState, getToken } from '../auth';
+import { clearAuthState, getCookieValue, getToken } from '../auth';
 
 export interface HttpRequestOptions extends AxiosRequestConfig {
     skipDefaultHeaders?: boolean;
     skipAuth?: boolean;
     requireBody?: boolean;
+    silentUnauthorized?: boolean;
     customHeaders?: Record<string, string>;
 }
 
@@ -24,13 +25,7 @@ const DEFAULT_LOGIN_PATH = '/login';
 const DEFAULT_CLIENT_APP_NAME = 'governance-frontend';
 
 const defaultGetStorageValue = (key: string): string | null => {
-    if (typeof window === 'undefined') {
-        return null;
-    }
-
-    return (
-        window.localStorage.getItem(key) || window.sessionStorage.getItem(key)
-    );
+    return getCookieValue(key);
 };
 
 let httpClientConfig: HttpClientConfig = {
@@ -201,14 +196,17 @@ const handleHttpStatus = (
     status: number,
     payload?: unknown,
     fallback?: string,
+    options?: Pick<HttpRequestOptions, 'silentUnauthorized'>,
 ): never => {
     const messageText = resolveHttpMessage(status, payload, fallback);
 
     if (status === 401) {
         const config = getRuntimeConfig();
         config.clearAuthState();
-        config.onUnauthorized?.(messageText);
-        redirectToLogin();
+        if (!options?.silentUnauthorized) {
+            config.onUnauthorized?.(messageText);
+            redirectToLogin();
+        }
         throw new Error(messageText);
     }
 
@@ -239,6 +237,7 @@ export async function httpRequest<T = unknown>(
         skipDefaultHeaders,
         skipAuth,
         requireBody: _requireBody,
+        silentUnauthorized,
         customHeaders,
         ...requestOptions
     } = options;
@@ -261,11 +260,14 @@ export async function httpRequest<T = unknown>(
             ...requestOptions,
             url,
             headers,
+            withCredentials: true,
             validateStatus: () => true,
         });
 
         if (response.status < 200 || response.status >= 300) {
-            handleHttpStatus(response.status, response.data);
+            handleHttpStatus(response.status, response.data, undefined, {
+                silentUnauthorized,
+            });
         }
 
         return response.data;
@@ -274,7 +276,9 @@ export async function httpRequest<T = unknown>(
             const responseStatus = error.response?.status;
             const responseData = error.response?.data;
             if (responseStatus) {
-                handleHttpStatus(responseStatus, responseData);
+                handleHttpStatus(responseStatus, responseData, undefined, {
+                    silentUnauthorized,
+                });
             }
         }
 

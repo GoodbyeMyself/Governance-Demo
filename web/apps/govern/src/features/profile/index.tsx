@@ -77,7 +77,7 @@ const ProfilePage: React.FC = () => {
                 email: values.email.trim(),
                 phone: values.phone?.trim() || undefined,
             });
-            if (!response.success || !response.data?.token) {
+            if (!response.success || !response.data?.user) {
                 throw new Error(
                     response.message || t('profile.updateProfileFailed'),
                 );
@@ -87,7 +87,7 @@ const ProfilePage: React.FC = () => {
                 persistence: getAuthPersistence(),
             };
             setAuthState(
-                response.data.token,
+                '',
                 response.data.user,
                 storageOptions,
             );

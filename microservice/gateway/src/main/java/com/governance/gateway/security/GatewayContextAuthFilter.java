@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -17,6 +19,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -63,6 +66,18 @@ public class GatewayContextAuthFilter implements GlobalFilter, Ordered {
     @Value("${gateway.auth.internal-token:change-me-gateway-token}")
     private String gatewayInternalToken;
 
+    @Value("${gateway.auth.cookie-name:governance_access_token}")
+    private String authCookieName;
+
+    @Value("${gateway.auth.cookie-path:/}")
+    private String authCookiePath;
+
+    @Value("${gateway.auth.cookie-secure:false}")
+    private boolean authCookieSecure;
+
+    @Value("${gateway.auth.cookie-same-site:Lax}")
+    private String authCookieSameSite;
+
     /**
      * 处理进入网关的请求，并把认证上下文透传到下游服务。
      *
@@ -88,19 +103,11 @@ public class GatewayContextAuthFilter implements GlobalFilter, Ordered {
             return chain.filter(exchange.mutate().request(builder.build()).build());
         }
 
-        String authorization = request.getHeaders().getFirst(AUTH_HEADER);
-        if (!StringUtils.hasText(authorization) || !authorization.startsWith(BEARER_PREFIX)) {
-            return unauthorized(
-                    exchange,
-                    localizedMessage(exchange, "缺少或无效的 Authorization 请求头", "Missing or invalid Authorization header")
-            );
-        }
-
-        String token = authorization.substring(BEARER_PREFIX.length()).trim();
+        String token = resolveToken(request);
         if (!StringUtils.hasText(token)) {
             return unauthorized(
                     exchange,
-                    localizedMessage(exchange, "缺少 Bearer 令牌", "Missing bearer token")
+                    localizedMessage(exchange, "缺少认证令牌", "Missing authentication token")
             );
         }
 
@@ -195,6 +202,7 @@ public class GatewayContextAuthFilter implements GlobalFilter, Ordered {
     private Mono<Void> unauthorized(ServerWebExchange exchange, String message) {
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
         exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
+        clearAuthCookie(exchange);
 
         byte[] body;
         try {
@@ -215,6 +223,45 @@ public class GatewayContextAuthFilter implements GlobalFilter, Ordered {
         return exchange.getResponse().writeWith(
                 Mono.just(exchange.getResponse().bufferFactory().wrap(body))
         );
+    }
+
+    /**
+     * 从请求头或 Cookie 中提取认证令牌。
+     *
+     * @param request 当前请求
+     * @return JWT；未找到时返回 {@code null}
+     */
+    private String resolveToken(ServerHttpRequest request) {
+        String authorization = request.getHeaders().getFirst(AUTH_HEADER);
+        if (StringUtils.hasText(authorization) && authorization.startsWith(BEARER_PREFIX)) {
+            String token = authorization.substring(BEARER_PREFIX.length()).trim();
+            if (StringUtils.hasText(token)) {
+                return token;
+            }
+        }
+
+        HttpCookie authCookie = request.getCookies().getFirst(authCookieName);
+        if (authCookie == null || !StringUtils.hasText(authCookie.getValue())) {
+            return null;
+        }
+
+        return authCookie.getValue().trim();
+    }
+
+    /**
+     * 清理浏览器中的认证 Cookie。
+     *
+     * @param exchange 当前网关上下文
+     */
+    private void clearAuthCookie(ServerWebExchange exchange) {
+        ResponseCookie cookie = ResponseCookie.from(authCookieName, "")
+                .httpOnly(true)
+                .secure(authCookieSecure)
+                .sameSite(authCookieSameSite)
+                .path(authCookiePath)
+                .maxAge(Duration.ZERO)
+                .build();
+        exchange.getResponse().addCookie(cookie);
     }
 
     /**

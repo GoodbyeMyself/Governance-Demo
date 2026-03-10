@@ -7,7 +7,6 @@ import {
     HOME_PATH,
     LOGIN_PATH,
     PORTAL_DEMO_PATH,
-    hasToken,
 } from '@governance/utils';
 import { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
@@ -37,12 +36,7 @@ const App: React.FC = () => {
 
             <Route
                 path="*"
-                element={
-                    <Navigate
-                        to={hasToken() ? HOME_PATH : LOGIN_PATH}
-                        replace
-                    />
-                }
+                element={<Navigate to={HOME_PATH} replace />}
             />
         </Routes>
     );

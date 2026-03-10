@@ -71,6 +71,20 @@ function Ensure-NacosReady {
     $nacosGrpcReady = Test-TcpPort -Port 9848
 
     if ($ForceStart -or -not ($nacosHttpReady -and $nacosGrpcReady)) {
+        $nacosContainerName = "governance-nacos"
+        $nacosState = ""
+
+        try {
+            $nacosState = (& docker inspect $nacosContainerName --format "{{.State.Status}}" 2>$null).Trim()
+        } catch {
+            $nacosState = ""
+        }
+
+        if ($nacosState -in @("restarting", "exited", "dead")) {
+            Write-Host "[precheck] Removing unhealthy Nacos container ($nacosState)..."
+            & docker rm -f $nacosContainerName | Out-Null
+        }
+
         Write-Host "[precheck] Starting Nacos by docker compose..."
         Push-Location $rootDir
         try {
@@ -122,6 +136,16 @@ function Wait-Health {
     return $false
 }
 
+function Ensure-SharedSupportInstalled {
+    Write-Host "[precheck] Installing service-support to local Maven repository..."
+    Push-Location $rootDir
+    try {
+        mvn -pl common/service-support -am -DskipTests install
+    } finally {
+        Pop-Location
+    }
+}
+
 if (-not (Test-Path $logDir)) {
     New-Item -ItemType Directory -Path $logDir | Out-Null
 }
@@ -153,6 +177,8 @@ if (-not $SkipInfraCheck) {
         }
     }
 }
+
+Ensure-SharedSupportInstalled
 
 $records = @()
 

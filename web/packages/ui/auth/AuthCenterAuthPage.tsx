@@ -20,7 +20,9 @@ import {
 import { LanguageSelect } from '@governance/components';
 import { useI18n } from '@governance/i18n';
 import {
+    clearAuthState,
     clearRememberedLoginCredentials,
+    getAuthPersistence,
     getRememberedLoginCredentials,
     setAuthState,
     setRememberedLoginCredentials,
@@ -35,6 +37,7 @@ import {
     Input,
     Modal,
     Space,
+    Spin,
     Typography,
     message,
 } from 'antd';
@@ -112,6 +115,7 @@ export const AuthCenterAuthPage: React.FC<AuthCenterAuthPageProps> = ({
     const [registerForm] = Form.useForm<RegisterForm>();
     const [forgotForm] = Form.useForm<ForgotForm>();
     const [messageApi, contextHolder] = message.useMessage();
+    const [checkingSession, setCheckingSession] = useState(true);
     const controlSize = 'middle' as const;
     const formStyle = { marginBottom: 14 };
     const twoColumnStyle = {
@@ -166,16 +170,48 @@ export const AuthCenterAuthPage: React.FC<AuthCenterAuthPageProps> = ({
     };
 
     useEffect(() => {
-        void loadCaptcha();
-        const remembered = getRememberedLoginCredentials();
-        if (remembered) {
-            loginForm.setFieldsValue({
-                username: remembered.username,
-                password: remembered.password,
-                rememberPassword: true,
-            });
-        }
-    }, []);
+        let disposed = false;
+
+        const bootstrap = async () => {
+            const remembered = getRememberedLoginCredentials();
+            if (remembered) {
+                loginForm.setFieldsValue({
+                    username: remembered.username,
+                    password: remembered.password,
+                    rememberPassword: true,
+                });
+            }
+
+            try {
+                const response = await fetchCurrentUser({
+                    ...storageOptions,
+                    silentUnauthorized: true,
+                });
+
+                if (response.success && response.data) {
+                    setAuthState('', response.data, {
+                        ...storageOptions,
+                        persistence: getAuthPersistence(storageOptions),
+                    });
+                    navigate(redirectPath, { replace: true });
+                    return;
+                }
+            } catch {
+                clearAuthState();
+            }
+
+            await loadCaptcha();
+            if (!disposed) {
+                setCheckingSession(false);
+            }
+        };
+
+        void bootstrap();
+
+        return () => {
+            disposed = true;
+        };
+    }, [loginForm, navigate, redirectPath, storageOptions]);
 
     useEffect(() => {
         if (!registerCountdown && !forgotCountdown) return;
@@ -185,15 +221,6 @@ export const AuthCenterAuthPage: React.FC<AuthCenterAuthPageProps> = ({
         }, 1000);
         return () => window.clearInterval(timer);
     }, [registerCountdown, forgotCountdown]);
-
-    const syncUser = async (token: string, persistence: 'local' | 'session') => {
-        try {
-            const response = await fetchCurrentUser({ ...storageOptions, persistence });
-            if (response.success && response.data) {
-                setAuthState(token, response.data, { ...storageOptions, persistence });
-            }
-        } catch {}
-    };
 
     const saveRemember = (values: LoginForm) => {
         if (values.rememberPassword) {
@@ -219,10 +246,9 @@ export const AuthCenterAuthPage: React.FC<AuthCenterAuthPageProps> = ({
             };
             setLoginLoading(true);
             const response = await login(payload);
-            if (!response.success || !response.data?.token) throw new Error(response.message || t('auth.loginFailed'));
-            setAuthState(response.data.token, response.data.user, { ...storageOptions, persistence });
+            if (!response.success || !response.data?.user) throw new Error(response.message || t('auth.loginFailed'));
+            setAuthState('', response.data.user, { ...storageOptions, persistence });
             saveRemember(values);
-            await syncUser(response.data.token, persistence);
             messageApi.success(t('auth.loginSuccess'));
             navigate(redirectPath, { replace: true });
         } catch (error) {
@@ -527,7 +553,18 @@ export const AuthCenterAuthPage: React.FC<AuthCenterAuthPageProps> = ({
                         >
                             {cardSubtitle}
                         </Typography.Paragraph>
-                        {mode === 'login' ? renderLogin() : mode === 'register' ? renderRegister() : renderForgot()}
+                        {checkingSession ? (
+                            <div
+                                style={{
+                                    minHeight: 280,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <Spin size="large" />
+                            </div>
+                        ) : mode === 'login' ? renderLogin() : mode === 'register' ? renderRegister() : renderForgot()}
                     </Card>
                 </div>
             </div>

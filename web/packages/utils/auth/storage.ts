@@ -6,7 +6,11 @@ import type {
 
 const DEFAULT_TOKEN_KEY = 'token';
 const DEFAULT_USER_KEY = 'authUser';
+const DEFAULT_PERSISTENCE_KEY = 'authPersistence';
 const DEFAULT_REMEMBERED_LOGIN_KEY = 'rememberedLoginCredentials';
+const DEFAULT_COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
+
+const hasDocument = () => typeof document !== 'undefined';
 
 const getBrowserStorage = (persistence: AuthPersistence) => {
     if (typeof window === 'undefined') {
@@ -21,23 +25,76 @@ const getBrowserStorage = (persistence: AuthPersistence) => {
 const resolveKeys = (options?: AuthStorageOptions) => ({
     tokenKey: options?.tokenKey || DEFAULT_TOKEN_KEY,
     userKey: options?.userKey || DEFAULT_USER_KEY,
+    persistenceKey: options?.persistenceKey || DEFAULT_PERSISTENCE_KEY,
 });
 
-const getStorageValue = (key: string): string | null => {
-    const localStorage = getBrowserStorage('local');
-    const sessionStorage = getBrowserStorage('session');
+const encodeCookieValue = (value: string) => encodeURIComponent(value);
 
-    return localStorage?.getItem(key) || sessionStorage?.getItem(key) || null;
+const decodeCookieValue = (value: string) => {
+    try {
+        return decodeURIComponent(value);
+    } catch {
+        return value;
+    }
 };
 
-const removeFromAllStorages = (key: string) => {
+export const getCookieValue = (key: string): string | null => {
+    if (!hasDocument()) {
+        return null;
+    }
+
+    const cookiePrefix = `${key}=`;
+    const cookie = document.cookie
+        .split(';')
+        .map((item) => item.trim())
+        .find((item) => item.startsWith(cookiePrefix));
+
+    if (!cookie) {
+        return null;
+    }
+
+    return decodeCookieValue(cookie.slice(cookiePrefix.length));
+};
+
+const setCookieValue = (
+    key: string,
+    value: string,
+    persistence: AuthPersistence,
+    maxAgeSeconds = DEFAULT_COOKIE_MAX_AGE_SECONDS,
+) => {
+    if (!hasDocument()) {
+        return;
+    }
+
+    const segments = [
+        `${key}=${encodeCookieValue(value)}`,
+        'Path=/',
+        'SameSite=Lax',
+    ];
+
+    if (persistence === 'local') {
+        segments.push(`Max-Age=${maxAgeSeconds}`);
+    }
+
+    document.cookie = segments.join('; ');
+};
+
+const clearCookieValue = (key: string) => {
+    if (!hasDocument()) {
+        return;
+    }
+
+    document.cookie = `${key}=; Path=/; SameSite=Lax; Max-Age=0`;
+};
+
+const removeFromLegacyStorages = (key: string) => {
     getBrowserStorage('local')?.removeItem(key);
     getBrowserStorage('session')?.removeItem(key);
 };
 
 export const getToken = (options?: AuthStorageOptions): string | null => {
     const { tokenKey } = resolveKeys(options);
-    return getStorageValue(tokenKey);
+    return getCookieValue(tokenKey);
 };
 
 export const hasToken = (options?: AuthStorageOptions): boolean =>
@@ -46,54 +103,51 @@ export const hasToken = (options?: AuthStorageOptions): boolean =>
 export const getAuthPersistence = (
     options?: AuthStorageOptions,
 ): AuthPersistence => {
-    const { tokenKey } = resolveKeys(options);
-    const localStorage = getBrowserStorage('local');
-    if (localStorage?.getItem(tokenKey)) {
-        return 'local';
-    }
-
-    const sessionStorage = getBrowserStorage('session');
-    if (sessionStorage?.getItem(tokenKey)) {
-        return 'session';
-    }
-
-    return options?.persistence || 'local';
+    const { persistenceKey } = resolveKeys(options);
+    const persistence = getCookieValue(persistenceKey);
+    return persistence === 'local' || persistence === 'session'
+        ? persistence
+        : options?.persistence || 'local';
 };
 
 export const setAuthState = <TUser>(
-    token: string,
+    _token: string | null | undefined,
     user: TUser | null | undefined,
     options?: AuthStorageOptions,
 ) => {
     const persistence = options?.persistence || 'local';
-    const storage = getBrowserStorage(persistence);
-    if (!storage) {
+    const { tokenKey, userKey, persistenceKey } = resolveKeys(options);
+
+    removeFromLegacyStorages(tokenKey);
+    clearCookieValue(tokenKey);
+
+    if (user) {
+        setCookieValue(userKey, JSON.stringify(user), persistence);
+        setCookieValue(persistenceKey, persistence, persistence);
         return;
     }
 
-    const { tokenKey, userKey } = resolveKeys(options);
-    removeFromAllStorages(tokenKey);
-    removeFromAllStorages(userKey);
-
-    storage.setItem(tokenKey, token);
-    if (user) {
-        storage.setItem(userKey, JSON.stringify(user));
-    } else {
-        storage.removeItem(userKey);
-    }
+    clearCookieValue(userKey);
+    clearCookieValue(persistenceKey);
 };
 
 export const clearAuthState = (options?: AuthStorageOptions) => {
-    const { tokenKey, userKey } = resolveKeys(options);
-    removeFromAllStorages(tokenKey);
-    removeFromAllStorages(userKey);
+    const { tokenKey, userKey, persistenceKey } = resolveKeys(options);
+
+    clearCookieValue(userKey);
+    clearCookieValue(persistenceKey);
+    clearCookieValue(tokenKey);
+
+    removeFromLegacyStorages(tokenKey);
+    removeFromLegacyStorages(userKey);
+    removeFromLegacyStorages(persistenceKey);
 };
 
 export const getStoredUser = <TUser = unknown>(
     options?: AuthStorageOptions,
 ): TUser | null => {
     const { userKey } = resolveKeys(options);
-    const value = getStorageValue(userKey);
+    const value = getCookieValue(userKey);
     if (!value) {
         return null;
     }
@@ -107,8 +161,7 @@ export const getStoredUser = <TUser = unknown>(
 
 export const getRememberedLoginCredentials =
     (): RememberedLoginCredentials | null => {
-        const localStorage = getBrowserStorage('local');
-        const value = localStorage?.getItem(DEFAULT_REMEMBERED_LOGIN_KEY);
+        const value = getCookieValue(DEFAULT_REMEMBERED_LOGIN_KEY);
         if (!value) {
             return null;
         }
@@ -123,17 +176,13 @@ export const getRememberedLoginCredentials =
 export const setRememberedLoginCredentials = (
     credentials: RememberedLoginCredentials,
 ) => {
-    const localStorage = getBrowserStorage('local');
-    if (!localStorage) {
-        return;
-    }
-
-    localStorage.setItem(
+    setCookieValue(
         DEFAULT_REMEMBERED_LOGIN_KEY,
         JSON.stringify(credentials),
+        'local',
     );
 };
 
 export const clearRememberedLoginCredentials = () => {
-    getBrowserStorage('local')?.removeItem(DEFAULT_REMEMBERED_LOGIN_KEY);
+    clearCookieValue(DEFAULT_REMEMBERED_LOGIN_KEY);
 };

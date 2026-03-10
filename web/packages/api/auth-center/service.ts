@@ -1,5 +1,4 @@
 import {
-    getToken,
     httpRequest,
     type AuthStorageOptions,
 } from '@governance/utils';
@@ -18,33 +17,14 @@ import type {
 
 const AUTH_API_PREFIX = '/api/auth-center';
 
-const normalizeToken = (token?: string | null) => {
-    if (!token) {
-        return null;
-    }
+export interface AuthCenterRequestOptions extends AuthStorageOptions {
+    silentUnauthorized?: boolean;
+}
 
-    return token.startsWith('Bearer ') ? token : `Bearer ${token}`;
-};
-
-const withAuthStorageOptions = (options?: AuthStorageOptions) => {
-    if (!options) {
-        return {};
-    }
-
-    const token = normalizeToken(getToken(options));
-    if (!token) {
-        return {
-            skipAuth: true as const,
-        };
-    }
-
-    return {
-        skipAuth: true as const,
-        customHeaders: {
-            Authorization: token,
-        },
-    };
-};
+const withCookieAuth = (options?: AuthCenterRequestOptions) => ({
+    skipAuth: true as const,
+    silentUnauthorized: options?.silentUnauthorized,
+});
 
 export const fetchCaptcha = async () =>
     httpRequest<ApiResponse<AuthCenterCaptchaData>>(
@@ -95,15 +75,15 @@ export const resetPassword = async (payload: AuthCenterResetPasswordPayload) =>
         data: payload,
     });
 
-export const fetchCurrentUser = async (options?: AuthStorageOptions) =>
+export const fetchCurrentUser = async (options?: AuthCenterRequestOptions) =>
     httpRequest<ApiResponse<AuthCenterUserProfile>>(`${AUTH_API_PREFIX}/me`, {
         method: 'GET',
-        ...withAuthStorageOptions(options),
+        ...withCookieAuth(options),
     });
 
 export const updateCurrentUserProfile = async (
     payload: AuthCenterProfileUpdatePayload,
-    options?: AuthStorageOptions,
+    options?: AuthCenterRequestOptions,
 ) =>
     httpRequest<ApiResponse<AuthCenterLoginData>>(
         `${AUTH_API_PREFIX}/me/profile`,
@@ -111,12 +91,12 @@ export const updateCurrentUserProfile = async (
             method: 'PUT',
             requireBody: true,
             data: payload,
-            ...withAuthStorageOptions(options),
+            ...withCookieAuth(options),
         },
     );
 
-export const logout = async (options?: AuthStorageOptions) =>
+export const logout = async (options?: AuthCenterRequestOptions) =>
     httpRequest<ApiResponse<null>>(`${AUTH_API_PREFIX}/logout`, {
         method: 'POST',
-        ...withAuthStorageOptions(options),
+        ...withCookieAuth(options),
     });

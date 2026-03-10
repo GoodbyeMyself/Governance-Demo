@@ -34,6 +34,11 @@ auth-center:
   # JWT 签名与过期时间配置。
   jwt-secret: ${AUTH_CENTER_JWT_SECRET:governance-auth-center-jwt-secret-please-change-it}
   jwt-expire-seconds: ${AUTH_CENTER_JWT_EXPIRE_SECONDS:86400}
+  cookie:
+    name: ${AUTH_CENTER_AUTH_COOKIE_NAME:governance_access_token}
+    path: ${AUTH_CENTER_AUTH_COOKIE_PATH:/}
+    secure: ${AUTH_CENTER_AUTH_COOKIE_SECURE:false}
+    same-site: ${AUTH_CENTER_AUTH_COOKIE_SAME_SITE:Lax}
   # 图形验证码与邮箱验证码基础参数。
   captcha-expire-seconds: ${AUTH_CENTER_CAPTCHA_EXPIRE_SECONDS:180}
   email-code-expire-seconds: ${AUTH_CENTER_EMAIL_CODE_EXPIRE_SECONDS:300}

@@ -1,4 +1,5 @@
 export const LOGIN_PATH = '/login';
+export const AUTH_BRIDGE_PATH = '/auth-bridge';
 export const HOME_PATH = '/home';
 export const PORTAL_DEMO_PATH = '/demo';
 export const DATA_SOURCE_PATH = '/data-source';
@@ -16,7 +17,7 @@ export const buildLoginRedirect = (pathname: string, search = '') => {
     return `${LOGIN_PATH}?redirect=${redirect}`;
 };
 
-type AppName = 'govern' | 'portal';
+export type AppName = 'govern' | 'portal';
 
 type RuntimeAppConfig = {
     apps?: {
@@ -42,6 +43,9 @@ const SIBLING_PORTS: Record<AppName, Record<string, string>> = {
 };
 
 const hasWindow = () => typeof window !== 'undefined';
+
+export const getSiblingAppName = (appName: AppName): AppName =>
+    appName === 'govern' ? 'portal' : 'govern';
 
 const getRuntimeAppConfig = (): RuntimeAppConfig | undefined => {
     if (!hasWindow()) {
@@ -115,3 +119,16 @@ export const buildGovernAppUrl = (pathname = HOME_PATH) =>
 
 export const buildPortalAppUrl = (pathname = HOME_PATH) =>
     buildAppUrl('portal', pathname);
+
+export const getAppOrigin = (appName: AppName) => {
+    const baseUrl = getAppBaseUrl(appName);
+    if (!baseUrl) {
+        return '';
+    }
+
+    try {
+        return new URL(baseUrl).origin;
+    } catch {
+        return '';
+    }
+};

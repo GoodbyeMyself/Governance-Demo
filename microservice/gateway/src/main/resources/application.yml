@@ -89,6 +89,10 @@ gateway:
     # 仅对 /api/ 前缀的业务接口启用网关鉴权，静态资源与聚合 Swagger 不走该规则。
     required-prefix: /api/
     internal-token: ${GATEWAY_TRUSTED_TOKEN:change-me-gateway-token}
+    cookie-name: ${AUTH_CENTER_AUTH_COOKIE_NAME:governance_access_token}
+    cookie-path: ${AUTH_CENTER_AUTH_COOKIE_PATH:/}
+    cookie-secure: ${AUTH_CENTER_AUTH_COOKIE_SECURE:false}
+    cookie-same-site: ${AUTH_CENTER_AUTH_COOKIE_SAME_SITE:Lax}
 
 management:
   endpoints:

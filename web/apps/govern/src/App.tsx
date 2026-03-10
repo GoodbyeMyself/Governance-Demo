@@ -8,7 +8,11 @@ import ProfilePage from '@/features/profile';
 import RoleManagementPage from '@/features/role-management';
 import UserManagementPage from '@/features/user-management';
 import { useI18n } from '@governance/i18n';
-import { GovernanceAppShell, RequireAdmin, RequireAuth } from '@governance/ui';
+import {
+    GovernanceAppShell,
+    RequireAdmin,
+    RequireAuth,
+} from '@governance/ui';
 import {
     ACCESS_PATH,
     DATA_SOURCE_PATH,
@@ -18,7 +22,6 @@ import {
     PROFILE_PATH,
     ROLE_MANAGEMENT_PATH,
     USER_MANAGEMENT_PATH,
-    hasToken,
 } from '@governance/utils';
 import { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
@@ -74,12 +77,7 @@ const App: React.FC = () => {
 
             <Route
                 path="*"
-                element={
-                    <Navigate
-                        to={hasToken() ? HOME_PATH : LOGIN_PATH}
-                        replace
-                    />
-                }
+                element={<Navigate to={HOME_PATH} replace />}
             />
         </Routes>
     );

@@ -66,13 +66,20 @@ function Invoke-Docker {
 
 function Invoke-DockerExec {
     param([string]$Command)
-    Invoke-Docker @('exec', $ContainerName, 'bash', '-lc', $Command)
+    # Avoid CRLF leaking into bash commands when running from Windows PowerShell.
+    $normalizedCommand = $Command -replace "`r", ''
+    Invoke-Docker @('exec', $ContainerName, 'bash', '-lc', $normalizedCommand)
 }
 
 function Test-DockerImage {
     param([string]$Image)
-    & docker image inspect $Image *> $null
-    return $LASTEXITCODE -eq 0
+    try {
+        & docker image inspect $Image *> $null
+        return $LASTEXITCODE -eq 0
+    }
+    catch {
+        return $false
+    }
 }
 
 function Ensure-DockerImage {
@@ -206,7 +213,8 @@ function Write-Utf8NoBom {
     )
 
     $encoding = New-Object System.Text.UTF8Encoding($false)
-    [System.IO.File]::WriteAllText($Path, $Content, $encoding)
+    $normalizedContent = $Content -replace "`r`n", "`n"
+    [System.IO.File]::WriteAllText($Path, $normalizedContent, $encoding)
 }
 
 $scriptDir = Split-Path -Parent $PSCommandPath
@@ -358,6 +366,9 @@ export MAIL_SMTP_STARTTLS_ENABLE='false'
 "@
     Write-Utf8NoBom -Path $runtimeEnvPath -Content $runtimeEnv
     Invoke-Docker @('cp', $runtimeEnvPath, "${ContainerName}:/opt/governance-demo/run/runtime.env")
+
+    Write-Step 'Normalize line endings for shell/runtime/config files'
+    Invoke-DockerExec "sed -i 's/\r$//' /opt/governance-demo/run/*.sh /opt/governance-demo/run/*.py /opt/governance-demo/run/runtime.env /opt/governance-demo/nacos-config/*.yaml /etc/nginx/conf.d/governance-demo.conf"
 
     Write-Step 'Initialize MySQL schemas and users'
     $initSqlPath = Join-Path $tmpRoot 'init-mysql.sql'

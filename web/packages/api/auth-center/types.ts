@@ -62,8 +62,8 @@ export interface AuthCenterProfileUpdatePayload {
 }
 
 export interface AuthCenterLoginData {
-    token: string;
-    tokenType: string;
+    token?: string | null;
+    tokenType?: string | null;
     expiresIn: number;
     user: AuthCenterUserProfile;
 }

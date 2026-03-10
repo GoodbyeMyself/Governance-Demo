@@ -9,11 +9,13 @@ import com.governance.authcenter.dto.AuthCenterResetPasswordRequest;
 import com.governance.authcenter.dto.AuthCenterSendEmailCodeRequest;
 import com.governance.authcenter.dto.AuthCenterSendEmailCodeResponse;
 import com.governance.authcenter.dto.AuthCenterUserProfileResponse;
+import com.governance.authcenter.security.AuthCenterCookieService;
 import com.governance.authcenter.service.AuthCenterService;
 import com.governance.shared.api.ApiResponse;
 import com.governance.shared.i18n.MessageResolver;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthCenterController {
 
     private final AuthCenterService authCenterService;
+    private final AuthCenterCookieService authCenterCookieService;
     private final MessageResolver messageResolver;
 
     /**
@@ -94,11 +97,21 @@ public class AuthCenterController {
     @PostMapping("/login")
     @Operation(summary = "用户登录", description = "校验用户名、密码和图形验证码并签发访问令牌")
     public ApiResponse<AuthCenterLoginResponse> login(
-            @Valid @RequestBody AuthCenterLoginRequest request
+            @Valid @RequestBody AuthCenterLoginRequest request,
+            HttpServletResponse response
     ) {
+        AuthCenterLoginResponse loginResponse = authCenterService.login(request);
+        authCenterCookieService.writeAuthCookie(
+                response,
+                loginResponse.getToken(),
+                loginResponse.getExpiresIn()
+        );
+        loginResponse.setToken(null);
+        loginResponse.setTokenType(null);
+
         return ApiResponse.success(
                 messageResolver.getMessage("auth.response.login.success"),
-                authCenterService.login(request)
+                loginResponse
         );
     }
 
@@ -137,11 +150,21 @@ public class AuthCenterController {
     @PutMapping("/me/profile")
     @Operation(summary = "更新当前用户资料", description = "修改用户名、邮箱和手机号，并返回新的登录态")
     public ApiResponse<AuthCenterLoginResponse> updateCurrentUserProfile(
-            @Valid @RequestBody AuthCenterProfileUpdateRequest request
+            @Valid @RequestBody AuthCenterProfileUpdateRequest request,
+            HttpServletResponse response
     ) {
+        AuthCenterLoginResponse loginResponse = authCenterService.updateCurrentUserProfile(request);
+        authCenterCookieService.writeAuthCookie(
+                response,
+                loginResponse.getToken(),
+                loginResponse.getExpiresIn()
+        );
+        loginResponse.setToken(null);
+        loginResponse.setTokenType(null);
+
         return ApiResponse.success(
                 messageResolver.getMessage("auth.response.profile.updated"),
-                authCenterService.updateCurrentUserProfile(request)
+                loginResponse
         );
     }
 
@@ -152,8 +175,9 @@ public class AuthCenterController {
      */
     @PostMapping("/logout")
     @Operation(summary = "退出登录", description = "当前实现为无状态令牌模式，仅返回退出结果")
-    public ApiResponse<Void> logout() {
+    public ApiResponse<Void> logout(HttpServletResponse response) {
         authCenterService.logout();
+        authCenterCookieService.clearAuthCookie(response);
         return ApiResponse.success(messageResolver.getMessage("auth.response.logout.success"), null);
     }
 }
