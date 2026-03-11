@@ -6,15 +6,10 @@
   "scripts": {
     "dev": "pnpm --filter @governance/govern dev",
     "dev:govern": "pnpm --filter @governance/govern dev",
-    "dev:web": "pnpm --filter @governance/govern dev",
     "dev:portal": "pnpm --filter @governance/portal dev",
     "build": "pnpm -r --if-present build",
     "build:govern": "pnpm --filter @governance/govern build",
-    "build:web": "pnpm --filter @governance/govern build",
     "build:portal": "pnpm --filter @governance/portal build",
-    "preview:govern": "pnpm --filter @governance/govern preview",
-    "preview:web": "pnpm --filter @governance/govern preview",
-    "preview:portal": "pnpm --filter @governance/portal preview",
     "format": "pnpm -r --if-present format"
   },
   "devDependencies": {
