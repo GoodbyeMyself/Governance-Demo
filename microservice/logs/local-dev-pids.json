@@ -2,46 +2,64 @@
     {
         "name":  "bms-service",
         "port":  8082,
-        "pid":  28916,
-        "reused":  false,
+        "pid":  null,
+        "reused":  true,
         "healthUrl":  "http://localhost:8082/actuator/health",
-        "outLog":  "E:\\Governance-Demo\\microservice\\logs\\bms-service.out.log",
-        "errLog":  "E:\\Governance-Demo\\microservice\\logs\\bms-service.err.log"
+        "outLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\bms-service.out.log",
+        "errLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\bms-service.err.log"
     },
     {
         "name":  "data-source",
         "port":  8083,
-        "pid":  23048,
-        "reused":  false,
+        "pid":  null,
+        "reused":  true,
         "healthUrl":  "http://localhost:8083/actuator/health",
-        "outLog":  "E:\\Governance-Demo\\microservice\\logs\\data-source.out.log",
-        "errLog":  "E:\\Governance-Demo\\microservice\\logs\\data-source.err.log"
+        "outLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\data-source.out.log",
+        "errLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\data-source.err.log"
     },
     {
         "name":  "data-metadata",
         "port":  8084,
-        "pid":  16780,
-        "reused":  false,
+        "pid":  null,
+        "reused":  true,
         "healthUrl":  "http://localhost:8084/actuator/health",
-        "outLog":  "E:\\Governance-Demo\\microservice\\logs\\data-metadata.out.log",
-        "errLog":  "E:\\Governance-Demo\\microservice\\logs\\data-metadata.err.log"
+        "outLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\data-metadata.out.log",
+        "errLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\data-metadata.err.log"
+    },
+    {
+        "name":  "iot-device",
+        "port":  8085,
+        "pid":  null,
+        "reused":  true,
+        "healthUrl":  "http://localhost:8085/actuator/health",
+        "outLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\iot-device.out.log",
+        "errLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\iot-device.err.log"
+    },
+    {
+        "name":  "iot-collection",
+        "port":  8086,
+        "pid":  null,
+        "reused":  true,
+        "healthUrl":  "http://localhost:8086/actuator/health",
+        "outLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\iot-collection.out.log",
+        "errLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\iot-collection.err.log"
     },
     {
         "name":  "auth-center",
         "port":  8081,
-        "pid":  24456,
-        "reused":  false,
+        "pid":  null,
+        "reused":  true,
         "healthUrl":  "http://localhost:8081/actuator/health",
-        "outLog":  "E:\\Governance-Demo\\microservice\\logs\\auth-center.out.log",
-        "errLog":  "E:\\Governance-Demo\\microservice\\logs\\auth-center.err.log"
+        "outLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\auth-center.out.log",
+        "errLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\auth-center.err.log"
     },
     {
         "name":  "gateway",
         "port":  8080,
-        "pid":  24772,
-        "reused":  false,
+        "pid":  null,
+        "reused":  true,
         "healthUrl":  "http://localhost:8080/actuator/health",
-        "outLog":  "E:\\Governance-Demo\\microservice\\logs\\gateway.out.log",
-        "errLog":  "E:\\Governance-Demo\\microservice\\logs\\gateway.err.log"
+        "outLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\gateway.out.log",
+        "errLog":  "D:\\Git\\Governance-Demo\\microservice\\logs\\gateway.err.log"
     }
 ]

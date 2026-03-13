@@ -6,6 +6,8 @@ const navigationMessages: LocaleMessages = {
     'nav.goToGovern': 'Go to Govern',
     'nav.goToPortal': 'Go to Portal',
     'nav.home': 'Workbench',
+    'nav.iotCollection': 'IoT Collection',
+    'nav.iotDevice': 'IoT Devices',
     'nav.logout': 'Logout',
     'nav.metadataCollection': 'Metadata Collection',
     'nav.profile': 'Profile',

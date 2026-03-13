@@ -31,6 +31,14 @@ spring:
           uri: lb://data-metadata
           predicates:
             - Path=/api/data-metadata/**
+        - id: iot-device
+          uri: lb://iot-device
+          predicates:
+            - Path=/api/iot-device/**
+        - id: iot-collection
+          uri: lb://iot-collection
+          predicates:
+            - Path=/api/iot-collection/**
         - id: bms-service
           uri: lb://bms-service
           predicates:
@@ -51,6 +59,18 @@ spring:
           uri: lb://data-metadata
           predicates:
             - Path=/metadata/swagger-ui.html,/metadata/swagger-ui/**,/metadata/v3/api-docs,/metadata/v3/api-docs/**
+          filters:
+            - StripPrefix=1
+        - id: iot-device-swagger
+          uri: lb://iot-device
+          predicates:
+            - Path=/iot-device/swagger-ui.html,/iot-device/swagger-ui/**,/iot-device/v3/api-docs,/iot-device/v3/api-docs/**
+          filters:
+            - StripPrefix=1
+        - id: iot-collection-swagger
+          uri: lb://iot-collection
+          predicates:
+            - Path=/iot-collection/swagger-ui.html,/iot-collection/swagger-ui/**,/iot-collection/v3/api-docs,/iot-collection/v3/api-docs/**
           filters:
             - StripPrefix=1
         - id: bms-swagger
@@ -77,8 +97,10 @@ springdoc:
         url: /bms/v3/api-docs
       - name: Data Source Service
         url: /source/v3/api-docs
-      - name: Data Metadata Service
-        url: /metadata/v3/api-docs
+      - name: IoT Device Service
+        url: /iot-device/v3/api-docs
+      - name: IoT Collection Service
+        url: /iot-collection/v3/api-docs
 
 auth-center:
   # 网关解析 JWT 时需要与认证中心保持一致的签名密钥。

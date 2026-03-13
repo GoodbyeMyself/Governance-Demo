@@ -16,6 +16,8 @@ $services = @(
     @{ Name = "bms-service"; Dir = "service/bms-service"; Port = 8082 },
     @{ Name = "data-source"; Dir = "service/data-source"; Port = 8083 },
     @{ Name = "data-metadata"; Dir = "service/data-metadata"; Port = 8084 },
+    @{ Name = "iot-device"; Dir = "service/iot-device"; Port = 8085 },
+    @{ Name = "iot-collection"; Dir = "service/iot-collection"; Port = 8086 },
     @{ Name = "auth-center"; Dir = "service/auth-center"; Port = 8081 },
     @{ Name = "gateway"; Dir = "gateway"; Port = 8080 }
 )

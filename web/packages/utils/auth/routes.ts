@@ -3,11 +3,19 @@ export const AUTH_BRIDGE_PATH = '/auth-bridge';
 export const HOME_PATH = '/home';
 export const PORTAL_DEMO_PATH = '/demo';
 export const DATA_SOURCE_PATH = '/data-source';
+export const IOT_DEVICE_PATH = '/iot-device';
+export const IOT_COLLECTION_PATH = '/iot-collection';
 export const METADATA_COLLECTION_PATH = '/metadata-collection';
 export const USER_MANAGEMENT_PATH = '/user-management';
 export const ROLE_MANAGEMENT_PATH = '/role-management';
 export const PROFILE_PATH = '/profile';
 export const ACCESS_PATH = '/access';
+
+export const buildIotDeviceDetailPath = (id: number | string) =>
+    `${IOT_DEVICE_PATH}/${id}`;
+
+export const buildIotCollectionDetailPath = (id: number | string) =>
+    `${IOT_COLLECTION_PATH}/${id}`;
 
 export const buildMetadataCollectionDetailPath = (id: number | string) =>
     `${METADATA_COLLECTION_PATH}/${id}`;

@@ -1,0 +1,51 @@
+# IoT 采集服务配置。
+# 负责采集任务管理，并依赖 IoT 设备服务查询设备主数据。
+server:
+  port: ${SERVER_PORT:8086}
+
+spring:
+  application:
+    name: iot-collection
+  config:
+    import: optional:nacos:${spring.application.name}.yaml
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/iot_collection_db?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:mayunlong}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: always
+      encoding: UTF-8
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+      config:
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+        file-extension: yaml
+
+app:
+  cors:
+    allowed-origin-patterns: ${APP_CORS_ALLOWED_ORIGIN_PATTERNS:http://localhost:*,http://127.0.0.1:*}
+
+integration:
+  iot-device-service:
+    name: ${IOT_DEVICE_SERVICE_NAME:iot-device}
+    path: ${IOT_DEVICE_SERVICE_PATH:/internal/iot-devices}
+
+security:
+  gateway:
+    trusted-token: ${GATEWAY_TRUSTED_TOKEN:change-me-gateway-token}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

@@ -1,0 +1,17 @@
+server:
+  port: 8086
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/iot_collection_db?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:mayunlong}
+
+integration:
+  iot-device-service:
+    name: ${IOT_DEVICE_SERVICE_NAME:iot-device}
+    path: ${IOT_DEVICE_SERVICE_PATH:/internal/iot-devices}
+
+security:
+  gateway:
+    trusted-token: ${GATEWAY_TRUSTED_TOKEN:change-me-gateway-token}

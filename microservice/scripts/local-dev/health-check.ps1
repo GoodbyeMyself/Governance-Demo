@@ -3,7 +3,9 @@ $services = @(
     @{ Name = "auth-center"; Port = 8081 },
     @{ Name = "bms-service"; Port = 8082 },
     @{ Name = "data-source"; Port = 8083 },
-    @{ Name = "data-metadata"; Port = 8084 }
+    @{ Name = "data-metadata"; Port = 8084 },
+    @{ Name = "iot-device"; Port = 8085 },
+    @{ Name = "iot-collection"; Port = 8086 }
 )
 
 $results = @()

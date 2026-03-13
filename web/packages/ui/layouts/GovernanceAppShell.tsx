@@ -6,6 +6,8 @@ import {
     ACCESS_PATH,
     DATA_SOURCE_PATH,
     HOME_PATH,
+    IOT_COLLECTION_PATH,
+    IOT_DEVICE_PATH,
     LOGIN_PATH,
     METADATA_COLLECTION_PATH,
     PROFILE_PATH,
@@ -26,6 +28,8 @@ const { Header, Content, Sider } = Layout;
 const NAV_PATHS = [
     HOME_PATH,
     DATA_SOURCE_PATH,
+    IOT_DEVICE_PATH,
+    IOT_COLLECTION_PATH,
     METADATA_COLLECTION_PATH,
     USER_MANAGEMENT_PATH,
     ROLE_MANAGEMENT_PATH,
@@ -51,6 +55,8 @@ export const GovernanceAppShell: React.FC = () => {
         const items: NonNullable<MenuProps['items']> = [
             { key: HOME_PATH, label: t('nav.home') },
             { key: DATA_SOURCE_PATH, label: t('nav.dataSource') },
+            { key: IOT_DEVICE_PATH, label: t('nav.iotDevice') },
+            { key: IOT_COLLECTION_PATH, label: t('nav.iotCollection') },
             {
                 key: METADATA_COLLECTION_PATH,
                 label: t('nav.metadataCollection'),

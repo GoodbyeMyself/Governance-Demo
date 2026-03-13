@@ -7,6 +7,7 @@ import authMessages from './modules/auth';
 import dashboardMessages from './modules/dashboard';
 import dataMetadataMessages from './modules/data-metadata';
 import dataSourceMessages from './modules/data-source';
+import iotMessages from './modules/iot';
 import portalDemoMessages from './modules/portal-demo';
 import profileMessages from './modules/profile';
 import roleManagementMessages from './modules/role-management';
@@ -26,6 +27,7 @@ const zhCN: LocaleMessages = {
     ...authMessages,
     ...dashboardMessages,
     ...dataSourceMessages,
+    ...iotMessages,
     ...dataMetadataMessages,
     ...portalDemoMessages,
     ...profileMessages,

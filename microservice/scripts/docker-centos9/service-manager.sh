@@ -33,6 +33,8 @@ Services:
   bms-service
   data-source
   data-metadata
+  iot-device
+  iot-collection
   all
 EOF
 }
@@ -42,6 +44,8 @@ list_services() {
 bms-service
 data-source
 data-metadata
+iot-device
+iot-collection
 auth-center
 gateway
 EOF
@@ -50,7 +54,7 @@ EOF
 service_exists() {
   local name="$1"
   case "$name" in
-    bms-service|data-source|data-metadata|auth-center|gateway)
+    bms-service|data-source|data-metadata|iot-device|iot-collection|auth-center|gateway)
       return 0
       ;;
     *)
@@ -65,6 +69,8 @@ jar_path() {
     bms-service) echo "${JAR_DIR}/bms-service.jar" ;;
     data-source) echo "${JAR_DIR}/data-source.jar" ;;
     data-metadata) echo "${JAR_DIR}/data-metadata.jar" ;;
+    iot-device) echo "${JAR_DIR}/iot-device.jar" ;;
+    iot-collection) echo "${JAR_DIR}/iot-collection.jar" ;;
     auth-center) echo "${JAR_DIR}/auth-center.jar" ;;
     gateway) echo "${JAR_DIR}/gateway.jar" ;;
     *)

@@ -225,13 +225,15 @@ $tmpRoot = Join-Path $repoRoot '.tmp\docker-centos9'
 $nacosTempDir = Join-Path $tmpRoot 'nacos'
 $runtimeEnvPath = Join-Path $tmpRoot 'runtime.env'
 $seedContainerName = "$ContainerName-nacos-seed"
-$hostPorts = @(12222, 23306, 19001, 19002, 18080, 18081, 18082, 18083, 18084, 18848, 19848, 19849)
+$hostPorts = @(12222, 23306, 19001, 19002, 18080, 18081, 18082, 18083, 18084, 18085, 18086, 18848, 19848, 19849)
 
 $gatewayJar = Join-Path $microserviceDir 'gateway\target\gateway-0.0.1-SNAPSHOT.jar'
 $authJar = Join-Path $microserviceDir 'service\auth-center\target\auth-center-0.0.1-SNAPSHOT.jar'
 $bmsJar = Join-Path $microserviceDir 'service\bms-service\target\bms-service-0.0.1-SNAPSHOT.jar'
 $dataSourceJar = Join-Path $microserviceDir 'service\data-source\target\data-source-0.0.1-SNAPSHOT.jar'
 $dataMetadataJar = Join-Path $microserviceDir 'service\data-metadata\target\data-metadata-0.0.1-SNAPSHOT.jar'
+$iotDeviceJar = Join-Path $microserviceDir 'service\iot-device\target\iot-device-0.0.1-SNAPSHOT.jar'
+$iotCollectionJar = Join-Path $microserviceDir 'service\iot-collection\target\iot-collection-0.0.1-SNAPSHOT.jar'
 $governDistDir = Join-Path $webDir 'apps\govern\dist'
 $portalDistDir = Join-Path $webDir 'apps\portal\dist'
 
@@ -250,7 +252,7 @@ try {
         Invoke-External -FilePath 'pnpm' -Arguments @('build') -WorkingDirectory $webDir
     }
 
-    foreach ($artifact in @($gatewayJar, $authJar, $bmsJar, $dataSourceJar, $dataMetadataJar)) {
+    foreach ($artifact in @($gatewayJar, $authJar, $bmsJar, $dataSourceJar, $dataMetadataJar, $iotDeviceJar, $iotCollectionJar)) {
         if (-not (Test-Path $artifact)) {
             throw "Missing artifact: $artifact"
         }
@@ -296,6 +298,8 @@ try {
         '-p', '18082:8082',
         '-p', '18083:8083',
         '-p', '18084:8084',
+        '-p', '18085:8085',
+        '-p', '18086:8086',
         '-p', '18848:8848',
         '-p', '19848:9848',
         '-p', '19849:9849',
@@ -332,6 +336,8 @@ pkill -x sshd >/dev/null 2>&1 || true
     Invoke-Docker @('cp', $bmsJar, "${ContainerName}:/opt/governance-demo/jars/bms-service.jar")
     Invoke-Docker @('cp', $dataSourceJar, "${ContainerName}:/opt/governance-demo/jars/data-source.jar")
     Invoke-Docker @('cp', $dataMetadataJar, "${ContainerName}:/opt/governance-demo/jars/data-metadata.jar")
+    Invoke-Docker @('cp', $iotDeviceJar, "${ContainerName}:/opt/governance-demo/jars/iot-device.jar")
+    Invoke-Docker @('cp', $iotCollectionJar, "${ContainerName}:/opt/governance-demo/jars/iot-collection.jar")
     Invoke-Docker @('cp', (Join-Path $governDistDir '.'), "${ContainerName}:/opt/governance-demo/govern")
     Invoke-Docker @('cp', (Join-Path $portalDistDir '.'), "${ContainerName}:/opt/governance-demo/portal")
     Invoke-Docker @('cp', (Join-Path $microserviceDir 'nacos-config\.'), "${ContainerName}:/opt/governance-demo/nacos-config")

@@ -2,6 +2,10 @@ import AccessPage from '@/features/access';
 import LoginPage from '@/features/auth/login';
 import DataSourcePage from '@/features/data-source';
 import HomePage from '@/features/home';
+import IotCollectionPage from '@/features/iot-collection';
+import IotCollectionDetailPage from '@/features/iot-collection/detail';
+import IotDevicePage from '@/features/iot-device';
+import IotDeviceDetailPage from '@/features/iot-device/detail';
 import MetadataCollectionPage from '@/features/metadata-collection';
 import MetadataCollectionDetailPage from '@/features/metadata-collection/detail';
 import ProfilePage from '@/features/profile';
@@ -17,6 +21,8 @@ import {
     ACCESS_PATH,
     DATA_SOURCE_PATH,
     HOME_PATH,
+    IOT_COLLECTION_PATH,
+    IOT_DEVICE_PATH,
     LOGIN_PATH,
     METADATA_COLLECTION_PATH,
     PROFILE_PATH,
@@ -47,6 +53,10 @@ const App: React.FC = () => {
                 <Route path="/" element={<Navigate to={HOME_PATH} replace />} />
                 <Route path={HOME_PATH} element={<HomePage />} />
                 <Route path={DATA_SOURCE_PATH} element={<DataSourcePage />} />
+                <Route path={IOT_DEVICE_PATH} element={<IotDevicePage />} />
+                <Route path={`${IOT_DEVICE_PATH}/:id`} element={<IotDeviceDetailPage />} />
+                <Route path={IOT_COLLECTION_PATH} element={<IotCollectionPage />} />
+                <Route path={`${IOT_COLLECTION_PATH}/:id`} element={<IotCollectionDetailPage />} />
                 <Route
                     path={METADATA_COLLECTION_PATH}
                     element={<MetadataCollectionPage />}

@@ -4,7 +4,10 @@
       "Bash(docker:*)",
       "Bash(mvn:*)",
       "Bash(java:*)",
-      "Bash(powershell:*)"
+      "Bash(powershell:*)",
+      "Bash(curl:*)",
+      "Bash(pnpm build:*)",
+      "Bash(git:*)"
     ]
   }
 }

@@ -139,7 +139,9 @@ if ($updateBackend) {
         @{ Local = 'service\auth-center\target\auth-center-0.0.1-SNAPSHOT.jar'; Remote = '/opt/governance-demo/jars/auth-center.jar' },
         @{ Local = 'service\bms-service\target\bms-service-0.0.1-SNAPSHOT.jar'; Remote = '/opt/governance-demo/jars/bms-service.jar' },
         @{ Local = 'service\data-source\target\data-source-0.0.1-SNAPSHOT.jar'; Remote = '/opt/governance-demo/jars/data-source.jar' },
-        @{ Local = 'service\data-metadata\target\data-metadata-0.0.1-SNAPSHOT.jar'; Remote = '/opt/governance-demo/jars/data-metadata.jar' }
+        @{ Local = 'service\data-metadata\target\data-metadata-0.0.1-SNAPSHOT.jar'; Remote = '/opt/governance-demo/jars/data-metadata.jar' },
+        @{ Local = 'service\iot-device\target\iot-device-0.0.1-SNAPSHOT.jar'; Remote = '/opt/governance-demo/jars/iot-device.jar' },
+        @{ Local = 'service\iot-collection\target\iot-collection-0.0.1-SNAPSHOT.jar'; Remote = '/opt/governance-demo/jars/iot-collection.jar' }
     )
 
     foreach ($jar in $jarMappings) {
