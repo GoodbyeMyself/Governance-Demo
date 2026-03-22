@@ -86,6 +86,98 @@ const agreementRule = (messageText: string) => ({
     },
 });
 
+const PRIMARY_BUTTON_STYLE = {
+    height: 44,
+    borderRadius: 10,
+    background: '#161616',
+    borderColor: '#161616',
+    boxShadow: 'inset 0 1px 0 rgba(255,255,255,.08)',
+    fontWeight: 600,
+} as const;
+
+const SECONDARY_BUTTON_STYLE = {
+    color: '#161616',
+    borderColor: '#d9d9d9',
+    background: '#ffffff',
+} as const;
+
+const LINK_STYLE = {
+    color: '#161616',
+    fontWeight: 500,
+} as const;
+
+const LOGO_ICON = (
+    <svg
+        xmlns='http://www.w3.org/2000/svg'
+        viewBox='0 0 24 24'
+        fill='none'
+        stroke='currentColor'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        className='mr-2 h-6 w-6'
+        style={{ width: 24, height: 24, marginRight: 8, flexShrink: 0 }}
+    >
+        <path d='M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3' />
+    </svg>
+);
+
+interface InteractiveGridPatternProps {
+    width?: number;
+    height?: number;
+    squares?: [number, number];
+    style?: React.CSSProperties;
+}
+
+const InteractiveGridPattern: React.FC<InteractiveGridPatternProps> = ({
+    width = 40,
+    height = 40,
+    squares = [24, 24],
+    style,
+}) => {
+    const [horizontal, vertical] = squares;
+    const [hoveredSquare, setHoveredSquare] = useState<number | null>(null);
+
+    return (
+        <svg
+            width={width * horizontal}
+            height={height * vertical}
+            style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                border: '1px solid rgba(156,163,175,.3)',
+                ...style,
+            }}
+        >
+            {Array.from({ length: horizontal * vertical }).map((_, index) => {
+                const x = (index % horizontal) * width;
+                const y = Math.floor(index / horizontal) * height;
+                const isHovered = hoveredSquare === index;
+
+                return (
+                    <rect
+                        key={index}
+                        x={x}
+                        y={y}
+                        width={width}
+                        height={height}
+                        style={{
+                            stroke: 'rgba(156,163,175,.3)',
+                            fill: isHovered ? 'rgba(209,213,219,.3)' : 'transparent',
+                            transitionProperty: 'all',
+                            transitionDuration: isHovered ? '100ms' : '1000ms',
+                            transitionTimingFunction: 'ease-in-out',
+                        }}
+                        onMouseEnter={() => setHoveredSquare(index)}
+                        onMouseLeave={() => setHoveredSquare(null)}
+                    />
+                );
+            })}
+        </svg>
+    );
+};
 export const AuthCenterAuthPage: React.FC<AuthCenterAuthPageProps> = ({
     title,
     subtitle,
@@ -123,21 +215,12 @@ export const AuthCenterAuthPage: React.FC<AuthCenterAuthPageProps> = ({
         gridTemplateColumns: screens.md ? '1fr 1fr' : '1fr',
         gap: 12,
     } as const;
-    const leftPanelBackground =
-        "linear-gradient(180deg, rgba(15,23,42,.12), rgba(15,23,42,.36)), url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 900'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%230b1220'/%3E%3Cstop offset='1' stop-color='%231d4ed8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='900' fill='url(%23g)'/%3E%3Ccircle cx='190' cy='180' r='180' fill='rgba(96,165,250,.18)'/%3E%3Ccircle cx='980' cy='180' r='220' fill='rgba(59,130,246,.16)'/%3E%3Ccircle cx='960' cy='720' r='260' fill='rgba(37,99,235,.22)'/%3E%3Cpath d='M0 680 C220 560 360 760 600 660 C820 560 960 360 1200 470 L1200 900 L0 900 Z' fill='rgba(255,255,255,.1)'/%3E%3Cpath d='M0 760 C180 690 320 810 520 730 C760 635 900 495 1200 600 L1200 900 L0 900 Z' fill='rgba(255,255,255,.08)'/%3E%3C/svg%3E\")";
-    const surfaceStyle = {
-        background: 'rgba(255,255,255,.96)',
-        border: '1px solid rgba(255,255,255,.58)',
-        boxShadow:
-            '0 28px 64px rgba(15,23,42,.18), 0 8px 24px rgba(15,23,42,.08)',
-        backdropFilter: 'blur(16px)',
+    const authSurfaceStyle = {
+        background: '#f7f7f5',
     } as const;
     const languageBoxStyle = {
         padding: '8px 10px',
         borderRadius: 999,
-        background: 'rgba(255,255,255,.18)',
-        border: '1px solid rgba(255,255,255,.18)',
-        backdropFilter: 'blur(12px)',
     } as const;
 
     const usernameRules = [
@@ -344,22 +427,59 @@ export const AuthCenterAuthPage: React.FC<AuthCenterAuthPageProps> = ({
     };
 
     const agreementLabel = (
-        <Typography.Text style={{ fontSize: 13 }}>
+        <Typography.Text style={{ fontSize: 13, color: '#525252' }}>
             {t('auth.agreementPrefix')}
-            <Typography.Link onClick={() => setAgreementOpen(true)}>{t('auth.agreementLink')}</Typography.Link>
+            <Typography.Link style={LINK_STYLE} onClick={() => setAgreementOpen(true)}>
+                {t('auth.agreementLink')}
+            </Typography.Link>
             {t('auth.agreementAnd')}
-            <Typography.Link onClick={() => setAgreementOpen(true)}>{t('auth.privacyLink')}</Typography.Link>
+            <Typography.Link style={LINK_STYLE} onClick={() => setAgreementOpen(true)}>
+                {t('auth.privacyLink')}
+            </Typography.Link>
         </Typography.Text>
     );
 
     const captchaInput = (name: string) => (
         <Space.Compact style={{ width: '100%' }}>
             <Form.Item name={name} noStyle rules={[{ required: true, message: t('auth.captchaRequired') }]}>
-                <Input size={controlSize} maxLength={6} prefix={<SafetyCertificateOutlined />} placeholder={t('auth.captchaPlaceholder')} />
+                <Input
+                    size={controlSize}
+                    maxLength={6}
+                    prefix={<SafetyCertificateOutlined style={{ color: '#525252' }} />}
+                    placeholder={t('auth.captchaPlaceholder')}
+                />
             </Form.Item>
-            <Button size={controlSize} style={{ width: 132 }} onClick={() => void loadCaptcha()} icon={<ReloadOutlined />}>
-                {captcha ? <img src={captcha.imageData} alt="captcha" style={{ width: 98, height: 32 }} /> : t('auth.captcha')}
-            </Button>
+            <button
+                type='button'
+                style={{
+                    width: 132,
+                    height: 32,
+                    padding: 0,
+                    margin: 0,
+                    border: '1px solid #d9d9d9',
+                    borderLeft: 'none',
+                    background: '#ffffff',
+                    overflow: 'hidden',
+                    borderRadius: 0,
+                    cursor: 'pointer',
+                    display: 'block',
+                    lineHeight: 0,
+                    flexShrink: 0,
+                }}
+                onClick={() => void loadCaptcha()}
+            >
+                {captcha ? (
+                    <img
+                        src={captcha.imageData}
+                        alt='captcha'
+                        style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover', cursor: 'pointer' }}
+                    />
+                ) : (
+                    <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', lineHeight: 1.2 }}>
+                        {t('auth.captcha')}
+                    </span>
+                )}
+            </button>
         </Space.Compact>
     );
 
@@ -371,188 +491,214 @@ export const AuthCenterAuthPage: React.FC<AuthCenterAuthPageProps> = ({
     });
 
     const renderLogin = () => (
-        <Form form={loginForm} layout="vertical" requiredMark={false}>
-            <Form.Item name="username" label={t('auth.username')} rules={[{ required: true, message: t('auth.usernameRequired') }]} style={formStyle}>
-                <Input size={controlSize} prefix={<UserOutlined />} placeholder={t('auth.usernamePlaceholder')} />
+        <Form form={loginForm} layout='vertical' requiredMark={false}>
+            <Form.Item name='username' label={t('auth.username')} rules={[{ required: true, message: t('auth.usernameRequired') }]} style={formStyle}>
+                <Input size={controlSize} prefix={<UserOutlined style={{ color: '#525252' }} />} placeholder={t('auth.usernamePlaceholder')} />
             </Form.Item>
-            <Form.Item name="password" label={t('auth.password')} rules={[{ required: true, message: t('auth.passwordRequired') }]} style={formStyle}>
-                <Input.Password size={controlSize} prefix={<LockOutlined />} placeholder={t('auth.passwordPlaceholder')} />
+            <Form.Item name='password' label={t('auth.password')} rules={[{ required: true, message: t('auth.passwordRequired') }]} style={formStyle}>
+                <Input.Password size={controlSize} prefix={<LockOutlined style={{ color: '#525252' }} />} placeholder={t('auth.passwordPlaceholder')} />
             </Form.Item>
             <Form.Item label={t('auth.captcha')} style={formStyle}>{captchaInput('captchaCode')}</Form.Item>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-                <Form.Item name="rememberPassword" valuePropName="checked" noStyle><Checkbox>{t('auth.rememberPassword')}</Checkbox></Form.Item>
-                <Typography.Link onClick={() => setMode('forgot')}>{t('auth.forgotPassword')}</Typography.Link>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, gap: 12 }}>
+                <Form.Item name='rememberPassword' valuePropName='checked' noStyle><Checkbox>{t('auth.rememberPassword')}</Checkbox></Form.Item>
+                <Typography.Link style={LINK_STYLE} onClick={() => setMode('forgot')}>{t('auth.forgotPassword')}</Typography.Link>
             </div>
-            <Form.Item name="agreeAgreement" valuePropName="checked" rules={[agreementRule(t('auth.agreementRequired'))]} style={{ marginBottom: 14 }}>
+            <Form.Item name='agreeAgreement' valuePropName='checked' rules={[agreementRule(t('auth.agreementRequired'))]} style={{ marginBottom: 14 }}>
                 <Checkbox>{agreementLabel}</Checkbox>
             </Form.Item>
-            <Button type="primary" size={controlSize} block loading={loginLoading} onClick={() => void handleLogin()}>{t('auth.login')}</Button>
-            <div style={{ textAlign: 'center', marginTop: 12 }}>
-                <Typography.Text type="secondary">{t('auth.noAccount')}</Typography.Text>
-                <Typography.Link style={{ marginLeft: 8 }} onClick={() => setMode('register')}>{t('auth.goRegister')}</Typography.Link>
+            <Button type='primary' size={controlSize} block loading={loginLoading} style={PRIMARY_BUTTON_STYLE} onClick={() => void handleLogin()}>{t('auth.login')}</Button>
+            <div style={{ textAlign: 'center', marginTop: 14 }}>
+                <Typography.Text type='secondary'>{t('auth.noAccount')}</Typography.Text>
+                <Typography.Link style={{ ...LINK_STYLE, marginLeft: 8 }} onClick={() => setMode('register')}>{t('auth.goRegister')}</Typography.Link>
             </div>
         </Form>
     );
 
     const renderRegister = () => (
-        <Form form={registerForm} layout="vertical" requiredMark={false}>
+        <Form form={registerForm} layout='vertical' requiredMark={false}>
             <div style={twoColumnStyle}>
-                <Form.Item name="username" label={t('auth.username')} rules={usernameRules} style={formStyle}><Input size={controlSize} prefix={<UserOutlined />} placeholder={t('auth.usernamePlaceholder')} /></Form.Item>
-                <Form.Item name="email" label={t('auth.email')} rules={emailRules} style={formStyle}><Input size={controlSize} prefix={<MailOutlined />} placeholder={t('auth.emailPlaceholder')} /></Form.Item>
+                <Form.Item name='username' label={t('auth.username')} rules={usernameRules} style={formStyle}><Input size={controlSize} prefix={<UserOutlined style={{ color: '#525252' }} />} placeholder={t('auth.usernamePlaceholder')} /></Form.Item>
+                <Form.Item name='email' label={t('auth.email')} rules={emailRules} style={formStyle}><Input size={controlSize} prefix={<MailOutlined style={{ color: '#525252' }} />} placeholder={t('auth.emailPlaceholder')} /></Form.Item>
             </div>
             <div style={twoColumnStyle}>
-                <Form.Item name="password" label={t('auth.password')} rules={passwordRules} style={formStyle}><Input.Password size={controlSize} prefix={<LockOutlined />} placeholder={t('auth.passwordPlaceholder')} /></Form.Item>
-                <Form.Item name="confirmPassword" label={t('auth.confirmPassword')} dependencies={['password']} rules={[{ required: true, message: t('auth.confirmPasswordRequired') }, confirmRule('password')]} style={formStyle}><Input.Password size={controlSize} prefix={<LockOutlined />} placeholder={t('auth.confirmPasswordPlaceholder')} /></Form.Item>
+                <Form.Item name='password' label={t('auth.password')} rules={passwordRules} style={formStyle}><Input.Password size={controlSize} prefix={<LockOutlined style={{ color: '#525252' }} />} placeholder={t('auth.passwordPlaceholder')} /></Form.Item>
+                <Form.Item name='confirmPassword' label={t('auth.confirmPassword')} dependencies={['password']} rules={[{ required: true, message: t('auth.confirmPasswordRequired') }, confirmRule('password')]} style={formStyle}><Input.Password size={controlSize} prefix={<LockOutlined style={{ color: '#525252' }} />} placeholder={t('auth.confirmPasswordPlaceholder')} /></Form.Item>
             </div>
             <Form.Item label={t('auth.captcha')} style={formStyle}>{captchaInput('captchaCode')}</Form.Item>
-            <Form.Item name="emailVerificationCode" label={t('auth.emailVerificationCode')} rules={[{ required: true, message: t('auth.emailVerificationCodeRequired') }]} style={formStyle}>
+            <Form.Item name='emailVerificationCode' label={t('auth.emailVerificationCode')} rules={[{ required: true, message: t('auth.emailVerificationCodeRequired') }]} style={formStyle}>
                 <Space.Compact style={{ width: '100%' }}>
-                    <Input size={controlSize} maxLength={6} prefix={<MailOutlined />} placeholder={t('auth.emailVerificationCodePlaceholder')} />
-                    <Button size={controlSize} style={{ width: 156 }} loading={sendingScene === 'REGISTER'} disabled={registerCountdown > 0} onClick={() => void sendEmailCode('REGISTER')}>
+                    <Input size={controlSize} maxLength={6} prefix={<MailOutlined style={{ color: '#525252' }} />} placeholder={t('auth.emailVerificationCodePlaceholder')} />
+                    <Button size={controlSize} style={{ width: 156, ...SECONDARY_BUTTON_STYLE }} loading={sendingScene === 'REGISTER'} disabled={registerCountdown > 0} onClick={() => void sendEmailCode('REGISTER')}>
                         {registerCountdown > 0 ? t('auth.resendCountdown', { seconds: registerCountdown }) : t('auth.sendEmailCode')}
                     </Button>
                 </Space.Compact>
             </Form.Item>
-            <Form.Item name="agreeAgreement" valuePropName="checked" rules={[agreementRule(t('auth.agreementRequired'))]} style={{ marginBottom: 14 }}><Checkbox>{agreementLabel}</Checkbox></Form.Item>
-            <Button type="primary" size={controlSize} block loading={registerLoading} onClick={() => void handleRegister()}>{t('auth.register')}</Button>
-            <div style={{ textAlign: 'center', marginTop: 12 }}>
-                <Typography.Text type="secondary">{t('auth.hasAccount')}</Typography.Text>
-                <Typography.Link style={{ marginLeft: 8 }} onClick={() => setMode('login')}>{t('auth.goLogin')}</Typography.Link>
+            <Form.Item name='agreeAgreement' valuePropName='checked' rules={[agreementRule(t('auth.agreementRequired'))]} style={{ marginBottom: 14 }}><Checkbox>{agreementLabel}</Checkbox></Form.Item>
+            <Button type='primary' size={controlSize} block loading={registerLoading} style={PRIMARY_BUTTON_STYLE} onClick={() => void handleRegister()}>{t('auth.register')}</Button>
+            <div style={{ textAlign: 'center', marginTop: 14 }}>
+                <Typography.Text type='secondary'>{t('auth.hasAccount')}</Typography.Text>
+                <Typography.Link style={{ ...LINK_STYLE, marginLeft: 8 }} onClick={() => setMode('login')}>{t('auth.goLogin')}</Typography.Link>
             </div>
         </Form>
     );
 
     const renderForgot = () => (
-        <Form form={forgotForm} layout="vertical" requiredMark={false}>
+        <Form form={forgotForm} layout='vertical' requiredMark={false}>
             <div style={twoColumnStyle}>
-                <Form.Item name="username" label={t('auth.username')} rules={usernameRules} style={formStyle}><Input size={controlSize} prefix={<UserOutlined />} placeholder={t('auth.usernamePlaceholder')} /></Form.Item>
-                <Form.Item name="email" label={t('auth.email')} rules={emailRules} style={formStyle}><Input size={controlSize} prefix={<MailOutlined />} placeholder={t('auth.emailPlaceholder')} /></Form.Item>
+                <Form.Item name='username' label={t('auth.username')} rules={usernameRules} style={formStyle}><Input size={controlSize} prefix={<UserOutlined style={{ color: '#525252' }} />} placeholder={t('auth.usernamePlaceholder')} /></Form.Item>
+                <Form.Item name='email' label={t('auth.email')} rules={emailRules} style={formStyle}><Input size={controlSize} prefix={<MailOutlined style={{ color: '#525252' }} />} placeholder={t('auth.emailPlaceholder')} /></Form.Item>
             </div>
             <div style={twoColumnStyle}>
-                <Form.Item name="newPassword" label={t('auth.newPassword')} rules={[{ required: true, message: t('auth.newPasswordRequired') }, ...passwordRules.slice(1)]} style={formStyle}><Input.Password size={controlSize} prefix={<LockOutlined />} placeholder={t('auth.newPasswordPlaceholder')} /></Form.Item>
-                <Form.Item name="confirmPassword" label={t('auth.confirmPassword')} dependencies={['newPassword']} rules={[{ required: true, message: t('auth.confirmPasswordRequired') }, confirmRule('newPassword')]} style={formStyle}><Input.Password size={controlSize} prefix={<LockOutlined />} placeholder={t('auth.confirmPasswordPlaceholder')} /></Form.Item>
+                <Form.Item name='newPassword' label={t('auth.newPassword')} rules={[{ required: true, message: t('auth.newPasswordRequired') }, ...passwordRules.slice(1)]} style={formStyle}><Input.Password size={controlSize} prefix={<LockOutlined style={{ color: '#525252' }} />} placeholder={t('auth.newPasswordPlaceholder')} /></Form.Item>
+                <Form.Item name='confirmPassword' label={t('auth.confirmPassword')} dependencies={['newPassword']} rules={[{ required: true, message: t('auth.confirmPasswordRequired') }, confirmRule('newPassword')]} style={formStyle}><Input.Password size={controlSize} prefix={<LockOutlined style={{ color: '#525252' }} />} placeholder={t('auth.confirmPasswordPlaceholder')} /></Form.Item>
             </div>
             <Form.Item label={t('auth.captcha')} style={formStyle}>{captchaInput('captchaCode')}</Form.Item>
-            <Form.Item name="emailVerificationCode" label={t('auth.emailVerificationCode')} rules={[{ required: true, message: t('auth.emailVerificationCodeRequired') }]} style={formStyle}>
+            <Form.Item name='emailVerificationCode' label={t('auth.emailVerificationCode')} rules={[{ required: true, message: t('auth.emailVerificationCodeRequired') }]} style={formStyle}>
                 <Space.Compact style={{ width: '100%' }}>
-                    <Input size={controlSize} maxLength={6} prefix={<MailOutlined />} placeholder={t('auth.emailVerificationCodePlaceholder')} />
-                    <Button size={controlSize} style={{ width: 156 }} loading={sendingScene === 'RESET_PASSWORD'} disabled={forgotCountdown > 0} onClick={() => void sendEmailCode('RESET_PASSWORD')}>
+                    <Input size={controlSize} maxLength={6} prefix={<MailOutlined style={{ color: '#525252' }} />} placeholder={t('auth.emailVerificationCodePlaceholder')} />
+                    <Button size={controlSize} style={{ width: 156, ...SECONDARY_BUTTON_STYLE }} loading={sendingScene === 'RESET_PASSWORD'} disabled={forgotCountdown > 0} onClick={() => void sendEmailCode('RESET_PASSWORD')}>
                         {forgotCountdown > 0 ? t('auth.resendCountdown', { seconds: forgotCountdown }) : t('auth.sendEmailCode')}
                     </Button>
                 </Space.Compact>
             </Form.Item>
-            <Form.Item name="agreeAgreement" valuePropName="checked" rules={[agreementRule(t('auth.agreementRequired'))]} style={{ marginBottom: 14 }}><Checkbox>{agreementLabel}</Checkbox></Form.Item>
-            <Button type="primary" size={controlSize} block loading={forgotLoading} onClick={() => void handleForgot()}>{t('auth.resetPassword')}</Button>
-            <div style={{ textAlign: 'center', marginTop: 12 }}>
-                <Typography.Text type="secondary">{t('auth.hasAccount')}</Typography.Text>
-                <Typography.Link style={{ marginLeft: 8 }} onClick={() => setMode('login')}>{t('auth.goLogin')}</Typography.Link>
+            <Form.Item name='agreeAgreement' valuePropName='checked' rules={[agreementRule(t('auth.agreementRequired'))]} style={{ marginBottom: 14 }}><Checkbox>{agreementLabel}</Checkbox></Form.Item>
+            <Button type='primary' size={controlSize} block loading={forgotLoading} style={PRIMARY_BUTTON_STYLE} onClick={() => void handleForgot()}>{t('auth.resetPassword')}</Button>
+            <div style={{ textAlign: 'center', marginTop: 14 }}>
+                <Typography.Text type='secondary'>{t('auth.hasAccount')}</Typography.Text>
+                <Typography.Link style={{ ...LINK_STYLE, marginLeft: 8 }} onClick={() => setMode('login')}>{t('auth.goLogin')}</Typography.Link>
             </div>
         </Form>
     );
 
     const cardTitle = title || (mode === 'login' ? t('auth.loginCardTitle') : mode === 'register' ? t('auth.registerCardTitle') : t('auth.resetPasswordCardTitle'));
     const cardSubtitle = subtitle || (mode === 'login' ? t('auth.loginCardSubtitle') : mode === 'register' ? t('auth.registerCardSubtitle') : t('auth.resetPasswordCardSubtitle'));
+    const displayTitle = mode === 'login' ? 'Sign in to Govern Dashboard' : cardTitle;
+    const displaySubtitle = mode === 'login' ? 'Welcome back! Please sign in to continue' : cardSubtitle;
 
     return (
-        <div style={{ height: '100vh', overflow: 'hidden', background: 'radial-gradient(circle at top left, rgba(96,165,250,.22), transparent 26%), linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%)', position: 'relative' }}>
+        <div style={{ minHeight: '100vh', background: '#f7f7f5', position: 'relative' }}>
             {contextHolder}
-            <div style={{ position: 'absolute', top: 12, right: 16, zIndex: 2 }}>
+            <div style={{ position: 'absolute', top: 12, right: 16, zIndex: 3 }}>
                 <div style={languageBoxStyle}>
-                    <LanguageSelect size="small" />
+                    <LanguageSelect size='small' />
                 </div>
             </div>
-            <div style={{ maxWidth: 1240, height: '100%', margin: '0 auto', display: 'grid', gridTemplateColumns: screens.lg ? '1.08fr .92fr' : '1fr', gap: 20, alignItems: 'center' }}>
+            <div
+                style={{
+                    height: '100vh',
+                    display: 'grid',
+                    gridTemplateColumns: screens.lg ? 'minmax(420px, 1fr) minmax(420px, 1fr)' : '1fr',
+                }}
+            >
                 {screens.lg && (
                     <div
                         style={{
-                            height: 'calc(100vh - 240px)',
-                            minHeight: 400,
-                            borderRadius: 28,
-                            backgroundImage: leftPanelBackground,
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                            border: '1px solid rgba(255,255,255,.14)',
-                            boxShadow: '0 30px 60px rgba(15,23,42,.24)',
                             position: 'relative',
                             overflow: 'hidden',
+                            background: '#18181b',
+                            color: '#fafaf9',
+                            padding: '40px 36px 28px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            height: 'calc(100vh - 80px)',
                         }}
                     >
                         <div
                             style={{
+                                position: 'relative',
+                                zIndex: 2,
+                                display: 'flex',
+                                alignItems: 'center',
+                                fontSize: 18,
+                                fontWeight: 600,
+                                marginTop: -2,
+                            }}
+                        >
+                            {LOGO_ICON}
+                            Govern Dashboard
+                        </div>
+                        <div
+                            style={{
                                 position: 'absolute',
-                                inset: 20,
-                                borderRadius: 22,
-                                border: '1px solid rgba(255,255,255,.12)',
-                                background:
-                                    'linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01))',
+                                inset: 0,
+                                background: '#18181b',
+                                zIndex: 0,
+                                pointerEvents: 'none',
                             }}
                         />
+                        <InteractiveGridPattern
+                            width={40}
+                            height={40}
+                            squares={[24, 24]}
+                            style={{
+                                inset: 0,
+                                top: '-2%',
+                                height: '102%',
+                                width: '100%',
+                                transform: 'skewY(12deg)',
+                                transformOrigin: 'center top',
+                                zIndex: 1,
+                                maskImage: 'radial-gradient(400px circle at center, white, transparent)',
+                                WebkitMaskImage: 'radial-gradient(400px circle at center, white, transparent)',
+                            }}
+                        />
+                        <div style={{ position: 'relative', zIndex: 2, marginTop: 'auto', paddingBottom: 8 }}>
+                            <blockquote style={{ margin: 0 }}>
+                                <p style={{ margin: 0, fontSize: 18, lineHeight: 1.7, fontWeight: 600 }}>
+                                    &ldquo;This governance platform has unified our data operations and helped us deliver enterprise-grade intelligence to every team faster than ever before.&rdquo;
+                                </p>
+                            </blockquote>
+                        </div>
                     </div>
                 )}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div
+                    style={{
+                        ...authSurfaceStyle,
+                        height: 'calc(100vh - 80px)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: screens.md ? '32px 24px' : '16px',
+                        overflowY: 'auto',
+                    }}
+                >
                     <Card
                         style={{
                             width: '100%',
                             maxWidth: 520,
-                            borderRadius: 26,
-                            ...surfaceStyle,
+                            borderRadius: 16,
+                            border: '1px solid #ddddda',
+                            boxShadow: '0 16px 40px rgba(15, 15, 15, .08)',
+                            background: '#ffffff',
                         }}
-                        styles={{ body: { padding: screens.md ? 28 : 20 } }}
+                        styles={{ body: { padding: screens.md ? 24 : 18 } }}
                     >
-                        <div
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 12,
-                                marginBottom: 18,
-                            }}
-                        >
-                            <div
+                        <div style={{ marginBottom: 20, textAlign: 'center' }}>
+                            <Typography.Title
+                                level={3}
                                 style={{
-                                    width: 44,
-                                    height: 44,
-                                    borderRadius: 14,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    color: '#fff',
-                                    background:
-                                        'linear-gradient(135deg, #1d4ed8, #3b82f6)',
-                                    boxShadow:
-                                        '0 10px 18px rgba(37,99,235,.28)',
-                                    flexShrink: 0,
+                                    margin: 0,
+                                    color: '#141414',
+                                    fontSize: 20,
+                                    lineHeight: 1.15,
+                                    fontWeight: 600,
+                                    letterSpacing: '-0.02em',
                                 }}
                             >
-                                <LockOutlined />
-                            </div>
-                            <div style={{ minWidth: 0 }}>
-                                <Typography.Text
-                                    style={{
-                                        display: 'block',
-                                        fontSize: 12,
-                                        color: '#2563eb',
-                                        fontWeight: 600,
-                                        letterSpacing: '.08em',
-                                        textTransform: 'uppercase',
-                                        marginBottom: 2,
-                                    }}
-                                >
-                                    {t('common.appName')}
-                                </Typography.Text>
-                                <Typography.Title
-                                    level={3}
-                                    style={{ margin: 0, lineHeight: 1.2 }}
-                                >
-                                    {cardTitle}
-                                </Typography.Title>
-                            </div>
+                                {displayTitle}
+                            </Typography.Title>
+                            <Typography.Paragraph
+                                style={{
+                                    marginTop: 8,
+                                    marginBottom: 0,
+                                    color: '#737373',
+                                    fontSize: 14,
+                                    lineHeight: 1.6,
+                                }}
+                            >
+                                {displaySubtitle}
+                            </Typography.Paragraph>
                         </div>
-                        <Typography.Paragraph
-                            type="secondary"
-                            style={{ marginBottom: 18, lineHeight: 1.6 }}
-                        >
-                            {cardSubtitle}
-                        </Typography.Paragraph>
                         {checkingSession ? (
                             <div
                                 style={{
@@ -562,7 +708,7 @@ export const AuthCenterAuthPage: React.FC<AuthCenterAuthPageProps> = ({
                                     justifyContent: 'center',
                                 }}
                             >
-                                <Spin size="large" />
+                                <Spin size='large' />
                             </div>
                         ) : mode === 'login' ? renderLogin() : mode === 'register' ? renderRegister() : renderForgot()}
                     </Card>

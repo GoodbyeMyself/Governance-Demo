@@ -115,7 +115,7 @@ powershell -ExecutionPolicy Bypass -File .\microservice\scripts\docker-centos9\i
 
 - 后端结构与运行说明：`microservice/README.md`
 - 前端 monorepo 结构说明：`web/README.md`
-- 部署与连接信息：`DEPLOYMENT.md`
+- 部署与连接信息：`docs/DEPLOYMENT.md`
 - Govern 应用说明：`web/apps/govern/README.md`
 - Portal 应用说明：`web/apps/portal/README.md`
 

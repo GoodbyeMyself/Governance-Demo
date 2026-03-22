@@ -25,6 +25,8 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const { Header, Content, Sider } = Layout;
 
+const DEVICE_MANAGEMENT_MENU_KEY = 'device-management';
+
 const NAV_PATHS = [
     HOME_PATH,
     DATA_SOURCE_PATH,
@@ -55,11 +57,17 @@ export const GovernanceAppShell: React.FC = () => {
         const items: NonNullable<MenuProps['items']> = [
             { key: HOME_PATH, label: t('nav.home') },
             { key: DATA_SOURCE_PATH, label: t('nav.dataSource') },
-            { key: IOT_DEVICE_PATH, label: t('nav.iotDevice') },
-            { key: IOT_COLLECTION_PATH, label: t('nav.iotCollection') },
             {
                 key: METADATA_COLLECTION_PATH,
                 label: t('nav.metadataCollection'),
+            },
+            {
+                key: DEVICE_MANAGEMENT_MENU_KEY,
+                label: t('nav.deviceManagement'),
+                children: [
+                    { key: IOT_DEVICE_PATH, label: t('nav.iotDevice') },
+                    { key: IOT_COLLECTION_PATH, label: t('nav.iotCollection') },
+                ],
             },
         ];
 
@@ -145,6 +153,7 @@ export const GovernanceAppShell: React.FC = () => {
                     <Menu
                         mode="inline"
                         selectedKeys={selectedMenuKey ? [selectedMenuKey] : []}
+                        defaultOpenKeys={[DEVICE_MANAGEMENT_MENU_KEY]}
                         items={menuItems}
                         onClick={({ key }) => navigate(String(key))}
                         style={{ borderInlineEnd: 'none', paddingTop: 8 }}
