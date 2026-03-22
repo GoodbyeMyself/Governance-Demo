@@ -7,14 +7,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="service-support" />
+        <module name="iot-collection" />
+        <module name="iot-device" />
         <module name="bms-service" />
         <module name="data-source" />
-        <module name="service-support" />
         <module name="auth-center" />
-        <module name="data-metadata" />
         <module name="gateway" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="data-metadata" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -23,6 +27,8 @@
       <module name="data-metadata" options="-parameters" />
       <module name="data-source" options="-parameters" />
       <module name="gateway" options="-parameters" />
+      <module name="iot-collection" options="-parameters" />
+      <module name="iot-device" options="-parameters" />
       <module name="service-support" options="-parameters" />
     </option>
   </component>
