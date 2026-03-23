@@ -600,7 +600,7 @@ export const AuthCenterAuthPage: React.FC<AuthCenterAuthPageProps> = ({
                             padding: '40px 36px 28px',
                             display: 'flex',
                             flexDirection: 'column',
-                            height: 'calc(100vh - 80px)',
+                            height: 'calc(100vh - 68px)',
                         }}
                     >
                         <div
