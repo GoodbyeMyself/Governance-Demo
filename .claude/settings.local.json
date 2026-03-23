@@ -3,7 +3,16 @@
     "allow": [
       "Skill(shadcn-ui)",
       "Bash(pnpm:*)",
-      "WebFetch(domain:shadcn-dashboard.kiranism.dev)"
+      "WebFetch(domain:shadcn-dashboard.kiranism.dev)",
+      "Skill(shadcn)",
+      "Bash(mkdir -p \"E:/Governance-Demo/shadcn-admin/apps/admin\" \"E:/Governance-Demo/shadcn-admin/packages/ui\" \"E:/Governance-Demo/shadcn-admin/packages/shared\" \"E:/Governance-Demo/shadcn-admin/packages/api\" \"E:/Governance-Demo/shadcn-admin/packages/business-auth\" \"E:/Governance-Demo/shadcn-admin/packages/business-system\" \"E:/Governance-Demo/shadcn-admin/packages/config-eslint\" \"E:/Governance-Demo/shadcn-admin/packages/config-typescript\" \"E:/Governance-Demo/shadcn-admin/packages/config-prettier\")",
+      "Bash(mv \"E:/Governance-Demo/shadcn-admin/.env.example\" \"E:/Governance-Demo/shadcn-admin/apps/admin/.env.example\")",
+      "Bash(mv \"E:/Governance-Demo/shadcn-admin/.prettierignore\" \"E:/Governance-Demo/shadcn-admin/apps/admin/.prettierignore\")",
+      "Bash(mv \"E:/Governance-Demo/shadcn-admin/.prettierrc\" \"E:/Governance-Demo/shadcn-admin/apps/admin/.prettierrc\")",
+      "Bash(mv \"E:/Governance-Demo/shadcn-admin/components.json\" \"E:/Governance-Demo/shadcn-admin/apps/admin/components.json\")",
+      "Bash(python:*)",
+      "Bash(set PYTHONPATH=E:/Governance-Demo/shadcn-admin/.tmp_py_playwright)",
+      "Bash(PYTHONPATH=\"E:/Governance-Demo/shadcn-admin/.tmp_py_playwright\" python -m playwright install chromium)"
     ]
   }
 }

@@ -1,0 +1,13 @@
+{
+  "name": "shadcn-admin-monorepo",
+  "private": true,
+  "packageManager": "pnpm@10.30.3",
+  "scripts": {
+    "dev": "pnpm --filter @shadcn-admin/admin dev",
+    "dev:admin": "pnpm --filter @shadcn-admin/admin dev",
+    "build": "pnpm --filter @shadcn-admin/admin build",
+    "build:admin": "pnpm --filter @shadcn-admin/admin build",
+    "lint": "pnpm --filter @shadcn-admin/admin lint",
+    "preview": "pnpm --filter @shadcn-admin/admin preview"
+  }
+}

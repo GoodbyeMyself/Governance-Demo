@@ -1,0 +1,22 @@
+# Ignore everything
+/*
+
+# Except these files & folders
+!/src
+!public
+!index.html
+!package.json
+!tsconfig.json
+!tsconfig.app.json
+!tsconfig.node.json
+!vite.config.ts
+!.prettierrc
+!.prettierignore
+!.env.example
+!components.json
+!README.md
+!eslint.config.js
+!knip.config.ts
+
+# Ignore auto generated routeTree.gen.ts
+/src/routeTree.gen.ts
