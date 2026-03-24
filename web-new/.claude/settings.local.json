@@ -4,7 +4,9 @@
       "Bash(cp:*)",
       "Bash(mkdir:*)",
       "Bash(rm:*)",
-      "Bash(git:*)"
+      "Bash(git:*)",
+      "Bash(npm install:*)",
+      "Bash(pnpm add:*)"
     ]
   }
 }

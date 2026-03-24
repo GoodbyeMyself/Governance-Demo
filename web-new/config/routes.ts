@@ -76,6 +76,52 @@ export default [
         icon: 'profile',
         component: './data-governance/metadata-collection',
       },
+      {
+        path: '/data-governance/device-management',
+        name: 'device-management',
+        icon: 'cluster',
+        routes: [
+          {
+            path: '/data-governance/device-management',
+            redirect: '/data-governance/device-management/device-link',
+          },
+          {
+            path: '/data-governance/device-management/device-link',
+            name: 'device-link',
+            icon: 'link',
+            component: './data-governance/device-management/device-link',
+          },
+          {
+            path: '/data-governance/device-management/data-collection',
+            name: 'data-collection',
+            icon: 'api',
+            component: './data-governance/device-management/data-collection',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: '/system-management',
+    name: 'system-management',
+    icon: 'setting',
+    routes: [
+      {
+        path: '/system-management',
+        redirect: '/system-management/user-management',
+      },
+      {
+        path: '/system-management/user-management',
+        name: 'user-management',
+        icon: 'team',
+        component: './system-management/user-management',
+      },
+      {
+        path: '/system-management/role-management',
+        name: 'role-management',
+        icon: 'solution',
+        component: './system-management/role-management',
+      },
     ],
   },
   {
