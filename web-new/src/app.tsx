@@ -1,9 +1,9 @@
-import { LinkOutlined } from '@ant-design/icons';
+import { LinkOutlined, SettingOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
 import type { RequestConfig, RunTimeLayoutConfig } from '@umijs/max';
 import { history } from '@umijs/max';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AvatarDropdown,
   AvatarName,
@@ -16,9 +16,40 @@ import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
 import '@ant-design/v5-patch-for-react-19';
 
-const isDev =
-  process.env.NODE_ENV === 'development' || process.env.CI;
+const isDev = process.env.NODE_ENV === 'development' || process.env.CI;
 const loginPath = '/user/login';
+const OPEN_GLOBAL_SETTING_EVENT = 'open-global-setting';
+
+const GlobalSettingDrawer = ({
+  settings,
+  onSettingChange,
+}: {
+  settings?: Partial<LayoutSettings>;
+  onSettingChange: (settings: Partial<LayoutSettings>) => void;
+}) => {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const handleOpen = () => setOpen(true);
+
+    window.addEventListener(OPEN_GLOBAL_SETTING_EVENT, handleOpen);
+
+    return () => {
+      window.removeEventListener(OPEN_GLOBAL_SETTING_EVENT, handleOpen);
+    };
+  }, []);
+
+  return (
+    <SettingDrawer
+      collapse={open}
+      disableUrlParams
+      enableDarkTheme
+      settings={settings}
+      onCollapseChange={setOpen}
+      onSettingChange={onSettingChange}
+    />
+  );
+};
 
 /**
  * @see https://umijs.org/docs/api/runtime-config#getinitialstate
@@ -110,6 +141,17 @@ export const layout: RunTimeLayoutConfig = ({
     ],
     links: [
       <a
+        key="global-setting"
+        href="#"
+        onClick={(event) => {
+          event.preventDefault();
+          window.dispatchEvent(new Event(OPEN_GLOBAL_SETTING_EVENT));
+        }}
+      >
+        <SettingOutlined />
+        <span>全局配置</span>
+      </a>,
+      <a
         key="help-center"
         href="https://pro.ant.design/zh-CN/docs/getting-started"
         target="_blank"
@@ -129,9 +171,7 @@ export const layout: RunTimeLayoutConfig = ({
         <>
           {children}
           {isDev && (
-            <SettingDrawer
-              disableUrlParams
-              enableDarkTheme
+            <GlobalSettingDrawer
               settings={initialState?.settings}
               onSettingChange={(settings) => {
                 setInitialState((preInitialState) => ({

@@ -6,7 +6,8 @@
       "Bash(rm:*)",
       "Bash(git:*)",
       "Bash(npm install:*)",
-      "Bash(pnpm add:*)"
+      "Bash(pnpm add:*)",
+      "WebSearch"
     ]
   }
 }
