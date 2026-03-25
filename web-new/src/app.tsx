@@ -98,7 +98,19 @@ export const layout: RunTimeLayoutConfig = ({
 }) => {
   return {
     actionsRender: () => [
-      <Question key="doc" />,
+      <Question
+        key="theme"
+        navTheme={(initialState?.settings?.navTheme as 'light' | 'realDark') ?? 'light'}
+        onThemeChange={(navTheme) => {
+          setInitialState((preInitialState) => ({
+            ...preInitialState,
+            settings: {
+              ...preInitialState?.settings,
+              navTheme,
+            },
+          }));
+        }}
+      />,
       <SelectLang key="SelectLang" />,
     ],
     avatarProps: {
