@@ -143,6 +143,7 @@ export default defineConfig({
   headScripts: [
     // 解决首次加载时白屏的问题
     { src: join(PUBLIC_PATH, 'scripts/loading.js'), async: true },
+    { src: join(PUBLIC_PATH, 'iconfont/iconfont.js'), async: true },
   ],
   //================ pro 插件配置 =================
   presets: ['umi-presets-pro'],
