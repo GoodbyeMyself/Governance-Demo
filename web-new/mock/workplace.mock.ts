@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import type { Request, Response } from 'express';
-import type { DataItem, OfflineDataType } from '../src/pages/dashboard/workplace/data.d';
+import type { DataItem, OfflineDataType } from '../src/pages/demo/dashboard/workplace/data.d';
 
 export type SearchDataType = {
   index: number;
