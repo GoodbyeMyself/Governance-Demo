@@ -119,6 +119,7 @@ export default defineConfig({
       theme: {
         cssVar: true,
         token: {
+          colorPrimary: defaultSettings.colorPrimary,
           fontFamily: 'AlibabaSans, sans-serif',
         },
       },
