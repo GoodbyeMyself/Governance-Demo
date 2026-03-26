@@ -50,6 +50,12 @@ export default [
     component: './workplace',
   },
   {
+    path: '/chat',
+    name: 'chat',
+    icon: 'message',
+    component: './chat',
+  },
+  {
     path: '/data-overview',
     name: 'data-overview',
     icon: 'areaChart',

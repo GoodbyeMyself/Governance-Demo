@@ -7,6 +7,7 @@ export default {
   'menu.login': 'Login',
   'menu.register': 'Register',
   'menu.register-result': 'Register Result',
+  'menu.chat': 'Chat',
   'menu.data-overview': 'Data Overview',
   'menu.data-governance': 'Data Governance',
   'menu.data-governance.data-source': 'Data Source Management',

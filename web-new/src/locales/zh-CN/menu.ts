@@ -8,6 +8,7 @@ export default {
   'menu.register': '注册',
   'menu.register-result': '注册结果',
   'menu.workplace': '工作台',
+  'menu.chat': '聊天',
   'menu.data-overview': '数据概览',
   'menu.data-governance': '数据治理',
   'menu.data-governance.data-source': '数据源管理',
