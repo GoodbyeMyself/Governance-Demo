@@ -19,7 +19,7 @@ import {
   useIntl,
   useModel,
 } from '@umijs/max';
-import { Alert, App, Grid, Tabs, Typography } from 'antd';
+import { Alert, App, Grid, Tabs } from 'antd';
 import { createStyles } from 'antd-style';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
@@ -31,7 +31,7 @@ const useStyles = createStyles(({ token }) => {
   return {
     action: {
       marginLeft: '8px',
-      color: 'rgba(0, 0, 0, 0.2)',
+      color: token.colorTextTertiary,
       fontSize: '24px',
       verticalAlign: 'middle',
       cursor: 'pointer',
@@ -45,28 +45,66 @@ const useStyles = createStyles(({ token }) => {
       top: 12,
       right: 16,
       zIndex: 3,
-      padding: '8px 10px',
-      borderRadius: 999,
+      padding: '0px',
       ':hover': {
-        backgroundColor: token.colorBgTextHover,
+         backgroundColor: token.colorBgTextHover,
       },
     },
     container: {
       minHeight: '100vh',
-      background: '#f7f7f5',
+      background: token.colorBgLayout,
       position: 'relative',
     },
     authCard: {
+      position: 'relative',
+      overflow: 'hidden',
       width: '100%',
       maxWidth: 520,
       borderRadius: 16,
-      border: '1px solid #ddddda',
-      boxShadow: '0 16px 40px rgba(15, 15, 15, .08)',
-      background: '#ffffff',
+      border: `1px solid ${token.colorPrimaryBorder}`,
+      boxShadow: token.boxShadowSecondary,
+      background: token.colorBgContainer,
       padding: '24px 24px 20px',
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 3,
+        background: `linear-gradient(90deg, ${token.colorPrimary}, ${token.colorPrimaryHover})`,
+      },
     },
     authCardMobile: {
       padding: '18px 18px 16px',
+    },
+    authTabs: {
+      marginBottom: 24,
+      '& .ant-tabs-nav': {
+        marginBottom: 24,
+      },
+      '& .ant-tabs-tab': {
+        color: token.colorTextSecondary,
+        transition: 'color 0.2s ease',
+      },
+      '& .ant-tabs-tab:hover': {
+        color: token.colorPrimaryHover,
+      },
+      '& .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn': {
+        color: token.colorPrimary,
+        fontWeight: 600,
+      },
+      '& .ant-tabs-ink-bar': {
+        background: token.colorPrimary,
+      },
+    },
+    forgotLink: {
+      float: 'right',
+      color: token.colorPrimary,
+      transition: 'color 0.2s ease',
+      '&:hover': {
+        color: token.colorPrimaryHover,
+      },
     },
   };
 });
@@ -338,8 +376,8 @@ const Login: React.FC = () => {
           </div>
         )}
         <div
+          className={styles.rightPanel}
           style={{
-            background: '#f7f7f5',
             height: '100vh',
             display: 'flex',
             alignItems: 'center',
@@ -377,6 +415,7 @@ const Login: React.FC = () => {
               }}
             >
               <Tabs
+                className={styles.authTabs}
                 activeKey={type}
                 onChange={setType}
                 centered
@@ -550,11 +589,7 @@ const Login: React.FC = () => {
                     defaultMessage="自动登录"
                   />
                 </ProFormCheckbox>
-                <a
-                  style={{
-                    float: 'right',
-                  }}
-                >
+                <a className={styles.forgotLink}>
                   <FormattedMessage
                     id="pages.login.forgotPassword"
                     defaultMessage="忘记密码"
