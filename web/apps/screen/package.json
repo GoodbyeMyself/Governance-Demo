@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "max dev --port 3004",
+    "dev": "max dev --port 3034",
     "build": "max build",
-    "preview": "max preview --port 3004"
+    "preview": "max preview --port 3034"
   },
   "dependencies": {
     "@governance/components": "workspace:*",

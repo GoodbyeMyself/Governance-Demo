@@ -4,6 +4,8 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"],
+      "@@/*": ["./src/.umi/*"],
+      "@@test/*": ["./src/.umi-test/*"],
       "@api": ["../../packages/api/src/index.ts"],
       "@api/*": ["../../packages/api/src/*"],
       "@utils": ["../../packages/utils/src/index.ts"],
