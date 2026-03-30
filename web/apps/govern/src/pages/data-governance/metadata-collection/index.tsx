@@ -20,11 +20,11 @@ import React, { useState } from 'react';
 import OperationModal from './components/OperationModal';
 import type { BasicListItemDataType } from './data.d';
 import {
-  addFakeList,
-  queryFakeList,
-  removeFakeList,
-  updateFakeList,
-} from './service';
+  addCommonList as addFakeList,
+  queryCommonList as queryFakeList,
+  removeCommonList as removeFakeList,
+  updateCommonList as updateFakeList,
+} from '@api';
 import useStyles from './style.style';
 
 const { Search } = Input;

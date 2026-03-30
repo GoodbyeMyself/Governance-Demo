@@ -14,8 +14,8 @@ import {
 import type { Store } from 'antd/es/form/interface';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
-import type { StateType } from './service';
-import { fakeRegister } from './service';
+import type { RegisterState as StateType } from '@api';
+import { registerUser as fakeRegister } from '@api';
 import useStyles from './styles';
 
 const FormItem = Form.Item;

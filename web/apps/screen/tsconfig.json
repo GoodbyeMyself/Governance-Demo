@@ -4,14 +4,14 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"],
-      "@api": ["../../../packages/api/src/index.ts"],
-      "@api/*": ["../../../packages/api/src/*"],
-      "@utils": ["../../../packages/utils/src/index.ts"],
-      "@utils/*": ["../../../packages/utils/src/*"],
-      "@i18n": ["../../../packages/i18n/src/index.ts"],
-      "@i18n/*": ["../../../packages/i18n/src/*"],
-      "@components": ["../../../packages/components/src/index.ts"],
-      "@components/*": ["../../../packages/components/src/*"]
+      "@api": ["../../packages/api/src/index.ts"],
+      "@api/*": ["../../packages/api/src/*"],
+      "@utils": ["../../packages/utils/src/index.ts"],
+      "@utils/*": ["../../packages/utils/src/*"],
+      "@i18n": ["../../packages/i18n/src/index.ts"],
+      "@i18n/*": ["../../packages/i18n/src/*"],
+      "@components": ["../../packages/components/src/index.ts"],
+      "@components/*": ["../../packages/components/src/*"]
     }
   },
   "include": ["./**/*.d.ts", "./**/*.ts", "./**/*.tsx"]

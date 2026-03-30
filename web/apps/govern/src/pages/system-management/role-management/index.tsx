@@ -3,7 +3,7 @@ import { PageContainer } from '@ant-design/pro-components';
 import { useRequest } from '@umijs/max';
 import { Button, Card, List, Typography } from 'antd';
 import type { CardListItemDataType } from './data.d';
-import { queryFakeList } from './service';
+import { queryCardFakeList as queryFakeList } from '@api';
 import useStyles from './style.style';
 
 const { Paragraph } = Typography;

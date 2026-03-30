@@ -23,7 +23,7 @@ import { categoryOptions } from '../../mock';
 import StandardFormRow from './components/StandardFormRow';
 import TagSelect from './components/TagSelect';
 import type { ListItemDataType } from './data.d';
-import { queryFakeList } from './service';
+import { querySearchList as queryFakeList } from '@api';
 import useStyles from './style.style';
 export function formatWan(val: number) {
   const v = val * 1;

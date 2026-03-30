@@ -12,7 +12,7 @@ import {
 import { useRequest } from '@umijs/max';
 import { Card, message } from 'antd';
 import type { FC } from 'react';
-import { fakeSubmitForm } from './service';
+import { submitBasicForm as fakeSubmitForm } from '@api';
 import useStyles from './style.style';
 
 const BasicForm: FC<Record<string, any>> = () => {

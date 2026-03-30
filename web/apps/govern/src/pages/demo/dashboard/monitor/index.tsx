@@ -6,7 +6,7 @@ import numeral from 'numeral';
 import type { FC } from 'react';
 import ActiveChart from './components/ActiveChart';
 import MonitorMap from './components/Map';
-import { queryTags } from './service';
+import { queryTagList as queryTags } from '@api';
 import useStyles from './style.style';
 
 const { Countdown } = Statistic;
@@ -15,7 +15,7 @@ const deadline = Date.now() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30; // Moment is 
 const Monitor: FC = () => {
   const { styles } = useStyles();
   const { loading, data } = useRequest(queryTags);
-  const wordCloudData = (data?.list || []).map((item) => {
+  const wordCloudData = (data?.list || []).map((item: any) => {
     return {
       id: +Date.now(),
       word: item.name,

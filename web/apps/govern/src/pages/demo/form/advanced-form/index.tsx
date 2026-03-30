@@ -13,7 +13,7 @@ import {
 import { Card, Col, message, Popover, Row } from 'antd';
 import type { FC } from 'react';
 import { useState } from 'react';
-import { fakeSubmitForm } from './service';
+import { submitAdvancedForm as fakeSubmitForm } from '@api';
 import useStyles from './style.style';
 
 interface TableFormDateType {

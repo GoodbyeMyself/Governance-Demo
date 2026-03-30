@@ -5,7 +5,7 @@ import { Badge, Card, Descriptions, Divider } from 'antd';
 import type { FC } from 'react';
 import React from 'react';
 import type { BasicGood, BasicProgress } from './data.d';
-import { queryBasicProfile } from './service';
+import { queryBasicProfile } from '@api';
 import useStyles from './style.style';
 
 const progressColumns: ProColumns<BasicProgress>[] = [
@@ -54,7 +54,7 @@ const Basic: FC = () => {
   if (basicGoods.length) {
     let num = 0;
     let amount = 0;
-    basicGoods.forEach((item) => {
+    basicGoods.forEach((item: BasicGood) => {
       num += Number(item.num);
       amount += Number(item.amount);
     });

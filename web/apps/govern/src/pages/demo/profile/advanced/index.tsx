@@ -29,7 +29,7 @@ import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useState } from 'react';
 import type { AdvancedProfileData } from './data.d';
-import { queryAdvancedProfile } from './service';
+import { queryAdvancedProfile } from '@api';
 import useStyles from './style.style';
 
 const { Step } = Steps;

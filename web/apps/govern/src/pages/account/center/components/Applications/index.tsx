@@ -9,7 +9,7 @@ import { Avatar, Card, Dropdown, List, Tooltip } from 'antd';
 import numeral from 'numeral';
 import React from 'react';
 import type { ListItemDataType } from '../../data.d';
-import { queryFakeList } from '../../service';
+import { queryAccountCenterFakeListDetail as queryFakeList } from '@api';
 import useStyles from './index.style';
 export function formatWan(val: number) {
   const v = val * 1;

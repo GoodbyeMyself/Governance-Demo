@@ -1,12 +1,12 @@
 import { request } from '@umijs/max';
 
-export interface StateType {
+export interface RegisterState {
   status?: 'ok' | 'error';
   currentAuthority?: 'user' | 'guest' | 'admin';
 }
 
 export interface UserRegisterParams {
-  mail: string;
+  email: string;
   password: string;
   confirm: string;
   mobile: string;
@@ -14,7 +14,7 @@ export interface UserRegisterParams {
   prefix: string;
 }
 
-export async function fakeRegister(params: UserRegisterParams) {
+export async function registerUser<T = any>(params: UserRegisterParams): Promise<T> {
   return request('/api/register', {
     method: 'POST',
     data: params,

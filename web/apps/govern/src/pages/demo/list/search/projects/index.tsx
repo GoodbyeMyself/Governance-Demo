@@ -8,7 +8,7 @@ import AvatarList from './components/AvatarList';
 import StandardFormRow from './components/StandardFormRow';
 import TagSelect from './components/TagSelect';
 import type { ListItemDataType } from './data.d';
-import { queryFakeList } from './service';
+import { querySearchList as queryFakeList } from '@api';
 import useStyles from './style.style';
 
 dayjs.extend(relativeTime);

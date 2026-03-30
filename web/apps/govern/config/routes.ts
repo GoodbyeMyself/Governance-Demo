@@ -342,7 +342,7 @@ export default [
   },
   {
     path: '/',
-    redirect: '/demo/dashboard/analysis',
+    redirect: '/workplace',
   },
   {
     component: '404',

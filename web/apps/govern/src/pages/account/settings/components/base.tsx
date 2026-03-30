@@ -10,7 +10,11 @@ import {
 import { useRequest } from '@umijs/max';
 import { Button, Input, message, Upload } from 'antd';
 import React from 'react';
-import { queryCity, queryCurrent, queryProvince } from '../service';
+import {
+  getAccountSettingsCurrentUser as queryCurrent,
+  queryGeographicCity as queryCity,
+  queryGeographicProvince as queryProvince,
+} from '@api';
 import useStyles from './index.style';
 
 const validatorPhone = (
@@ -148,8 +152,8 @@ const BaseView: React.FC = () => {
                   }}
                   name="province"
                   request={async () => {
-                    return queryProvince().then(({ data }) => {
-                      return data.map((item) => {
+                    return queryProvince().then(({ data }: any) => {
+                      return data.map((item: any) => {
                         return {
                           label: item.name,
                           value: item.id,
@@ -179,8 +183,8 @@ const BaseView: React.FC = () => {
                             return [];
                           }
                           return queryCity(province.key || '').then(
-                            ({ data }) => {
-                              return data.map((item) => {
+                            ({ data }: any) => {
+                              return data.map((item: any) => {
                                 return {
                                   label: item.name,
                                   value: item.id,

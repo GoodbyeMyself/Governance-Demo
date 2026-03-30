@@ -22,7 +22,7 @@ import Applications from './components/Applications';
 import Articles from './components/Articles';
 import Projects from './components/Projects';
 import type { CurrentUser, TagType, tabKeyType } from './data.d';
-import { queryCurrent } from './service';
+import { getAccountCenterCurrentUserDetail as queryCurrent } from '@api';
 
 const operationTabList = [
   {
@@ -244,7 +244,7 @@ const Center: React.FC = () => {
                 <div className={styles.team}>
                   <div className={styles.teamTitle}>团队</div>
                   <Row gutter={36}>
-                    {currentUser.notice?.map((item) => (
+                    {currentUser.notice?.map((item: any) => (
                       <Col key={item.id} lg={24} xl={12}>
                         <a href={item.href}>
                           <Avatar size="small" src={item.logo} />

@@ -18,7 +18,7 @@ import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
 import type { TableListItem, TableListPagination } from './data';
-import { addRule, removeRule, rule, updateRule } from './service';
+import { addRule, removeRule, rule, updateRule } from '@api';
 
 /**
  * 添加节点
