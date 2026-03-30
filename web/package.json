@@ -2,6 +2,10 @@
   "name": "governance-web",
   "private": true,
   "scripts": {
+    "dev:bms": "pnpm --filter ./apps/bms dev",
+    "build:bms": "pnpm --filter ./apps/bms build",
+    "preview:bms": "pnpm --filter ./apps/bms preview",
+
     "dev:govern": "pnpm --filter ./apps/govern dev",
     "build:govern": "pnpm --filter ./apps/govern build",
     "lint:govern": "pnpm --filter ./apps/govern lint",
@@ -14,6 +18,10 @@
 
     "dev:screen": "pnpm --filter ./apps/screen dev",
     "build:screen": "pnpm --filter ./apps/screen build",
-    "preview:screen": "pnpm --filter ./apps/screen preview"
+    "preview:screen": "pnpm --filter ./apps/screen preview",
+
+    "dev:template": "pnpm --filter ./apps/template dev",
+    "build:template": "pnpm --filter ./apps/template build",
+    "preview:template": "pnpm --filter ./apps/template preview"
   }
 }

@@ -8,6 +8,133 @@ importers:
 
   .: {}
 
+  apps/bms:
+    dependencies:
+      '@ant-design/icons':
+        specifier: ^5.6.1
+        version: 5.6.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@ant-design/plots':
+        specifier: ^2.6.0
+        version: 2.6.8(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@ant-design/pro-components':
+        specifier: ^2.7.19
+        version: 2.8.10(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@ant-design/v5-patch-for-react-19':
+        specifier: ^1.0.3
+        version: 1.0.3(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@antv/l7':
+        specifier: ^2.22.7
+        version: 2.25.2
+      '@antv/l7-react':
+        specifier: ^2.4.3
+        version: 2.4.3(@antv/l7@2.25.2)(mapbox-gl@1.13.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@governance/api':
+        specifier: workspace:*
+        version: link:../../packages/api
+      '@governance/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
+      antd:
+        specifier: ^5.25.4
+        version: 5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      antd-style:
+        specifier: ^3.7.0
+        version: 3.7.1(@types/react@19.2.14)(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      classnames:
+        specifier: ^2.5.1
+        version: 2.5.1
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.20
+      numeral:
+        specifier: ^2.0.6
+        version: 2.0.6
+      rc-util:
+        specifier: ^5.44.4
+        version: 5.44.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react:
+        specifier: ^19.1.0
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.1.0
+        version: 19.2.4(react@19.2.4)
+    devDependencies:
+      '@ant-design/pro-cli':
+        specifier: ^3.3.0
+        version: 3.4.0(@types/node@25.5.0)(encoding@0.1.13)(mem-fs@2.3.0)
+      '@biomejs/biome':
+        specifier: ^2.0.6
+        version: 2.4.8
+      '@commitlint/cli':
+        specifier: ^19.5.0
+        version: 19.8.1(@types/node@25.5.0)(typescript@5.9.3)
+      '@commitlint/config-conventional':
+        specifier: ^19.5.0
+        version: 19.8.1
+      '@testing-library/dom':
+        specifier: ^10.4.0
+        version: 10.4.1
+      '@testing-library/react':
+        specifier: ^16.0.1
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@types/express':
+        specifier: ^5.0.3
+        version: 5.0.6
+      '@types/jest':
+        specifier: ^30.0.0
+        version: 30.0.0
+      '@types/lodash':
+        specifier: ^4.17.10
+        version: 4.17.24
+      '@types/react':
+        specifier: ^19.1.5
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: ^19.1.5
+        version: 19.2.3(@types/react@19.2.14)
+      '@types/react-helmet':
+        specifier: ^6.1.11
+        version: 6.1.11
+      '@umijs/max':
+        specifier: ^4.3.24
+        version: 4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(lightningcss@1.22.1)(prettier@2.8.8)(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
+      express:
+        specifier: ^4.21.1
+        version: 4.22.1
+      gh-pages:
+        specifier: ^6.1.1
+        version: 6.3.0
+      jest:
+        specifier: ^30.0.4
+        version: 30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3))
+      jest-environment-jsdom:
+        specifier: ^29.7.0
+        version: 29.7.0
+      lint-staged:
+        specifier: ^16.1.2
+        version: 16.4.0
+      mockjs:
+        specifier: ^1.1.0
+        version: 1.1.0
+      swagger-ui-dist:
+        specifier: ^5.32.1
+        version: 5.32.1
+      ts-node:
+        specifier: ^10.9.2
+        version: 10.9.2(@types/node@25.5.0)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      umi-presets-pro:
+        specifier: ^2.0.3
+        version: 2.0.3(@babel/core@7.29.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(chokidar@3.6.0)(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(encoding@0.1.13)(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(umi@4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react@19.2.14)(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(lightningcss@1.22.1)(prettier@2.8.8)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4))
+      umi-serve:
+        specifier: ^1.9.11
+        version: 1.9.11(@babel/core@7.29.0)
+
   apps/govern:
     dependencies:
       '@ant-design/icons':
@@ -173,6 +300,133 @@ importers:
       react-dom:
         specifier: ^19.1.0
         version: 19.2.4(react@19.2.4)
+
+  apps/template:
+    dependencies:
+      '@ant-design/icons':
+        specifier: ^5.6.1
+        version: 5.6.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@ant-design/plots':
+        specifier: ^2.6.0
+        version: 2.6.8(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@ant-design/pro-components':
+        specifier: ^2.7.19
+        version: 2.8.10(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@ant-design/v5-patch-for-react-19':
+        specifier: ^1.0.3
+        version: 1.0.3(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@antv/l7':
+        specifier: ^2.22.7
+        version: 2.25.2
+      '@antv/l7-react':
+        specifier: ^2.4.3
+        version: 2.4.3(@antv/l7@2.25.2)(mapbox-gl@1.13.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@governance/api':
+        specifier: workspace:*
+        version: link:../../packages/api
+      '@governance/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
+      antd:
+        specifier: ^5.25.4
+        version: 5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      antd-style:
+        specifier: ^3.7.0
+        version: 3.7.1(@types/react@19.2.14)(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      classnames:
+        specifier: ^2.5.1
+        version: 2.5.1
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.20
+      numeral:
+        specifier: ^2.0.6
+        version: 2.0.6
+      rc-util:
+        specifier: ^5.44.4
+        version: 5.44.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react:
+        specifier: ^19.1.0
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.1.0
+        version: 19.2.4(react@19.2.4)
+    devDependencies:
+      '@ant-design/pro-cli':
+        specifier: ^3.3.0
+        version: 3.4.0(@types/node@25.5.0)(encoding@0.1.13)(mem-fs@2.3.0)
+      '@biomejs/biome':
+        specifier: ^2.0.6
+        version: 2.4.8
+      '@commitlint/cli':
+        specifier: ^19.5.0
+        version: 19.8.1(@types/node@25.5.0)(typescript@5.9.3)
+      '@commitlint/config-conventional':
+        specifier: ^19.5.0
+        version: 19.8.1
+      '@testing-library/dom':
+        specifier: ^10.4.0
+        version: 10.4.1
+      '@testing-library/react':
+        specifier: ^16.0.1
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@types/express':
+        specifier: ^5.0.3
+        version: 5.0.6
+      '@types/jest':
+        specifier: ^30.0.0
+        version: 30.0.0
+      '@types/lodash':
+        specifier: ^4.17.10
+        version: 4.17.24
+      '@types/react':
+        specifier: ^19.1.5
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: ^19.1.5
+        version: 19.2.3(@types/react@19.2.14)
+      '@types/react-helmet':
+        specifier: ^6.1.11
+        version: 6.1.11
+      '@umijs/max':
+        specifier: ^4.3.24
+        version: 4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(lightningcss@1.22.1)(prettier@2.8.8)(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
+      express:
+        specifier: ^4.21.1
+        version: 4.22.1
+      gh-pages:
+        specifier: ^6.1.1
+        version: 6.3.0
+      jest:
+        specifier: ^30.0.4
+        version: 30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3))
+      jest-environment-jsdom:
+        specifier: ^29.7.0
+        version: 29.7.0
+      lint-staged:
+        specifier: ^16.1.2
+        version: 16.4.0
+      mockjs:
+        specifier: ^1.1.0
+        version: 1.1.0
+      swagger-ui-dist:
+        specifier: ^5.32.1
+        version: 5.32.1
+      ts-node:
+        specifier: ^10.9.2
+        version: 10.9.2(@types/node@25.5.0)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      umi-presets-pro:
+        specifier: ^2.0.3
+        version: 2.0.3(@babel/core@7.29.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(chokidar@3.6.0)(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(encoding@0.1.13)(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(umi@4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react@19.2.14)(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(lightningcss@1.22.1)(prettier@2.8.8)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4))
+      umi-serve:
+        specifier: ^1.9.11
+        version: 1.9.11(@babel/core@7.29.0)
 
   packages/api:
     dependencies:
@@ -15747,11 +16001,11 @@ snapshots:
 
   '@stagewise/toolbar@0.6.2': {}
 
-  '@stylelint/postcss-css-in-js@0.37.3(postcss-syntax@0.36.2(postcss@8.5.8))(postcss@7.0.39)':
+  '@stylelint/postcss-css-in-js@0.37.3(postcss-syntax@0.36.2)(postcss@7.0.39)':
     dependencies:
       '@babel/core': 7.29.0
       postcss: 7.0.39
-      postcss-syntax: 0.36.2(postcss@8.5.8)
+      postcss-syntax: 0.36.2(postcss-html@0.36.0)(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39)
     transitivePeerDependencies:
       - supports-color
 
@@ -15763,10 +16017,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@stylelint/postcss-markdown@0.36.2(postcss-syntax@0.36.2(postcss@8.5.8))(postcss@7.0.39)':
+  '@stylelint/postcss-markdown@0.36.2(postcss-syntax@0.36.2)(postcss@7.0.39)':
     dependencies:
       postcss: 7.0.39
-      postcss-syntax: 0.36.2(postcss@8.5.8)
+      postcss-syntax: 0.36.2(postcss-html@0.36.0)(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39)
       remark: 13.0.0
       unist-util-find-all-after: 3.0.2
     transitivePeerDependencies:
@@ -16282,10 +16536,10 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.3
 
-  '@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.35.0)(typescript@5.9.3))(eslint@7.32.0)(typescript@4.9.5)':
+  '@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0)(typescript@4.9.5)':
     dependencies:
       '@eslint-community/regexpp': 4.12.2
-      '@typescript-eslint/parser': 5.62.0(eslint@8.35.0)(typescript@5.9.3)
+      '@typescript-eslint/parser': 5.62.0(eslint@7.32.0)(typescript@4.9.5)
       '@typescript-eslint/scope-manager': 5.62.0
       '@typescript-eslint/type-utils': 5.62.0(eslint@7.32.0)(typescript@4.9.5)
       '@typescript-eslint/utils': 5.62.0(eslint@7.32.0)(typescript@4.9.5)
@@ -16751,14 +17005,14 @@ snapshots:
       '@babel/preset-env': 7.29.2(@babel/core@7.29.0)
       '@babel/preset-react': 7.28.5(@babel/core@7.29.0)
       '@babel/preset-typescript': 7.28.5(@babel/core@7.29.0)
-      '@typescript-eslint/eslint-plugin': 5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.35.0)(typescript@5.9.3))(eslint@7.32.0)(typescript@4.9.5)
+      '@typescript-eslint/eslint-plugin': 5.62.0(@typescript-eslint/parser@5.62.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0)(typescript@4.9.5)
       '@typescript-eslint/parser': 5.62.0(eslint@7.32.0)(typescript@4.9.5)
       chalk: 4.1.2
       eslint: 7.32.0
       eslint-config-prettier: 8.10.2(eslint@7.32.0)
       eslint-formatter-pretty: 4.1.0
       eslint-plugin-babel: 5.3.1(eslint@7.32.0)
-      eslint-plugin-jest: 24.7.0(@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.35.0)(typescript@5.9.3))(eslint@8.35.0)(typescript@5.9.3))(eslint@7.32.0)(typescript@4.9.5)
+      eslint-plugin-jest: 24.7.0(@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0)(typescript@4.9.5)
       eslint-plugin-promise: 6.6.0(eslint@7.32.0)
       eslint-plugin-react: 7.37.5(eslint@7.32.0)
       eslint-plugin-react-hooks: 4.6.2(eslint@7.32.0)
@@ -16819,6 +17073,32 @@ snapshots:
       '@typescript-eslint/parser': 5.62.0(eslint@8.35.0)
       '@umijs/babel-preset-umi': 4.6.35
       eslint-plugin-jest: 27.2.3(@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.35.0))(eslint@8.35.0))(eslint@8.35.0)
+      eslint-plugin-react: 7.33.2(eslint@8.35.0)
+      eslint-plugin-react-hooks: 4.6.0(eslint@8.35.0)
+      postcss: 8.5.8
+      postcss-syntax: 0.36.2(postcss@8.5.8)
+      stylelint-config-standard: 25.0.0(stylelint@14.8.2)
+    transitivePeerDependencies:
+      - eslint
+      - jest
+      - postcss-html
+      - postcss-jsx
+      - postcss-less
+      - postcss-markdown
+      - postcss-scss
+      - stylelint
+      - supports-color
+      - typescript
+
+  '@umijs/lint@4.6.35(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(typescript@5.9.3)':
+    dependencies:
+      '@babel/core': 7.23.6
+      '@babel/eslint-parser': 7.23.3(@babel/core@7.23.6)(eslint@8.35.0)
+      '@stylelint/postcss-css-in-js': 0.38.0(postcss-syntax@0.36.2(postcss@8.5.8))(postcss@8.5.8)
+      '@typescript-eslint/eslint-plugin': 5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.35.0)(typescript@5.9.3))(eslint@8.35.0)(typescript@5.9.3)
+      '@typescript-eslint/parser': 5.62.0(eslint@8.35.0)(typescript@5.9.3)
+      '@umijs/babel-preset-umi': 4.6.35
+      eslint-plugin-jest: 27.2.3(@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.35.0)(typescript@5.9.3))(eslint@8.35.0)(typescript@5.9.3))(eslint@8.35.0)(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(typescript@5.9.3)
       eslint-plugin-react: 7.33.2(eslint@8.35.0)
       eslint-plugin-react-hooks: 4.6.0(eslint@8.35.0)
       postcss: 8.5.8
@@ -17299,6 +17579,16 @@ snapshots:
       lodash: 4.17.23
       prettier: 2.8.8
       umi: 4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react@19.2.14)(eslint@8.35.0)(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(lightningcss@1.22.1)(prettier@2.8.8)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(stylelint@14.8.2)(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
+    transitivePeerDependencies:
+      - supports-color
+
+  '@umijs/request-record@1.1.4(umi@4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react@19.2.14)(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(lightningcss@1.22.1)(prettier@2.8.8)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4))':
+    dependencies:
+      chokidar: 3.6.0
+      express: 4.22.1
+      lodash: 4.17.23
+      prettier: 2.8.8
+      umi: 4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react@19.2.14)(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(lightningcss@1.22.1)(prettier@2.8.8)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
     transitivePeerDependencies:
       - supports-color
 
@@ -19994,12 +20284,12 @@ snapshots:
       eslint: 7.32.0
       eslint-rule-composer: 0.3.0
 
-  eslint-plugin-jest@24.7.0(@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.35.0)(typescript@5.9.3))(eslint@8.35.0)(typescript@5.9.3))(eslint@7.32.0)(typescript@4.9.5):
+  eslint-plugin-jest@24.7.0(@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0)(typescript@4.9.5):
     dependencies:
       '@typescript-eslint/experimental-utils': 4.33.0(eslint@7.32.0)(typescript@4.9.5)
       eslint: 7.32.0
     optionalDependencies:
-      '@typescript-eslint/eslint-plugin': 5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.35.0)(typescript@5.9.3))(eslint@8.35.0)(typescript@5.9.3)
+      '@typescript-eslint/eslint-plugin': 5.62.0(@typescript-eslint/parser@5.62.0(eslint@7.32.0)(typescript@4.9.5))(eslint@7.32.0)(typescript@4.9.5)
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -23930,11 +24220,11 @@ snapshots:
     dependencies:
       postcss: 8.5.8
 
-  postcss-html@0.36.0(postcss-syntax@0.36.2(postcss@8.5.8))(postcss@7.0.39):
+  postcss-html@0.36.0(postcss-syntax@0.36.2)(postcss@7.0.39):
     dependencies:
       htmlparser2: 3.10.1
       postcss: 7.0.39
-      postcss-syntax: 0.36.2(postcss@8.5.8)
+      postcss-syntax: 0.36.2(postcss-html@0.36.0)(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39)
 
   postcss-image-set-function@4.0.7(postcss@8.5.8):
     dependencies:
@@ -24130,7 +24420,7 @@ snapshots:
     dependencies:
       postcss: 7.0.39
     optionalDependencies:
-      postcss-html: 0.36.0(postcss-syntax@0.36.2(postcss@8.5.8))(postcss@7.0.39)
+      postcss-html: 0.36.0(postcss-syntax@0.36.2)(postcss@7.0.39)
       postcss-less: 3.1.4
       postcss-scss: 2.1.1
 
@@ -26533,8 +26823,8 @@ snapshots:
 
   stylelint@13.13.1:
     dependencies:
-      '@stylelint/postcss-css-in-js': 0.37.3(postcss-syntax@0.36.2(postcss@8.5.8))(postcss@7.0.39)
-      '@stylelint/postcss-markdown': 0.36.2(postcss-syntax@0.36.2(postcss@8.5.8))(postcss@7.0.39)
+      '@stylelint/postcss-css-in-js': 0.37.3(postcss-syntax@0.36.2)(postcss@7.0.39)
+      '@stylelint/postcss-markdown': 0.36.2(postcss-syntax@0.36.2)(postcss@7.0.39)
       autoprefixer: 9.8.8
       balanced-match: 2.0.0
       chalk: 4.1.2
@@ -26560,7 +26850,7 @@ snapshots:
       micromatch: 4.0.8
       normalize-selector: 0.2.0
       postcss: 7.0.39
-      postcss-html: 0.36.0(postcss-syntax@0.36.2(postcss@8.5.8))(postcss@7.0.39)
+      postcss-html: 0.36.0(postcss-syntax@0.36.2)(postcss@7.0.39)
       postcss-less: 3.1.4
       postcss-media-query-parser: 0.2.3
       postcss-resolve-nested-selector: 0.1.6
@@ -27062,6 +27352,30 @@ snapshots:
       - typescript
       - umi
 
+  umi-presets-pro@2.0.3(@babel/core@7.29.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(chokidar@3.6.0)(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(encoding@0.1.13)(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(umi@4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react@19.2.14)(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(lightningcss@1.22.1)(prettier@2.8.8)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)):
+    dependencies:
+      '@alita/plugins': 3.5.5(@babel/core@7.29.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@umijs/max-plugin-openapi': 2.0.3(chokidar@3.6.0)(encoding@0.1.13)(typescript@5.9.3)
+      '@umijs/plugins': 4.6.35(@babel/core@7.29.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@umijs/request-record': 1.1.4(umi@4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react@19.2.14)(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(lightningcss@1.22.1)(prettier@2.8.8)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4))
+      swagger-ui-dist: 4.19.1
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@types/react'
+      - '@types/react-dom'
+      - antd
+      - chokidar
+      - debug
+      - dva
+      - encoding
+      - rc-field-form
+      - react
+      - react-dom
+      - react-native
+      - supports-color
+      - typescript
+      - umi
+
   umi-request@1.4.0:
     dependencies:
       isomorphic-fetch: 2.2.1
@@ -27104,6 +27418,61 @@ snapshots:
       '@umijs/bundler-webpack': 4.6.35(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
       '@umijs/core': 4.6.35
       '@umijs/lint': 4.6.35(eslint@8.35.0)(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(stylelint@14.8.2)(typescript@5.9.3)
+      '@umijs/preset-umi': 4.6.35(@types/node@25.5.0)(@types/react@19.2.14)(lightningcss@1.22.1)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
+      '@umijs/renderer-react': 4.6.35(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@umijs/server': 4.6.35
+      '@umijs/test': 4.6.35(@babel/core@7.29.0)
+      '@umijs/utils': 4.6.35
+      prettier-plugin-organize-imports: 3.2.4(prettier@2.8.8)(typescript@5.9.3)
+      prettier-plugin-packagejson: 2.4.3(prettier@2.8.8)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@rspack/core'
+      - '@types/node'
+      - '@types/react'
+      - '@types/webpack'
+      - '@volar/vue-language-plugin-pug'
+      - '@volar/vue-typescript'
+      - bufferutil
+      - eslint
+      - fibers
+      - jest
+      - lightningcss
+      - node-sass
+      - postcss-html
+      - postcss-jsx
+      - postcss-less
+      - postcss-markdown
+      - postcss-scss
+      - prettier
+      - react
+      - react-dom
+      - resolve-url-loader
+      - rollup
+      - sass
+      - sass-embedded
+      - sockjs-client
+      - styled-jsx
+      - stylelint
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - type-fest
+      - typescript
+      - utf-8-validate
+      - webpack
+      - webpack-dev-server
+      - webpack-hot-middleware
+      - webpack-plugin-serve
+
+  umi@4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react@19.2.14)(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(lightningcss@1.22.1)(prettier@2.8.8)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4):
+    dependencies:
+      '@babel/runtime': 7.23.6
+      '@umijs/bundler-utils': 4.6.35
+      '@umijs/bundler-webpack': 4.6.35(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
+      '@umijs/core': 4.6.35
+      '@umijs/lint': 4.6.35(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(typescript@5.9.3)
       '@umijs/preset-umi': 4.6.35(@types/node@25.5.0)(@types/react@19.2.14)(lightningcss@1.22.1)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
       '@umijs/renderer-react': 4.6.35(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@umijs/server': 4.6.35
