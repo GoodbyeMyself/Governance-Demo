@@ -1,0 +1,10 @@
+{
+  "name": "@governance/utils",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "antd": "^5.25.4",
+    "dayjs": "^1.11.13"
+  }
+}

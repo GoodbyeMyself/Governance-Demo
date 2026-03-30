@@ -2,7 +2,17 @@
   "permissions": {
     "allow": [
       "Skill(playwright-cli)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(git status:*)",
+      "Bash(git mv:*)",
+      "Bash(pnpm --dir \"/e/Governance-Demo/web\" --filter @governance/govern tsc --noEmit)",
+      "Bash(pnpm --dir \"/e/Governance-Demo/web\" install)",
+      "Bash(CI=true pnpm --dir \"/e/Governance-Demo/web\" install)",
+      "Bash(CI=true pnpm --dir \"/e/Governance-Demo/web\" install --no-frozen-lockfile)",
+      "Bash(PNPM_FROZEN_LOCKFILE=false pnpm --dir \"/e/Governance-Demo/web\" install)",
+      "Bash(pnpm --dir \"/e/Governance-Demo/web\" install --config.confirmModulesPurge=false)",
+      "Bash(pnpm --dir \"/e/Governance-Demo/web\" --filter @governance/govern dev -- --port 3001)",
+      "Bash(pnpm --dir \"/e/Governance-Demo/web\" --filter @governance/govern dev)"
     ]
   }
 }

@@ -1,0 +1,17 @@
+{
+  "name": "@governance/portal",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "max dev --port 3002",
+    "build": "max build",
+    "preview": "max preview --port 3002"
+  },
+  "dependencies": {
+    "@umijs/max": "^4.3.24",
+    "antd": "^5.25.4",
+    "dayjs": "^1.11.13",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  }
+}

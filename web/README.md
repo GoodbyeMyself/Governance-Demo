@@ -1,16 +1,59 @@
-# Govern
+# web
 
+当前目录已开始按 monorepo 结构改造，现阶段已将后台应用下沉到 `apps/govern`，并约定后续新增：
+
+- `apps/govern`：后台管理端（已完成 monorepo 接入）
+- `apps/portal`：门户端（骨架已建立）
+- `apps/screen`：大屏端（骨架已建立）
+
+三端当前阶段统一保持 **Umi Max**，待整体结构稳定后再评估框架层调整。
+
+## 当前开发入口
+
+- 后台应用：`apps/govern`
 
 Install `node_modules`:
 
 ```bash
-npm install
+pnpm install
 ```
 
-or
+## 常用命令
+
+### 启动后台应用
 
 ```bash
-yarn
+pnpm dev:govern
+```
+
+### 启动门户应用
+
+```bash
+pnpm dev:portal
+```
+
+### 启动大屏应用
+
+```bash
+pnpm dev:screen
+```
+
+### 构建后台应用
+
+```bash
+pnpm build:govern
+```
+
+### 检查后台应用
+
+```bash
+pnpm lint:govern
+```
+
+### 测试后台应用
+
+```bash
+pnpm test:govern
 ```
 
 ## Provided Scripts
