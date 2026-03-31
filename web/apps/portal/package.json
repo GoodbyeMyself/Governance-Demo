@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "max dev --port 3033",
+    "dev": "max dev",
     "build": "max build",
     "lint": "npm run typecheck",
     "typecheck": "tsc --noEmit",
-    "preview": "max preview --port 3033"
+    "preview": "max preview"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",

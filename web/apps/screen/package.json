@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "max dev --port 3034",
+    "dev": "max dev",
     "build": "max build",
     "lint": "npm run typecheck",
     "typecheck": "tsc --noEmit",
-    "preview": "max preview --port 3034"
+    "preview": "max preview"
   },
   "devDependencies": {
     "@types/react": "^19.1.5",

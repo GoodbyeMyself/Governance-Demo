@@ -45,7 +45,7 @@ export default [
   },
   {
     path: '',
-    redirect: '/dashboard/analysis',
+    redirect: '/dashboard/workplace',
   },
   {
     path: '/dashboard',
@@ -54,7 +54,7 @@ export default [
     routes: [
       {
         path: '/dashboard',
-        redirect: '/dashboard/analysis',
+        redirect: '/dashboard/workplace',
       },
       {
         name: 'workplace',
