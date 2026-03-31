@@ -472,6 +472,15 @@ importers:
       antd-style:
         specifier: ^3.7.0
         version: 3.7.1(@types/react@19.2.14)(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      classnames:
+        specifier: ^2.5.1
+        version: 2.5.1
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.20
+      numeral:
+        specifier: ^2.0.6
+        version: 2.0.6
       react:
         specifier: ^19.1.0
         version: 19.2.4

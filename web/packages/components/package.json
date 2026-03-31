@@ -9,6 +9,9 @@
     "@umijs/max": "^4.3.24",
     "antd": "^5.25.4",
     "antd-style": "^3.7.0",
+    "classnames": "^2.5.1",
+    "dayjs": "^1.11.13",
+    "numeral": "^2.0.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   }
