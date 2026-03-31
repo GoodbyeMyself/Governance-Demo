@@ -1,5 +1,5 @@
 {
-  "name": "@governance/govern",
+  "name": "@governance/bms",
   "version": "6.0.0",
   "private": true,
   "description": "An out-of-box UI solution for enterprise applications",
@@ -28,7 +28,8 @@
     "test": "jest",
     "test:coverage": "npm run jest -- --coverage",
     "test:update": "npm run jest -- -u",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "typecheck": "npm run tsc"
   },
   "browserslist": [
     "defaults"

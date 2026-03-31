@@ -5,7 +5,15 @@
   "scripts": {
     "dev": "max dev --port 3033",
     "build": "max build",
+    "lint": "npm run typecheck",
+    "typecheck": "tsc --noEmit",
     "preview": "max preview --port 3033"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/react": "^19.1.5",
+    "@types/react-dom": "^19.1.5",
+    "typescript": "^5.6.3"
   },
   "dependencies": {
     "@ant-design/icons": "^5.6.1",

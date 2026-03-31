@@ -278,7 +278,7 @@ importers:
         version: 1.0.3(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@umijs/max':
         specifier: ^4.3.24
-        version: 4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(lightningcss@1.22.1)(prettier@2.8.8)(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(webpack@5.105.4)
+        version: 4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(lightningcss@1.22.1)(prettier@2.8.8)(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
       antd:
         specifier: ^5.25.4
         version: 5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -300,6 +300,19 @@ importers:
       react-dom:
         specifier: ^19.1.0
         version: 19.2.4(react@19.2.4)
+    devDependencies:
+      '@types/express':
+        specifier: ^5.0.3
+        version: 5.0.6
+      '@types/react':
+        specifier: ^19.1.5
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: ^19.1.5
+        version: 19.2.3(@types/react@19.2.14)
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
   apps/screen:
     dependencies:
@@ -308,64 +321,13 @@ importers:
         version: link:../../packages/components
       '@umijs/max':
         specifier: ^4.3.24
-        version: 4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(lightningcss@1.22.1)(prettier@2.8.8)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(webpack@5.105.4)
+        version: 4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(lightningcss@1.22.1)(prettier@2.8.8)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
       antd:
         specifier: ^5.25.4
         version: 5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       dayjs:
         specifier: ^1.11.13
         version: 1.11.20
-      react:
-        specifier: ^19.1.0
-        version: 19.2.4
-      react-dom:
-        specifier: ^19.1.0
-        version: 19.2.4(react@19.2.4)
-
-  apps/template:
-    dependencies:
-      '@ant-design/icons':
-        specifier: ^5.6.1
-        version: 5.6.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@ant-design/plots':
-        specifier: ^2.6.0
-        version: 2.6.8(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@ant-design/pro-components':
-        specifier: ^2.7.19
-        version: 2.8.10(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@ant-design/v5-patch-for-react-19':
-        specifier: ^1.0.3
-        version: 1.0.3(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@antv/l7':
-        specifier: ^2.22.7
-        version: 2.25.2
-      '@antv/l7-react':
-        specifier: ^2.4.3
-        version: 2.4.3(@antv/l7@2.25.2)(mapbox-gl@1.13.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@governance/api':
-        specifier: workspace:*
-        version: link:../../packages/api
-      '@governance/utils':
-        specifier: workspace:*
-        version: link:../../packages/utils
-      antd:
-        specifier: ^5.25.4
-        version: 5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      antd-style:
-        specifier: ^3.7.0
-        version: 3.7.1(@types/react@19.2.14)(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      classnames:
-        specifier: ^2.5.1
-        version: 2.5.1
-      dayjs:
-        specifier: ^1.11.13
-        version: 1.11.20
-      numeral:
-        specifier: ^2.0.6
-        version: 2.0.6
-      rc-util:
-        specifier: ^5.44.4
-        version: 5.44.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: ^19.1.0
         version: 19.2.4
@@ -373,81 +335,15 @@ importers:
         specifier: ^19.1.0
         version: 19.2.4(react@19.2.4)
     devDependencies:
-      '@ant-design/pro-cli':
-        specifier: ^3.3.0
-        version: 3.4.0(@types/node@25.5.0)(encoding@0.1.13)(mem-fs@2.3.0)
-      '@biomejs/biome':
-        specifier: ^2.0.6
-        version: 2.4.8
-      '@commitlint/cli':
-        specifier: ^19.5.0
-        version: 19.8.1(@types/node@25.5.0)(typescript@5.9.3)
-      '@commitlint/config-conventional':
-        specifier: ^19.5.0
-        version: 19.8.1
-      '@testing-library/dom':
-        specifier: ^10.4.0
-        version: 10.4.1
-      '@testing-library/react':
-        specifier: ^16.0.1
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@types/express':
-        specifier: ^5.0.3
-        version: 5.0.6
-      '@types/jest':
-        specifier: ^30.0.0
-        version: 30.0.0
-      '@types/lodash':
-        specifier: ^4.17.10
-        version: 4.17.24
       '@types/react':
         specifier: ^19.1.5
         version: 19.2.14
       '@types/react-dom':
         specifier: ^19.1.5
         version: 19.2.3(@types/react@19.2.14)
-      '@types/react-helmet':
-        specifier: ^6.1.11
-        version: 6.1.11
-      '@umijs/max':
-        specifier: ^4.3.24
-        version: 4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(lightningcss@1.22.1)(prettier@2.8.8)(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
-      cross-env:
-        specifier: ^7.0.3
-        version: 7.0.3
-      express:
-        specifier: ^4.21.1
-        version: 4.22.1
-      gh-pages:
-        specifier: ^6.1.1
-        version: 6.3.0
-      jest:
-        specifier: ^30.0.4
-        version: 30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3))
-      jest-environment-jsdom:
-        specifier: ^29.7.0
-        version: 29.7.0
-      lint-staged:
-        specifier: ^16.1.2
-        version: 16.4.0
-      mockjs:
-        specifier: ^1.1.0
-        version: 1.1.0
-      swagger-ui-dist:
-        specifier: ^5.32.1
-        version: 5.32.1
-      ts-node:
-        specifier: ^10.9.2
-        version: 10.9.2(@types/node@25.5.0)(typescript@5.9.3)
       typescript:
         specifier: ^5.6.3
         version: 5.9.3
-      umi-presets-pro:
-        specifier: ^2.0.3
-        version: 2.0.3(@babel/core@7.29.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(chokidar@3.6.0)(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(encoding@0.1.13)(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(umi@4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react@19.2.14)(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(lightningcss@1.22.1)(prettier@2.8.8)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4))
-      umi-serve:
-        specifier: ^1.9.11
-        version: 1.9.11(@babel/core@7.29.0)
 
   packages/api:
     dependencies:
@@ -465,7 +361,7 @@ importers:
         version: 2.8.10(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@umijs/max':
         specifier: ^4.3.24
-        version: 4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(lightningcss@1.22.1)(prettier@2.8.8)(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(webpack@5.105.4)
+        version: 4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(lightningcss@1.22.1)(prettier@2.8.8)(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
       antd:
         specifier: ^5.25.4
         version: 5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -487,6 +383,16 @@ importers:
       react-dom:
         specifier: ^19.1.0
         version: 19.2.4(react@19.2.4)
+    devDependencies:
+      '@types/react':
+        specifier: ^19.1.5
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: ^19.1.5
+        version: 19.2.3(@types/react@19.2.14)
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
   packages/i18n: {}
 
@@ -16936,7 +16842,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@umijs/bundler-utoopack@4.6.35(resolve-url-loader@5.0.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)':
+  '@umijs/bundler-utoopack@4.6.35(resolve-url-loader@5.0.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)':
     dependencies:
       '@umijs/bundler-utils': 4.6.35
       '@umijs/bundler-webpack': 4.6.35(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
@@ -17325,14 +17231,66 @@ snapshots:
       - webpack-hot-middleware
       - webpack-plugin-serve
 
-  '@umijs/max@4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(lightningcss@1.22.1)(prettier@2.8.8)(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(webpack@5.105.4)':
+  '@umijs/max@4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(lightningcss@1.22.1)(prettier@2.8.8)(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)':
     dependencies:
-      '@umijs/lint': 4.6.35(eslint@8.35.0)(stylelint@14.8.2)
+      '@umijs/lint': 4.6.35(eslint@8.35.0)(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(stylelint@14.8.2)(typescript@5.9.3)
       '@umijs/plugins': 4.6.35(@babel/core@7.29.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(antd@4.24.16(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       antd: 4.24.16(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       eslint: 8.35.0
       stylelint: 14.8.2
-      umi: 4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(eslint@8.35.0)(lightningcss@1.22.1)(prettier@2.8.8)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(stylelint@14.8.2)(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(webpack@5.105.4)
+      umi: 4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react@19.2.14)(eslint@8.35.0)(lightningcss@1.22.1)(prettier@2.8.8)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(stylelint@14.8.2)(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@rspack/core'
+      - '@types/node'
+      - '@types/react'
+      - '@types/react-dom'
+      - '@types/webpack'
+      - '@volar/vue-language-plugin-pug'
+      - '@volar/vue-typescript'
+      - bufferutil
+      - debug
+      - dva
+      - fibers
+      - jest
+      - lightningcss
+      - node-sass
+      - postcss-html
+      - postcss-jsx
+      - postcss-less
+      - postcss-markdown
+      - postcss-scss
+      - prettier
+      - rc-field-form
+      - react
+      - react-dom
+      - react-native
+      - resolve-url-loader
+      - rollup
+      - sass
+      - sass-embedded
+      - sockjs-client
+      - styled-jsx
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - type-fest
+      - typescript
+      - utf-8-validate
+      - webpack
+      - webpack-dev-server
+      - webpack-hot-middleware
+      - webpack-plugin-serve
+
+  '@umijs/max@4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(lightningcss@1.22.1)(prettier@2.8.8)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)':
+    dependencies:
+      '@umijs/lint': 4.6.35(eslint@8.35.0)(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(stylelint@14.8.2)(typescript@5.9.3)
+      '@umijs/plugins': 4.6.35(@babel/core@7.29.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(antd@4.24.16(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      antd: 4.24.16(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      eslint: 8.35.0
+      stylelint: 14.8.2
+      umi: 4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react@19.2.14)(eslint@8.35.0)(lightningcss@1.22.1)(prettier@2.8.8)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(stylelint@14.8.2)(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
     transitivePeerDependencies:
       - '@babel/core'
       - '@rspack/core'
@@ -17380,7 +17338,7 @@ snapshots:
   '@umijs/max@4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(lightningcss@1.22.1)(prettier@2.8.8)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(webpack@5.105.4)':
     dependencies:
       '@umijs/lint': 4.6.35(eslint@8.35.0)(stylelint@14.8.2)
-      '@umijs/plugins': 4.6.35(@babel/core@7.29.0)(antd@4.24.16(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@umijs/plugins': 4.6.35(@babel/core@7.29.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(antd@4.24.16(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       antd: 4.24.16(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       eslint: 8.35.0
       stylelint: 14.8.2
@@ -17557,6 +17515,51 @@ snapshots:
       - react-native
       - supports-color
 
+  '@umijs/plugins@4.6.35(@babel/core@7.29.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(antd@4.24.16(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+    dependencies:
+      '@ahooksjs/use-request': 2.8.15(react@19.2.4)
+      '@ant-design/antd-theme-variable': 1.0.0
+      '@ant-design/cssinjs': 1.24.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@ant-design/icons': 4.8.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@ant-design/moment-webpack-plugin': 0.0.3
+      '@ant-design/pro-components': 2.8.10(antd@4.24.16(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@tanstack/react-query': 4.43.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@tanstack/react-query-devtools': 4.43.0(@tanstack/react-query@4.43.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@umijs/bundler-utils': 4.6.35
+      '@umijs/valtio': 1.0.4(@types/react@19.2.14)(react@19.2.4)
+      antd-dayjs-webpack-plugin: 1.0.6(dayjs@1.11.20)
+      axios: 0.27.2
+      babel-plugin-import: 1.13.8
+      babel-plugin-styled-components: 2.1.4(@babel/core@7.29.0)(styled-components@6.1.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
+      dayjs: 1.11.20
+      dva-core: 2.0.4(redux@4.2.1)
+      dva-immer: 1.0.2(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
+      dva-loading: 3.0.25(dva-core@2.0.4(redux@4.2.1))
+      event-emitter: 0.3.5
+      fast-deep-equal: 3.1.3
+      intl: 1.2.5
+      lodash: 4.17.23
+      moment: 2.30.1
+      qiankun: 2.10.16
+      react-intl: 3.12.1(@types/react@19.2.14)(react@19.2.4)
+      react-redux: 8.1.3(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(redux@4.2.1)
+      redux: 4.2.1
+      styled-components: 6.1.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      tslib: 2.8.1
+      warning: 4.0.3
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@types/react'
+      - '@types/react-dom'
+      - antd
+      - debug
+      - dva
+      - rc-field-form
+      - react
+      - react-dom
+      - react-native
+      - supports-color
+
   '@umijs/plugins@4.6.35(@babel/core@7.29.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(antd@5.29.3(date-fns@2.30.0)(moment@2.30.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@ahooksjs/use-request': 2.8.15(react@19.2.4)
@@ -17602,52 +17605,7 @@ snapshots:
       - react-native
       - supports-color
 
-  '@umijs/plugins@4.6.35(@babel/core@7.29.0)(antd@4.24.16(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
-    dependencies:
-      '@ahooksjs/use-request': 2.8.15(react@19.2.4)
-      '@ant-design/antd-theme-variable': 1.0.0
-      '@ant-design/cssinjs': 1.24.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@ant-design/icons': 4.8.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@ant-design/moment-webpack-plugin': 0.0.3
-      '@ant-design/pro-components': 2.8.10(antd@4.24.16(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(rc-field-form@2.7.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@tanstack/react-query': 4.43.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@tanstack/react-query-devtools': 4.43.0(@tanstack/react-query@4.43.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@umijs/bundler-utils': 4.6.35
-      '@umijs/valtio': 1.0.4(@types/react@19.2.14)(react@19.2.4)
-      antd-dayjs-webpack-plugin: 1.0.6(dayjs@1.11.20)
-      axios: 0.27.2
-      babel-plugin-import: 1.13.8
-      babel-plugin-styled-components: 2.1.4(@babel/core@7.29.0)(styled-components@6.1.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
-      dayjs: 1.11.20
-      dva-core: 2.0.4(redux@4.2.1)
-      dva-immer: 1.0.2(dva@2.5.0-beta.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
-      dva-loading: 3.0.25(dva-core@2.0.4(redux@4.2.1))
-      event-emitter: 0.3.5
-      fast-deep-equal: 3.1.3
-      intl: 1.2.5
-      lodash: 4.17.23
-      moment: 2.30.1
-      qiankun: 2.10.16
-      react-intl: 3.12.1(@types/react@19.2.14)(react@19.2.4)
-      react-redux: 8.1.3(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(redux@4.2.1)
-      redux: 4.2.1
-      styled-components: 6.1.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      tslib: 2.8.1
-      warning: 4.0.3
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@types/react'
-      - '@types/react-dom'
-      - antd
-      - debug
-      - dva
-      - rc-field-form
-      - react
-      - react-dom
-      - react-native
-      - supports-color
-
-  '@umijs/preset-umi@4.6.35(@types/node@25.5.0)(@types/react@19.2.14)(lightningcss@1.22.1)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)':
+  '@umijs/preset-umi@4.6.35(@types/node@25.5.0)(@types/react@19.2.14)(lightningcss@1.22.1)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)':
     dependencies:
       '@iconify/utils': 2.1.1
       '@stagewise/toolbar': 0.6.2
@@ -17657,7 +17615,75 @@ snapshots:
       '@umijs/bundler-esbuild': 4.6.35
       '@umijs/bundler-mako': 0.11.10(postcss@8.5.8)(sass@1.54.0)(typescript@5.9.3)(webpack@5.105.4)
       '@umijs/bundler-utils': 4.6.35
-      '@umijs/bundler-utoopack': 4.6.35(resolve-url-loader@5.0.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
+      '@umijs/bundler-utoopack': 4.6.35(resolve-url-loader@5.0.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
+      '@umijs/bundler-vite': 4.6.35(@types/node@25.5.0)(lightningcss@1.22.1)(postcss@8.5.8)(rollup@3.30.0)(sass@1.54.0)(sugarss@2.0.0)(terser@5.46.1)
+      '@umijs/bundler-webpack': 4.6.35(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
+      '@umijs/core': 4.6.35
+      '@umijs/did-you-know': 1.0.4
+      '@umijs/es-module-parser': 0.0.7
+      '@umijs/history': 5.3.1
+      '@umijs/mfsu': 4.6.35
+      '@umijs/plugin-run': 4.6.35
+      '@umijs/renderer-react': 4.6.35(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@umijs/server': 4.6.35
+      '@umijs/ui': 3.0.1
+      '@umijs/utils': 4.6.35
+      '@umijs/zod2ts': 4.6.35
+      babel-plugin-dynamic-import-node: 2.3.3
+      babel-plugin-react-compiler: 0.0.0-experimental-c23de8d-20240515
+      click-to-react-component: 1.1.0(@types/react@19.2.14)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      core-js: 3.34.0
+      current-script-polyfill: 1.0.0
+      enhanced-resolve: 5.9.3
+      fast-glob: 3.2.12
+      html-webpack-plugin: 5.5.0(webpack@5.105.4)
+      less-plugin-resolve: 1.0.2
+      path-to-regexp: 1.7.0
+      postcss: 8.5.8
+      postcss-prefix-selector: 1.16.0(postcss@8.5.8)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      react-router: 6.3.0(react@18.3.1)
+      react-router-dom: 6.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      regenerator-runtime: 0.13.11
+    transitivePeerDependencies:
+      - '@rspack/core'
+      - '@types/node'
+      - '@types/react'
+      - '@types/webpack'
+      - bufferutil
+      - fibers
+      - lightningcss
+      - node-sass
+      - resolve-url-loader
+      - rollup
+      - sass
+      - sass-embedded
+      - sockjs-client
+      - styled-jsx
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - type-fest
+      - typescript
+      - utf-8-validate
+      - webpack
+      - webpack-dev-server
+      - webpack-hot-middleware
+      - webpack-plugin-serve
+
+  '@umijs/preset-umi@4.6.35(@types/node@25.5.0)(lightningcss@1.22.1)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(webpack@5.105.4)':
+    dependencies:
+      '@iconify/utils': 2.1.1
+      '@stagewise/toolbar': 0.6.2
+      '@svgr/core': 6.5.1
+      '@umijs/ast': 4.6.35
+      '@umijs/babel-preset-umi': 4.6.35
+      '@umijs/bundler-esbuild': 4.6.35
+      '@umijs/bundler-mako': 0.11.10(postcss@8.5.8)(sass@1.54.0)(typescript@5.9.3)(webpack@5.105.4)
+      '@umijs/bundler-utils': 4.6.35
+      '@umijs/bundler-utoopack': 4.6.35(resolve-url-loader@5.0.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
       '@umijs/bundler-vite': 4.6.35(@types/node@25.5.0)(lightningcss@1.22.1)(postcss@8.5.8)(rollup@3.30.0)(sass@1.54.0)(sugarss@2.0.0)(terser@5.46.1)
       '@umijs/bundler-webpack': 4.6.35(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
       '@umijs/core': 4.6.35
@@ -27607,7 +27633,62 @@ snapshots:
       '@umijs/bundler-webpack': 4.6.35(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
       '@umijs/core': 4.6.35
       '@umijs/lint': 4.6.35(eslint@8.35.0)(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(stylelint@14.8.2)(typescript@5.9.3)
-      '@umijs/preset-umi': 4.6.35(@types/node@25.5.0)(@types/react@19.2.14)(lightningcss@1.22.1)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
+      '@umijs/preset-umi': 4.6.35(@types/node@25.5.0)(@types/react@19.2.14)(lightningcss@1.22.1)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
+      '@umijs/renderer-react': 4.6.35(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@umijs/server': 4.6.35
+      '@umijs/test': 4.6.35(@babel/core@7.29.0)
+      '@umijs/utils': 4.6.35
+      prettier-plugin-organize-imports: 3.2.4(prettier@2.8.8)(typescript@5.9.3)
+      prettier-plugin-packagejson: 2.4.3(prettier@2.8.8)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@rspack/core'
+      - '@types/node'
+      - '@types/react'
+      - '@types/webpack'
+      - '@volar/vue-language-plugin-pug'
+      - '@volar/vue-typescript'
+      - bufferutil
+      - eslint
+      - fibers
+      - jest
+      - lightningcss
+      - node-sass
+      - postcss-html
+      - postcss-jsx
+      - postcss-less
+      - postcss-markdown
+      - postcss-scss
+      - prettier
+      - react
+      - react-dom
+      - resolve-url-loader
+      - rollup
+      - sass
+      - sass-embedded
+      - sockjs-client
+      - styled-jsx
+      - stylelint
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - type-fest
+      - typescript
+      - utf-8-validate
+      - webpack
+      - webpack-dev-server
+      - webpack-hot-middleware
+      - webpack-plugin-serve
+
+  umi@4.6.35(@babel/core@7.29.0)(@types/node@25.5.0)(@types/react@19.2.14)(eslint@8.35.0)(lightningcss@1.22.1)(prettier@2.8.8)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(stylelint@14.8.2)(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4):
+    dependencies:
+      '@babel/runtime': 7.23.6
+      '@umijs/bundler-utils': 4.6.35
+      '@umijs/bundler-webpack': 4.6.35(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
+      '@umijs/core': 4.6.35
+      '@umijs/lint': 4.6.35(eslint@8.35.0)(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(stylelint@14.8.2)(typescript@5.9.3)
+      '@umijs/preset-umi': 4.6.35(@types/node@25.5.0)(@types/react@19.2.14)(lightningcss@1.22.1)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
       '@umijs/renderer-react': 4.6.35(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@umijs/server': 4.6.35
       '@umijs/test': 4.6.35(@babel/core@7.29.0)
@@ -27662,7 +27743,7 @@ snapshots:
       '@umijs/bundler-webpack': 4.6.35(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
       '@umijs/core': 4.6.35
       '@umijs/lint': 4.6.35(jest@30.3.0(@types/node@25.5.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.5.0)(typescript@5.9.3)))(typescript@5.9.3)
-      '@umijs/preset-umi': 4.6.35(@types/node@25.5.0)(@types/react@19.2.14)(lightningcss@1.22.1)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
+      '@umijs/preset-umi': 4.6.35(@types/node@25.5.0)(@types/react@19.2.14)(lightningcss@1.22.1)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
       '@umijs/renderer-react': 4.6.35(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@umijs/server': 4.6.35
       '@umijs/test': 4.6.35(@babel/core@7.29.0)
@@ -27717,7 +27798,7 @@ snapshots:
       '@umijs/bundler-webpack': 4.6.35(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
       '@umijs/core': 4.6.35
       '@umijs/lint': 4.6.35(eslint@8.35.0)(stylelint@14.8.2)
-      '@umijs/preset-umi': 4.6.35(@types/node@25.5.0)(@types/react@19.2.14)(lightningcss@1.22.1)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(babel-plugin-macros@3.1.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(typescript@5.9.3)(webpack@5.105.4)
+      '@umijs/preset-umi': 4.6.35(@types/node@25.5.0)(lightningcss@1.22.1)(resolve-url-loader@5.0.0)(rollup@3.30.0)(sass@1.54.0)(styled-jsx@5.1.7(@babel/core@7.29.0)(react@19.2.4))(sugarss@2.0.0)(terser@5.46.1)(type-fest@0.21.3)(webpack@5.105.4)
       '@umijs/renderer-react': 4.6.35(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@umijs/server': 4.6.35
       '@umijs/test': 4.6.35(@babel/core@7.29.0)

@@ -27,6 +27,10 @@ import {
 } from '@api';
 import useStyles from './style.style';
 
+type CommonListResponse = {
+  list: BasicListItemDataType[];
+};
+
 const { Search } = Input;
 
 const Info: FC<{
@@ -82,35 +86,34 @@ export const BasicList: FC = () => {
     Partial<BasicListItemDataType> | undefined
   >(undefined);
 
-  const {
-    data: listData,
-    loading,
-    mutate,
-  } = useRequest(() => {
-    return queryFakeList({
+  const listRequest = useRequest<CommonListResponse>(() => {
+    return queryFakeList<CommonListResponse>({
       count: 50,
     });
   });
+  const listData = listRequest.data as CommonListResponse | undefined;
+  const loading = listRequest.loading;
+  const mutate = listRequest.mutate;
 
   const { run: postRun } = useRequest(
     (method, params) => {
       if (method === 'remove') {
-        return removeFakeList(params);
+        return removeFakeList<CommonListResponse>(params);
       }
       if (method === 'update') {
-        return updateFakeList(params);
+        return updateFakeList<CommonListResponse>(params);
       }
-      return addFakeList(params);
+      return addFakeList<CommonListResponse>(params);
     },
     {
       manual: true,
       onSuccess: (result) => {
-        mutate(result);
+        mutate(result as CommonListResponse);
       },
     },
   );
 
-  const list = listData?.list || [];
+  const list: BasicListItemDataType[] = listData?.list ?? [];
   const paginationProps = {
     showSizeChanger: true,
     showQuickJumper: true,
@@ -232,7 +235,7 @@ export const BasicList: FC = () => {
             }}
             extra={extraContent}
           >
-            <List
+            <List<BasicListItemDataType>
               size="large"
               rowKey="id"
               loading={loading}

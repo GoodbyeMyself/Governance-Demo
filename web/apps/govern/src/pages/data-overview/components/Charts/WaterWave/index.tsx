@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import autoHeight from '../../../../demo/dashboard/monitor/components/Charts/autoHeight';
+import autoHeight from '../autoHeight';
 
 /* eslint no-return-assign: 0 */
 /* eslint no-mixed-operators: 0 */

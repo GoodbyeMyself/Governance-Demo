@@ -1,3 +1,6 @@
 packages:
-  - 'apps/*'
+  - 'apps/bms'
+  - 'apps/govern'
+  - 'apps/portal'
+  - 'apps/screen'
   - 'packages/*'

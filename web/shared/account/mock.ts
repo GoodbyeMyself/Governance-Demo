@@ -1,4 +1,14 @@
-import type { Request, Response } from 'express';
+type MockRequest = {
+  body?: Record<string, any>;
+  query?: Record<string, any>;
+  params: Record<string, string>;
+};
+
+type MockResponse = {
+  json: (data: unknown) => unknown;
+  send: (data: unknown) => unknown;
+  status: (code: number) => MockResponse;
+};
 
 const city = require('./city.json');
 const province = require('./province.json');
@@ -236,7 +246,7 @@ function fakeList(count: number) {
   return list;
 }
 
-function getFakeList(req: Request, res: Response) {
+function getFakeList(req: MockRequest, res: MockResponse) {
   const params = req.query as any;
   const count = Number(params.count) * 1 || 5;
   return res.json({
@@ -246,25 +256,25 @@ function getFakeList(req: Request, res: Response) {
   });
 }
 
-function getCurrentUser(_req: Request, res: Response) {
+function getCurrentUser(_req: MockRequest, res: MockResponse) {
   return res.json({
     data: currentUserDetail,
   });
 }
 
-function getProvince(_: Request, res: Response) {
+function getProvince(_: MockRequest, res: MockResponse) {
   return res.json({
     data: province,
   });
 }
 
-function getCity(req: Request, res: Response) {
+function getCity(req: MockRequest, res: MockResponse) {
   return res.json({
     data: city[req.params.province],
   });
 }
 
-function getAccountSettingsCurrentUser(_req: Request, res: Response) {
+function getAccountSettingsCurrentUser(_req: MockRequest, res: MockResponse) {
   return res.json({
     data: accountSettingsCurrentUser,
   });

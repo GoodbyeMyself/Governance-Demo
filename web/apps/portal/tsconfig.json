@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "declaration": false,
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"],
@@ -16,5 +17,10 @@
       "@components/*": ["../../packages/components/src/*"]
     }
   },
-  "include": ["./**/*.d.ts", "./**/*.ts", "./**/*.tsx"]
+  "include": ["./**/*.d.ts", "./**/*.ts", "./**/*.tsx"],
+  "exclude": [
+    "./**/*.test.ts",
+    "./**/*.test.tsx",
+    "./**/__snapshots__/**"
+  ]
 }

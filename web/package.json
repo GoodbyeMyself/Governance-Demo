@@ -2,6 +2,11 @@
   "name": "governance-web",
   "private": true,
   "scripts": {
+    "build": "pnpm -r --workspace-concurrency=1 --filter ./apps/* build",
+    "lint": "pnpm -r --workspace-concurrency=1 --filter ./apps/* --if-present lint",
+    "typecheck": "pnpm -r --workspace-concurrency=1 --filter ./apps/* --if-present typecheck",
+    "test": "pnpm -r --workspace-concurrency=1 --filter ./apps/* --if-present test",
+
     "dev:bms": "pnpm --filter ./apps/bms dev",
     "build:bms": "pnpm --filter ./apps/bms build",
     "preview:bms": "pnpm --filter ./apps/bms preview",
@@ -9,19 +14,20 @@
     "dev:govern": "pnpm --filter ./apps/govern dev",
     "build:govern": "pnpm --filter ./apps/govern build",
     "lint:govern": "pnpm --filter ./apps/govern lint",
+    "typecheck:govern": "pnpm --filter ./apps/govern typecheck",
     "test:govern": "pnpm --filter ./apps/govern test",
     "openapi:govern": "pnpm --filter ./apps/govern openapi",
 
     "dev:portal": "pnpm --filter ./apps/portal dev",
     "build:portal": "pnpm --filter ./apps/portal build",
+    "lint:portal": "pnpm --filter ./apps/portal lint",
+    "typecheck:portal": "pnpm --filter ./apps/portal typecheck",
     "preview:portal": "pnpm --filter ./apps/portal preview",
 
     "dev:screen": "pnpm --filter ./apps/screen dev",
     "build:screen": "pnpm --filter ./apps/screen build",
-    "preview:screen": "pnpm --filter ./apps/screen preview",
-
-    "dev:template": "pnpm --filter ./apps/template dev",
-    "build:template": "pnpm --filter ./apps/template build",
-    "preview:template": "pnpm --filter ./apps/template preview"
+    "lint:screen": "pnpm --filter ./apps/screen lint",
+    "typecheck:screen": "pnpm --filter ./apps/screen typecheck",
+    "preview:screen": "pnpm --filter ./apps/screen preview"
   }
 }

@@ -1,6 +1,28 @@
 import dayjs from 'dayjs';
 import type { Request, Response } from 'express';
-import type { AnalysisData, DataItem, RadarData } from '../src/pages/demo/dashboard/analysis/data';
+
+type DataItem = {
+  [field: string]: string | number | number[] | null | undefined;
+};
+
+type RadarData = {
+  name: string;
+  label: string;
+  value: number;
+};
+
+type AnalysisData = {
+  visitData: DataItem[];
+  visitData2: DataItem[];
+  salesData: DataItem[];
+  searchData: DataItem[];
+  offlineData: DataItem[];
+  offlineChartData: DataItem[];
+  salesTypeData: DataItem[];
+  salesTypeDataOnline: DataItem[];
+  salesTypeDataOffline: DataItem[];
+  radarData: RadarData[];
+};
 
 // mock data
 const visitData: DataItem[] = [];

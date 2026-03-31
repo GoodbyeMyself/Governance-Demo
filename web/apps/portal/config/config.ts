@@ -7,7 +7,9 @@ import routes from './routes';
 const { REACT_APP_ENV = 'dev' } = process.env;
 const PUBLIC_PATH = '/';
 
-export default defineConfig({
+type PortalConfig = Parameters<typeof defineConfig>[0];
+
+const config: PortalConfig = {
   alias: {
     '@api': join(__dirname, '../../../packages/api/src'),
     '@utils': join(__dirname, '../../../packages/utils/src'),
@@ -63,4 +65,6 @@ export default defineConfig({
   define: {
     'process.env.CI': process.env.CI,
   },
-});
+};
+
+export default config;

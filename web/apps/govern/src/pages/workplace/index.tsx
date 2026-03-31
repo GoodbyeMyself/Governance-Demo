@@ -6,7 +6,12 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import type { FC } from 'react';
 import EditableLinkGroup from './components/EditableLinkGroup';
-import type { ActivitiesType, CurrentUser } from './data.d';
+import type {
+  ActivitiesType,
+  CurrentUser,
+  NoticeType,
+  RadarDataType,
+} from './data.d';
 import {
   getWorkplaceChartData as fakeChartData,
   queryActivities,
@@ -94,11 +99,18 @@ const ExtraContent: FC<Record<string, any>> = () => {
 };
 const Workplace: FC = () => {
   const { styles } = useStyles();
-  const { loading: projectLoading, data: projectNotice = [] } =
-    useRequest(queryProjectNotice);
-  const { loading: activitiesLoading, data: activities = [] } =
-    useRequest(queryActivities);
-  const { data } = useRequest(fakeChartData);
+  const projectNoticeRequest = useRequest(queryProjectNotice);
+  const activitiesRequest = useRequest(queryActivities);
+  const workplaceChartRequest = useRequest(fakeChartData);
+  const projectLoading = projectNoticeRequest.loading;
+  const activitiesLoading = activitiesRequest.loading;
+  const projectNotice =
+    (projectNoticeRequest.data as NoticeType[] | undefined) ?? [];
+  const activities =
+    (activitiesRequest.data as ActivitiesType[] | undefined) ?? [];
+  const workplaceChartData =
+    (workplaceChartRequest.data as { radarData: RadarDataType[] } | undefined) ??
+    undefined;
   const renderActivities = (item: ActivitiesType) => {
     const events = item.template.split(/@\{([^{}]*)\}/gi).map((key) => {
       if (item[key as keyof ActivitiesType]) {
@@ -162,7 +174,7 @@ const Workplace: FC = () => {
             extra={<Link to="/">全部项目</Link>}
             loading={projectLoading}
           >
-            {projectNotice.map((item) => (
+            {projectNotice.map((item: NoticeType) => (
               <Card.Grid className={styles.projectGrid} key={item.id}>
                 <Card.Meta
                   title={
@@ -227,11 +239,11 @@ const Workplace: FC = () => {
             }}
             variant="borderless"
             title="XX 指数"
-            loading={data?.radarData?.length === 0}
+            loading={workplaceChartData?.radarData?.length === 0}
           >
             <Radar
               height={343}
-              data={data?.radarData || []}
+              data={workplaceChartData?.radarData || []}
               xField="label"
               colorField="name"
               yField="value"
@@ -267,7 +279,7 @@ const Workplace: FC = () => {
           >
             <div className={styles.members}>
               <Row gutter={48}>
-                {projectNotice.map((item) => {
+                {projectNotice.map((item: NoticeType) => {
                   return (
                     <Col span={12} key={`members-item-${item.id}`}>
                       <a>
