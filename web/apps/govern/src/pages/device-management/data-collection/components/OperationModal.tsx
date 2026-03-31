@@ -7,7 +7,7 @@ import {
 } from '@ant-design/pro-components';
 import { Button, Result } from 'antd';
 import type { FC } from 'react';
-import type { BasicListItemDataType } from '../data.d';
+import type { BasicListItemDataType } from '../data';
 import useStyles from '../style.style';
 
 type OperationModalProps = {

@@ -62,6 +62,29 @@ export default [
     component: './data-overview',
   },
   {
+      path: '/device-management',
+      name: 'device-management',
+      icon: 'ApiOutlined',
+      routes: [
+        {
+          path: '/device-management',
+          redirect: '/device-management/device-link',
+        },
+        {
+          path: '/device-management/device-link',
+          name: 'device-link',
+          icon: 'link',
+          component: './device-management/device-link',
+        },
+        {
+          path: '/device-management/data-collection',
+          name: 'data-collection',
+          icon: 'api',
+          component: './device-management/data-collection',
+        },
+      ],
+    },
+  {
     path: '/data-governance',
     name: 'data-governance',
     icon: 'database',
@@ -82,29 +105,7 @@ export default [
         icon: 'profile',
         component: './data-governance/metadata-collection',
       },
-      {
-        path: '/data-governance/device-management',
-        name: 'device-management',
-        icon: 'cluster',
-        routes: [
-          {
-            path: '/data-governance/device-management',
-            redirect: '/data-governance/device-management/device-link',
-          },
-          {
-            path: '/data-governance/device-management/device-link',
-            name: 'device-link',
-            icon: 'link',
-            component: './data-governance/device-management/device-link',
-          },
-          {
-            path: '/data-governance/device-management/data-collection',
-            name: 'data-collection',
-            icon: 'api',
-            component: './data-governance/device-management/data-collection',
-          },
-        ],
-      },
+      
     ],
   },
   {

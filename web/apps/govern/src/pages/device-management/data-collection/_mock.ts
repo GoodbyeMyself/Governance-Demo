@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import type { BasicListItemDataType } from './data.d';
+import type { BasicListItemDataType } from './data';
 
 const titles = [
   'Alipay',
