@@ -24,6 +24,7 @@
         <module>service/auth-center</module>
         <module>service/bms-service</module>
         <module>service/data-source</module>
+        <module>service/data-metadata</module>
         <module>service/iot-device</module>
         <module>service/iot-collection</module>
     </modules>
