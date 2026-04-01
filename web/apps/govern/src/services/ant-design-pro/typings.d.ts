@@ -2,31 +2,44 @@
 /* eslint-disable */
 
 declare namespace API {
+  type BackendApiResponse<T> = {
+    success: boolean;
+    message: string;
+    data: T;
+  };
+
   type CurrentUser = {
+    id?: number;
+    username?: string;
+    nickname?: string;
     name?: string;
     avatar?: string;
     userid?: string;
     email?: string;
-    signature?: string;
-    title?: string;
-    group?: string;
-    tags?: { key?: string; label?: string }[];
-    notifyCount?: number;
-    unreadCount?: number;
-    country?: string;
-    access?: string;
-    geographic?: {
-      province?: { label?: string; key?: string };
-      city?: { label?: string; key?: string };
-    };
-    address?: string;
     phone?: string;
+    role?: 'USER' | 'ADMIN';
+    status?: 'ENABLED' | 'DISABLED';
+    lastLoginAt?: string;
+    createdAt?: string;
+    access?: 'user' | 'admin';
   };
 
   type LoginResult = {
+    success?: boolean;
+    message?: string;
     status?: string;
     type?: string;
     currentAuthority?: string;
+    data?: {
+      expiresIn?: number;
+      user?: CurrentUser;
+    };
+  };
+
+  type CaptchaResult = {
+    captchaId?: string;
+    imageData?: string;
+    expiresIn?: number;
   };
 
   type PageParams = {
@@ -57,13 +70,16 @@ declare namespace API {
   };
 
   type FakeCaptcha = {
-    code?: number;
-    status?: string;
+    captchaId?: string;
+    imageData?: string;
+    expiresIn?: number;
   };
 
   type LoginParams = {
     username?: string;
     password?: string;
+    captchaId?: string;
+    captchaCode?: string;
     autoLogin?: boolean;
     type?: string;
   };

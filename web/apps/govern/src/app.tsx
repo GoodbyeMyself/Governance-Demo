@@ -18,7 +18,22 @@ import '@ant-design/v5-patch-for-react-19';
 
 const isDev = process.env.NODE_ENV === 'development' || process.env.CI;
 const loginPath = '/user/login';
+const authFreePaths = [loginPath, '/user/register', '/user/register-result'];
 const OPEN_GLOBAL_SETTING_EVENT = 'open-global-setting';
+
+function redirectToLogin() {
+  const { pathname, search } = history.location;
+
+  if (authFreePaths.includes(pathname)) {
+    return;
+  }
+
+  const redirect = pathname + search;
+  history.replace({
+    pathname: loginPath,
+    search: redirect ? `?redirect=${encodeURIComponent(redirect)}` : undefined,
+  });
+}
 
 const GlobalSettingDrawer = ({
   settings,
@@ -51,9 +66,6 @@ const GlobalSettingDrawer = ({
   );
 };
 
-/**
- * @see https://umijs.org/docs/api/runtime-config#getinitialstate
- * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
   currentUser?: API.CurrentUser;
@@ -62,36 +74,45 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryCurrentUser({
+      const response = await queryCurrentUser({
         skipErrorHandler: true,
       });
-      return msg.data;
-    } catch (_error) {
-      history.push(loginPath);
+      return response.data;
+    } catch (error: any) {
+      if (error?.response?.status === 401) {
+        redirectToLogin();
+        return undefined;
+      }
+
+      throw error;
     }
-    return undefined;
   };
-  // 如果不是登录页面，执行
+
   const { location } = history;
-  if (
-    ![loginPath, '/user/register', '/user/register-result'].includes(
-      location.pathname,
-    )
-  ) {
-    const currentUser = await fetchUserInfo();
-    return {
-      fetchUserInfo,
-      currentUser,
-      settings: defaultSettings as Partial<LayoutSettings>,
-    };
+  const isAuthPage = authFreePaths.includes(location.pathname);
+
+  if (!isAuthPage) {
+    try {
+      const currentUser = await fetchUserInfo();
+      return {
+        fetchUserInfo,
+        currentUser,
+        settings: defaultSettings as Partial<LayoutSettings>,
+      };
+    } catch {
+      return {
+        fetchUserInfo,
+        settings: defaultSettings as Partial<LayoutSettings>,
+      };
+    }
   }
+
   return {
     fetchUserInfo,
     settings: defaultSettings as Partial<LayoutSettings>,
   };
 }
 
-// ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({
   initialState,
   setInitialState,
@@ -100,7 +121,9 @@ export const layout: RunTimeLayoutConfig = ({
     actionsRender: () => [
       <Question
         key="theme"
-        navTheme={(initialState?.settings?.navTheme as 'light' | 'realDark') ?? 'light'}
+        navTheme={
+          (initialState?.settings?.navTheme as 'light' | 'realDark') ?? 'light'
+        }
         onThemeChange={(navTheme) => {
           setInitialState((preInitialState: typeof initialState) => ({
             ...preInitialState,
@@ -126,9 +149,10 @@ export const layout: RunTimeLayoutConfig = ({
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
-      // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
-        history.push(loginPath);
+      const isAuthPage = authFreePaths.includes(location.pathname);
+
+      if (!initialState?.currentUser && !isAuthPage) {
+        redirectToLogin();
       }
     },
     bgLayoutImgList: [
@@ -174,11 +198,7 @@ export const layout: RunTimeLayoutConfig = ({
       </a>,
     ],
     menuHeaderRender: undefined,
-    // 自定义 403 页面
-    // unAccessible: <div>unAccessible</div>,
-    // 增加一个 loading 的状态
     childrenRender: (children) => {
-      // if (initialState?.loading) return <PageLoading />;
       return (
         <>
           {children}
@@ -200,12 +220,6 @@ export const layout: RunTimeLayoutConfig = ({
   };
 };
 
-/**
- * @name request 配置，可以配置错误处理
- * 它基于 axios 和 ahooks 的 useRequest 提供了一套统一的网络请求和错误处理方案。
- * @doc https://umijs.org/docs/max/request#配置
- */
 export const request: RequestConfig = {
-  baseURL: 'https://proapi.azurewebsites.net',
   ...errorConfig,
 };
