@@ -120,7 +120,7 @@ public class InMemoryCaptchaService implements CaptchaService {
                 .append("<defs><linearGradient id='bg' x1='0%' y1='0%' x2='100%' y2='100%'>")
                 .append("<stop offset='0%' stop-color='#0f172a'/><stop offset='100%' stop-color='#1d4ed8'/>")
                 .append("</linearGradient></defs>")
-                .append("<rect width='132' height='44' rx='12' fill='url(#bg)'/>");
+                .append("<rect width='132' height='44' fill='url(#bg)'/>");
 
         for (int index = 0; index < 6; index++) {
             svg.append("<circle cx='")
