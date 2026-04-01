@@ -1,0 +1,33 @@
+{
+    "name": "@governance/govern",
+    "private": true,
+    "author": "Ma Yunlong <15500409521@163.com>",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite",
+        "format": "prettier --cache --write .",
+        "preview": "vite preview",
+        "start": "pnpm dev"
+    },
+    "dependencies": {
+        "@ant-design/icons": "^6.1.0",
+        "@governance/api": "workspace:*",
+        "@governance/components": "workspace:*",
+        "@governance/i18n": "workspace:*",
+        "@governance/ui": "workspace:*",
+        "@governance/utils": "workspace:*",
+        "antd": "^6.3.1",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-router-dom": "^7.13.1"
+    },
+    "devDependencies": {
+        "@types/node": "^25.3.5",
+        "@types/react": "^18.0.33",
+        "@types/react-dom": "^18.0.11",
+        "@vitejs/plugin-react": "^5.1.4",
+        "less": "^4.4.2",
+        "typescript": "^5.0.3",
+        "vite": "^7.3.1"
+    }
+}

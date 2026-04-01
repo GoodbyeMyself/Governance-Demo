@@ -188,7 +188,7 @@ class WaterWave extends Component<WaterWaveProps> {
     const { percent, title, height = 1 } = this.props;
     return (
       <div
-        ref={(n) => {
+        ref={(n: HTMLDivElement | null) => {
           this.root = n;
         }}
         style={{
@@ -203,7 +203,7 @@ class WaterWave extends Component<WaterWaveProps> {
           }}
         >
           <canvas
-            ref={(n) => {
+            ref={(n: HTMLCanvasElement | null) => {
               this.node = n;
             }}
             width={height * 2}

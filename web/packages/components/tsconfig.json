@@ -1,7 +1,19 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "jsx": "react",
+    "noImplicitAny": false,
+    "types": ["react", "react-dom"],
+    "paths": {
+      "@api": ["../api/src/index.ts"],
+      "@api/*": ["../api/src/*"]
+    }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "../../apps/govern/src/services/ant-design-pro/typings.d.ts",
+    "../../apps/govern/src/services/swagger/typings.d.ts"
+  ]
 }

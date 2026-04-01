@@ -1,5 +1,5 @@
 import { Dropdown } from 'antd';
-import type { DropDownProps } from 'antd/es/dropdown';
+import type { DropdownProps } from 'antd/es/dropdown';
 import { createStyles } from 'antd-style';
 import classNames from 'classnames';
 import React from 'react';
@@ -23,7 +23,7 @@ export type HeaderDropdownProps = {
     | 'topCenter'
     | 'topRight'
     | 'bottomCenter';
-} & Omit<DropDownProps, 'overlay'>;
+} & Omit<DropdownProps, 'overlay'>;
 
 const HeaderDropdown: React.FC<HeaderDropdownProps> = ({
   overlayClassName: cls,

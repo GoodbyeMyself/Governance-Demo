@@ -3,5 +3,11 @@
   "compilerOptions": {
     "baseUrl": "./"
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.d.ts",
+    "../../apps/govern/src/services/ant-design-pro/typings.d.ts",
+    "../../apps/govern/src/services/swagger/typings.d.ts"
+  ]
 }

@@ -15,6 +15,7 @@ import {
 } from 'antd';
 import type { Store } from 'antd/es/form/interface';
 import { createStyles } from 'antd-style';
+import React from 'react';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 
@@ -208,9 +209,9 @@ const Register: FC = () => {
           <Input size="large" placeholder="邮箱" />
         </FormItem>
         <Popover
-          getPopupContainer={(node) => {
-            if (node?.parentNode) {
-              return node.parentNode as HTMLElement;
+          getPopupContainer={(node: HTMLElement) => {
+            if (node.parentNode instanceof HTMLElement) {
+              return node.parentNode;
             }
             return node;
           }}

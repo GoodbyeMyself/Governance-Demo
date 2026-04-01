@@ -18,6 +18,7 @@
 - `packages/api`
 - `packages/components`
 - `packages/i18n`
+- `packages/mocks`
 - `packages/utils`
 
 ## 安装依赖
@@ -27,6 +28,13 @@ pnpm install
 ```
 
 ## 常用命令
+
+```bash
+pnpm build
+pnpm lint
+pnpm typecheck
+pnpm test
+```
 
 ```bash
 pnpm dev:bms
@@ -43,13 +51,16 @@ pnpm build:screen
 ```
 
 ```bash
-pnpm lint
-pnpm typecheck
-pnpm test
+pnpm build:packages
+pnpm lint:packages
+pnpm typecheck:packages
+pnpm test:packages
 ```
 
 ## 说明
 
 - `apps/*` 只保留正式业务平台
 - 模板工程不再作为正式应用参与 workspace 治理
-- 当前工程已完成 monorepo 结构接入，后续仍需继续收口共享边界和类型治理
+- 当前正式应用为四端：`bms / govern / portal / screen`
+- 跨包共享继续保留 `@api`、`@utils`、`@components`、`@i18n` 别名模式
+- 当前工程已完成 monorepo 结构接入，后续仍需继续收口共享边界、依赖声明和根级治理

@@ -251,7 +251,7 @@ export default function LoginPage({
     const userInfo = await initialState?.fetchUserInfo?.();
     if (userInfo) {
       flushSync(() => {
-        setInitialState((s) => ({
+        setInitialState((s: any) => ({
           ...s,
           currentUser: userInfo,
         }));
@@ -419,7 +419,7 @@ export default function LoginPage({
                 />,
                 <ActionIcons key="icons" />,
               ]}
-              onFinish={async (values) => {
+              onFinish={async (values: any) => {
                 await handleSubmit(values as API.LoginParams);
               }}
             >

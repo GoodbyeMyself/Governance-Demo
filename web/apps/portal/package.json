@@ -13,9 +13,13 @@
     "@types/express": "^5.0.3",
     "@types/react": "^19.1.5",
     "@types/react-dom": "^19.1.5",
-    "typescript": "^5.6.3"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@governance/api": "workspace:*",
+    "@governance/components": "workspace:*",
+    "@governance/i18n": "workspace:*",
+    "@governance/utils": "workspace:*",
     "@ant-design/icons": "^5.6.1",
     "@ant-design/plots": "^2.6.0",
     "@ant-design/pro-components": "^2.7.19",

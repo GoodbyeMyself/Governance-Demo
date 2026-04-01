@@ -102,7 +102,7 @@ export const layout: RunTimeLayoutConfig = ({
         key="theme"
         navTheme={(initialState?.settings?.navTheme as 'light' | 'realDark') ?? 'light'}
         onThemeChange={(navTheme) => {
-          setInitialState((preInitialState) => ({
+          setInitialState((preInitialState: typeof initialState) => ({
             ...preInitialState,
             settings: {
               ...preInitialState?.settings,
@@ -116,7 +116,7 @@ export const layout: RunTimeLayoutConfig = ({
     avatarProps: {
       src: initialState?.currentUser?.avatar,
       title: <AvatarName />,
-      render: (_, avatarChildren) => {
+      render: (_: unknown, avatarChildren: React.ReactNode) => {
         return <AvatarDropdown menu>{avatarChildren}</AvatarDropdown>;
       },
     },
@@ -155,7 +155,7 @@ export const layout: RunTimeLayoutConfig = ({
       <a
         key="global-setting"
         href="#"
-        onClick={(event) => {
+        onClick={(event: React.MouseEvent<HTMLAnchorElement>) => {
           event.preventDefault();
           window.dispatchEvent(new Event(OPEN_GLOBAL_SETTING_EVENT));
         }}
@@ -186,7 +186,7 @@ export const layout: RunTimeLayoutConfig = ({
             <GlobalSettingDrawer
               settings={initialState?.settings}
               onSettingChange={(settings) => {
-                setInitialState((preInitialState) => ({
+                setInitialState((preInitialState: typeof initialState) => ({
                   ...preInitialState,
                   settings,
                 }));

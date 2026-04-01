@@ -1,3 +1,4 @@
+import React from 'react';
 import { LoginPage } from '@components/user';
 import { login } from '@/services/ant-design-pro/api';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';

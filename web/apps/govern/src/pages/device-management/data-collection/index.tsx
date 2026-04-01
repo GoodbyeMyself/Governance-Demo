@@ -172,7 +172,7 @@ export const BasicList: FC = () => {
   }> = ({ item }) => (
     <Dropdown
       menu={{
-        onClick: ({ key }) => editAndDelete(key, item),
+        onClick: ({ key }: { key: string }) => editAndDelete(key, item),
         items: [
           {
             key: 'edit',
@@ -246,7 +246,7 @@ export const BasicList: FC = () => {
                   actions={[
                     <a
                       key="edit"
-                      onClick={(e) => {
+                      onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                         e.preventDefault();
                         showEditModal(item);
                       }}

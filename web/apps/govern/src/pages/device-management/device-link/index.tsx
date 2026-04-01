@@ -231,7 +231,7 @@ const TableList: React.FC = () => {
         request={rule}
         columns={columns}
         rowSelection={{
-          onChange: (_, selectedRows) => {
+          onChange: (_: React.Key[], selectedRows: API.RuleListItem[]) => {
             setSelectedRows(selectedRows);
           },
         }}

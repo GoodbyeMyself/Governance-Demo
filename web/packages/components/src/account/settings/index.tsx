@@ -83,12 +83,12 @@ const Settings: React.FC = () => {
 
   return (
     <GridContent>
-      <div
-        className={styles.main}
-        ref={(ref) => {
-          if (ref) {
-            dom.current = ref;
-          }
+        <div
+          className={styles.main}
+          ref={(ref: HTMLDivElement | null) => {
+            if (ref) {
+              dom.current = ref;
+            }
         }}
       >
         <div className={styles.leftMenu}>

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Card } from 'antd';
-import type { CardProps } from 'antd/es/card';
+import type { CardProps } from 'antd';
 import classNames from 'classnames';
 import React from 'react';
 import useStyles from './index.style';
