@@ -3,4 +3,5 @@ packages:
   - 'apps/govern'
   - 'apps/portal'
   - 'apps/screen'
+  - 'apps/workspace'
   - 'packages/*'

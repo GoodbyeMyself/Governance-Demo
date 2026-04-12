@@ -36,6 +36,12 @@
     "build:screen": "pnpm --filter ./apps/screen build",
     "lint:screen": "pnpm --filter ./apps/screen lint",
     "typecheck:screen": "pnpm --filter ./apps/screen typecheck",
-    "preview:screen": "pnpm --filter ./apps/screen preview"
+    "preview:screen": "pnpm --filter ./apps/screen preview",
+
+    "dev:workspace": "pnpm --filter ./apps/workspace dev",
+    "build:workspace": "pnpm --filter ./apps/workspace build",
+    "lint:workspace": "pnpm --filter ./apps/workspace lint",
+    "typecheck:workspace": "pnpm --filter ./apps/workspace typecheck",
+    "preview:workspace": "pnpm --filter ./apps/workspace preview"
   }
 }
